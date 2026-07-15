@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="MiniGame/MiniGame.vcxproj" Id="d0be347a-6161-4523-9211-f4e2cb6aabbb" />
+</Solution>
