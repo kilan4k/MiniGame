@@ -12,7 +12,7 @@ int Player::CalculateDamage() {
 	
 	int damage = rand() % (1+maxDamage - minDamage) + minDamage; // Damage between min and max
 	//cout << "Random Damage got: " << damage<<"\n";
-	damage = rand() % 100 < critChance ? damage * 1.5 : damage; // damage after crit + 50% 
+	damage = rand() % 100 < critChance ? round((float)damage * 1.5) : damage; // damage after crit + 50% 
 	//cout << "Damage after critChance: " << damage<<"\n";
 	return damage;
 }
@@ -24,4 +24,12 @@ int Player::TakeDamage(int damage) {
 }
 bool Player::isAlive() {
 	return hp > 0;
+}
+void Player::AddXp(int amount) {
+	playerXp += amount;
+	while (playerXp >= xpToNextLvl) {
+		level++;
+		playerXp -= xpToNextLvl;
+		xpToNextLvl = 100 * level * 1.5;
+	}
 }

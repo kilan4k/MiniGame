@@ -1,5 +1,7 @@
 ﻿#include "Enemy.h"
 #include "Player.h"
+#include <cstdlib>
+#include <string>
 #include <iostream>
 #include <ctime>
 using std::cout, std::cin, std::string, std::endl;
@@ -12,12 +14,21 @@ int main()
 {
     
     srand(time(0));
-    Player myPlayer = Player(100, 100, 100, 50, 0);
+
+
+    Player myPlayer = Player(100, 20, 50, 25, 2);
+    Enemy spider = Enemy("Spider", 50, 15, 25, 50, 0, 10, 20);
+    Enemy zombie = Enemy("Zombie", 100, 20, 30, 15, 1, 15, 30);
+    
+    int experienceAddTest = 10;
     while (true) {
         std::cin.get();
-        cout<<myPlayer.TakeDamage(myPlayer.CalculateDamage())<<"\n";
+        cout <<"My player hp: " << myPlayer.hp << "\n";
+        cout << "My player xp: " << myPlayer.playerXp<< "\n; My player lvl: "<<myPlayer.level<<"\n; My player left xp for next level: "<<myPlayer.xpToNextLvl;
+        experienceAddTest *= 3;
+        myPlayer.AddXp(experienceAddTest);
     }
-
+    
 
     return 0;
 }
