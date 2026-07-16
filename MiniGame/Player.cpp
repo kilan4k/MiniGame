@@ -5,7 +5,7 @@
 using std::cout, std::cin, std::string, std::endl;
 
 
-Player::Player(float hp, int minDamage, int maxDamage, short critChance, short armor)
+Player::Player(float hp, Weapon* currentWeapon, short critChance, short armor)
 	:hp(hp), minDamage(minDamage), maxDamage(maxDamage), critChance(critChance), armor(armor)
 {}
 int Player::CalculateDamage() {

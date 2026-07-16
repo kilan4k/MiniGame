@@ -15,7 +15,8 @@ Enemy::Enemy() {
 	money = 1;
 }
 Enemy::Enemy(string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor, int money, int xpReward)
-	: name(name), hp(maxHp),maxHp(maxHp), minDamage(minDamage),maxDamage(maxDamage),critChance(critChance),armor(armor),money(money), xpReward(xpReward) {}
+	: name(name), hp(maxHp),maxHp(maxHp), minDamage(minDamage),maxDamage(maxDamage),critChance(critChance),armor(armor),money(money), xpReward(xpReward) 
+{}
 
 int Enemy::CalculateDamage() {
 	int damage = rand() % (1 + maxDamage - minDamage) + minDamage; // Damage between min and max

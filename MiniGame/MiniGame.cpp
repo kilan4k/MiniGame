@@ -1,20 +1,24 @@
 ﻿#include "Enemy.h"
+#include "Weapon.h"
 #include "Player.h"
+#include <vector>
 #include <cstdlib>
 #include <string>
 #include <iostream>
 #include <ctime>
-using std::cout, std::cin, std::string, std::endl;
+using std::cout, std::cin, std::string, std::endl, std::vector;
 
 
 
-
+void printWeaponCatalogue(const vector<Weapon>& weapons);
 void playerCreation(Player& myPlayer);
 int main()
 {
     srand(time(0));
 
-    Player myPlayer = Player(100, 20, 50, 25, 2);
+    //Player myPlayer;
+
+    //Enemy types
     Enemy* pCurrentEnemy;
     Enemy rat = Enemy("Rat", 25, 5, 10, 10, 0, 5, 10);
     Enemy spider = Enemy("Spider", 50, 15, 25, 50, 0, 10, 20);
@@ -29,16 +33,28 @@ int main()
     Enemy dragon = Enemy("Dragon", 300, 30, 60, 35, 1, 100, 120);
     Enemy demon = Enemy("Demon", 400, 60, 100, 40, 1, 120, 200);
 
-    
+    vector<Enemy> enemies = {rat, spider, rogue, skeleton, zombie, goblin, barbarian, bear, juggernaut, knight, dragon, demon};
+
+    //Weapon types
+    Weapon fists = Weapon("Fists", 10, 20, 5, 0, 0, true);
+    Weapon knife = Weapon("Knife", 20, 30, 5, 25, 1, false);
+    Weapon machete = Weapon("Machete", 25,35,10,35,4,false);
+    //Weapon 
+        vector<Weapon> weapons = { fists, knife, machete };
+
+
+
     int experienceAddTest = 10;
+    /*
     while (true) {
+        cout << "\n";
         std::cin.get();
         cout <<"My player hp: " << myPlayer.hp << "\n";
-        cout << "My player xp: " << myPlayer.playerXp<< "\n; My player lvl: "<<myPlayer.level<<"\n; My player left xp for next level: "<<myPlayer.xpToNextLvl;
+        cout << "My player xp: " << myPlayer.playerXp<< "\n; My player lvl: "<<myPlayer.level<<"\n; My player left xp for next level: "<<myPlayer.xpToNextLvl<<"\n";
         experienceAddTest *= 3;
         myPlayer.AddXp(experienceAddTest);
-    }
-    
+    }*/
+    printWeaponCatalogue(weapons);
 
     return 0;
 }
@@ -46,17 +62,28 @@ int main()
 
 
 
-//idea: 
-//I have a class of player and Enemy.
-//Player should have HP, MaxHP, minDMG,maxDMG(so theres random dmg), critChance(+50%dmg),Money, Level, and maybe something else 
-//Enemy should have HP, maxHP, minDMG,maxDMG, Armor, Money (when u kill him u get money)
-//First when starting program there should be starting screen, choose a weapon, go to shop or go battle, when u go battle u can meet a random enemy (their stats should increase in % with bigger player's level
-//Then when battle starts theres 50% chance of either u attack first or enemy, after both attack u can either continue fight or leave
-//if u lose, program closes, if u win u get money from enemy and then u can go shopping, healing or continue battling.
-//maybe i'll add something as well I just can't think of it now
-//Each class of Armor should decrease incoming damage by 20%. max Armor is 4
+
 void playerCreation(Player& myPlayer) {
 
 
 
+}
+void printWeaponCatalogue(const vector<Weapon>& weapons) {
+    cout << "=============== WEAPON SHOP ===============\n";
+    for (const auto& weapon : weapons) {
+        cout << "\n-------------------------------------------\n";
+        cout << "| " << weapon.name<<":\n";
+        cout<<"| Damage: " << weapon.minDamage << "-" << weapon.maxDamage<<"\n";
+        cout << "| Critical damage chance: " << weapon.critChance << "%\n";
+        cout << "| Price: " << weapon.price << "$\n";
+        cout << "| Available on player level: " << weapon.lvlReq<< "\n";
+        if (weapon.isBought) {
+            cout << "| You own this weapon";
+        }
+        else {
+            cout << "| You don't own this weapon";
+        }
+
+    }
+    cout << "\n-------------------------------------------\n\n";
 }
