@@ -1,9 +1,16 @@
 # MiniGame
-//I have a class of player and Enemy.
-//Player should have HP, MaxHP, minDMG,maxDMG(so theres random dmg), critChance(+50%dmg),Money, Level, and maybe something else 
-//Enemy should have HP, maxHP, minDMG,maxDMG, Armor, Money (when u kill him u get money)
-//First when starting program there should be starting screen, choose a weapon, go to shop or go battle, when u go battle u can meet a random enemy (their stats should increase in % with bigger player's level
-//Then when battle starts theres 50% chance of either u attack first or enemy, after both attack u can either continue fight or leave
-//if u lose, program closes, if u win u get money from enemy and then u can go shopping, healing or continue battling.
-//maybe i'll add something as well I just can't think of it now
-//Each class of Armor should decrease incoming damage by 20%. max Armor is 4
+
+A simple text-based RPG console game written in C++. 
+
+## Current Features
+* **Player Progression**: A working XP and level-up system. The experience needed for the next level increases with each new level.
+* **Diverse Enemies**: 12 different enemy types (from a weak Rat to a powerful Demon). Each enemy has its own unique health, damage, armor, critical hit chance, gold, and XP reward.
+* **Combat Mechanics**: Basic damage system with random damage ranges, armor reduction, and critical hits.
+
+## What is Next?
+* **Battle Loop**: A turn-based combat system in the console where the player fights spawned enemies.
+* **Difficulty Settings**: Easy, Medium, and Hard modes that change which enemies are more likely to appear.
+* **Gold and Shop**: A system to spend earned gold on upgrades for your character.
+
+## Technologies Used
+* C++ (OOP principles)
