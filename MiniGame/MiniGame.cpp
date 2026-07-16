@@ -17,7 +17,15 @@ enum WeaponIndex {
     FISTS = 0,
     KNIFE = 1,
     MACHETE = 2,
-    SWORD = 3
+    AXE = 3,
+    HAMMER = 4,
+    SWORD = 5,
+    BOW = 6,
+    KATANA = 7,
+    SHOTGUN = 8,
+    FIRESTF = 9,
+    LGHTSBR = 10,
+    DEADSTF = 11
 };
 
 int main()
@@ -43,62 +51,68 @@ int main()
     vector<Enemy> enemies = {rat, spider, rogue, skeleton, zombie, goblin, barbarian, bear, juggernaut, knight, dragon, demon};
 
     //Weapon types
-    Weapon fists = Weapon("Fists", 10, 20, 5, 0, 0, true);
-    Weapon knife = Weapon("Knife", 20, 30, 5, 25, 1, false);
-    Weapon machete = Weapon("Machete", 25,35,10,35,4,false);
-    Weapon sword = Weapon("Sword", 40, 50, 25, 100, 8, false);
-    Weapon bow = Weapon("Bow", 25, 60, 50, 125, 10, false);
-    vector<Weapon> weapons = { fists, knife, machete, sword};
+    Weapon fists = Weapon("Fists", 10, 20, 5, 0, 0, true); //0
+    Weapon knife = Weapon("Knife", 20, 30, 5, 25, 1, false);//1
+    Weapon machete = Weapon("Machete", 25,35,10,85,6,false);//2
+    Weapon axe = Weapon("Axe", 35,45,35,150,7,false);//3
+    Weapon hammer = Weapon("Hammer", 20, 40, 33, 95, 7, false);//4
+    Weapon sword = Weapon("Sword", 40, 55, 25, 200, 10, false);//5
+    Weapon bow = Weapon("Bow", 25, 60, 65, 250, 15, false);//6
+    Weapon katana = Weapon("Katana", 50, 75, 50, 400, 20, false);//7
+    Weapon shotgun = Weapon("Shotgun", 30, 90, 1, 600, 25, false);//8
+    Weapon firestf= Weapon("Fire staff", 50, 70, 50, 750, 25, false);//9
+    Weapon lightsaber = Weapon("Light Saber", 67, 80, 25, 800, 25, false);//10
+    Weapon deadlystf= Weapon("Deadly staff", 50, 200, 67, 1500, 50, false);//11
 
-    //Player types
+    vector<Weapon> weapons = { fists, knife, machete, axe, hammer, sword, bow, katana, shotgun, firestf, lightsaber, deadlystf};
+
+    //Player types (and declaring names beneath cus i'm a lazy man to edit a constructor but it ain't a big deal ig)
+    Player empty = Player(1, 0, &weapons[FISTS], 0);
+    empty.name = "New character"; 
     Player bandit = Player(1, 50, &weapons[KNIFE], 0);
     bandit.name = "Bandit";
     Player punchman = Player(1, 50, &weapons[FISTS], 1);
     punchman.name = "Punchman";
-    Player noobie = Player(5, 0, &weapons[FISTS], 0);
-    noobie.name = "Noobie"; 
-    vector<Player> players = {bandit, punchman, noobie};
-    Player* myPlayer = playerCreation(weapons,players);
-
+    Player archer = Player(10, 0, &weapons[BOW], 0);
+    archer.name = "Archer";
+    vector<Player> players = { empty, bandit, punchman, archer};
     //printPlayerStats(bandit);
-
-
-    int experienceAddTest = 10;
- 
     //printEnemyCatalogue(enemies);
     //printWeaponCatalogue(weapons);
+    Player* myPlayer = playerCreation(weapons,players);
+    printPlayerStats(*myPlayer);
+    //*myPlayer->currentWeapon = deadlystf;
+    myPlayer->AddXp(200000);
+    printPlayerStats(*myPlayer);
     cin.get();
     delete myPlayer;
     return 0;
 }
 
 
-
-
-
-Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {
-    cout << "======= WELCOME TO CHARACTER CREATOR ======\n";
+Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {// creating player's character
+    cout << "======= WELCOME TO CHARACTER CREATOR ======\n"; 
     bool hasChosen = false;
     char choice ;
     string cName;
     string nickname;
-    while (!hasChosen) {
+    while (!hasChosen) { //we'll be asking everytime till user chooses a character
 
     cout << "You can choose any of these characters: \n\n";
-   for (const auto& character : playerTypes) {
-        cout << character.name<<"\n";
+   for (const auto& character : playerTypes) { // showing every character
+        cout << character.name<<"\n"; 
     }
    cout << "\nEnter '1' to choose a character\nEnter '2' to show stats for each character\n";
    cin >> choice;
    switch (choice) {
     case '1':
         cout << "Which of available characters you would like to choose? Enter its name: ";
-        cin >> cName;
+        std::getline(cin >> std::ws, cName);
         for (const auto& character : playerTypes) {
-            if (toLowerString(character.name) == toLowerString(cName)) {
+            if (toLowerString(character.name) == toLowerString(cName)) { // checking if user's input equals any name of a character
                 hasChosen = true;
                 cout << "\nExcellent choice! You have successfully chosen a character called " << character.name << ". Now enter your nickname: ";
-                cin >> nickname;
+                std::getline(cin>>std::ws, nickname);
                 
                 cout << "Welcome to this dangerous world, " << nickname << " and I wish you good luck on this journey!\n\n";
                 Player* newPlayer = new Player(character.level, character.money, character.currentWeapon, character.armor);
@@ -109,12 +123,12 @@ Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {
             
         }
         if (!hasChosen) {
-            cout << "\nError! Try again.\n";
+            cout << "\nError! Try again.\n"; // Error in case user inputs some dumb stuff
         }
         break;
     case '2':
         for (const auto& character : playerTypes) {
-            printPlayerStats(character);
+            printPlayerStats(character);// if user asks to show stats we show him stats for every character
         }
         break;
     default:
@@ -127,7 +141,7 @@ Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {
 }
 std::string toLowerString(std::string str) {
     for (char& c : str) {
-        c = std::tolower(static_cast<unsigned char>(c));
+        c = std::tolower(static_cast<unsigned char>(c)); // for loop to turn string into a lowercase string obv
     }
     return str;
 }
@@ -137,7 +151,7 @@ void printEnemyCatalogue(const vector<Enemy>& enemies) { // Printing every enemy
         cout << "\n-------------------------------------------\n";
         cout << "| " << enemy.name << ":\n";
         cout << "| HP: " << enemy.maxHp << "\n";
-        cout << "| Damage: " << enemy.minDamage<<"-"<<enemy.maxDamage << "\n";
+        cout << "| Basic damage: " << enemy.minDamage<<"-"<<enemy.maxDamage << "\n";
         cout << "| Critical damage chance: " << enemy.critChance<< "%\n";
         cout << "| Armor class: " << enemy.armor<< "\n";
         cout << "| Money drop: " << enemy.money<< "$\n";
@@ -150,7 +164,7 @@ void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon ca
     for (const auto& weapon : weapons) {
         cout << "\n-------------------------------------------\n";
         cout << "| " << weapon.name<<":\n";
-        cout<<"| Damage: " << weapon.minDamage << "-" << weapon.maxDamage<<"\n";
+        cout<<"| Basic damage: " << weapon.minDamage << "-" << weapon.maxDamage<<"\n";
         cout << "| Critical damage chance: " << weapon.critChance << "%\n";
         cout << "| Price: " << weapon.price << "$\n";
         cout << "| Available on player level: " << weapon.lvlReq<< "\n";
@@ -164,7 +178,7 @@ void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon ca
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
-void printPlayerStats(const Player& player) {
+void printPlayerStats(const Player& player) { // Printing character or player stats 
     cout << "\n\n\n============= CHARACTER STATS =============\n";
     cout << "\n-------------------------------------------\n";
     cout << "| " << player.name << ":\n";
