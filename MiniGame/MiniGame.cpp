@@ -9,7 +9,7 @@
 using std::cout, std::cin, std::string, std::endl, std::vector;
 
 
-
+void printEnemyCatalogue(const vector<Enemy>& enemies);
 void printWeaponCatalogue(const vector<Weapon>& weapons);
 void playerCreation(Player& myPlayer);
 int main()
@@ -39,8 +39,8 @@ int main()
     Weapon fists = Weapon("Fists", 10, 20, 5, 0, 0, true);
     Weapon knife = Weapon("Knife", 20, 30, 5, 25, 1, false);
     Weapon machete = Weapon("Machete", 25,35,10,35,4,false);
-    //Weapon 
-        vector<Weapon> weapons = { fists, knife, machete };
+    
+    vector<Weapon> weapons = { fists, knife, machete };
 
 
 
@@ -54,6 +54,7 @@ int main()
         experienceAddTest *= 3;
         myPlayer.AddXp(experienceAddTest);
     }*/
+    printEnemyCatalogue(enemies);
     printWeaponCatalogue(weapons);
 
     return 0;
@@ -68,8 +69,22 @@ void playerCreation(Player& myPlayer) {
 
 
 }
-void printWeaponCatalogue(const vector<Weapon>& weapons) {
-    cout << "=============== WEAPON SHOP ===============\n";
+void printEnemyCatalogue(const vector<Enemy>& enemies) { // Printing every enemy in game just so that user knows what to deal with
+    cout << "\n\n\n============= ENEMIES MANUAL ==============\n";
+    for (const auto& enemy : enemies) {
+        cout << "\n-------------------------------------------\n";
+        cout << "| " << enemy.name << ":\n";
+        cout << "| HP: " << enemy.maxHp << "\n";
+        cout << "| Damage: " << enemy.minDamage<<"-"<<enemy.maxDamage << "\n";
+        cout << "| Critical damage chance: " << enemy.critChance<< "%\n";
+        cout << "| Armor class: " << enemy.armor<< "\n";
+        cout << "| Money drop: " << enemy.money<< "$\n";
+        cout << "| EXP drop: " << enemy.xpReward;
+    }
+    cout << "\n-------------------------------------------\n\n\n";
+}
+void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon catalogue which may also be used as a shop
+    cout << "\n\n\n=============== WEAPON SHOP ===============\n";
     for (const auto& weapon : weapons) {
         cout << "\n-------------------------------------------\n";
         cout << "| " << weapon.name<<":\n";
@@ -85,5 +100,5 @@ void printWeaponCatalogue(const vector<Weapon>& weapons) {
         }
 
     }
-    cout << "\n-------------------------------------------\n\n";
+    cout << "\n-------------------------------------------\n\n\n";
 }

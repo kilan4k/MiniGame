@@ -22,10 +22,10 @@ int Player::TakeDamage(int damage) {
 	hp -= damage<hp?damage:hp; // if dmg is greater than hp then u cry man
 	return damage;
 }
-bool Player::isAlive() {
+bool Player::isAlive() { // Checking if Player's alive
 	return hp > 0;
 }
-void Player::AddXp(int amount) {
+void Player::AddXp(int amount) { // Adding XP to a player, if levels up then reduces xp required for lvl in case they have xp for leveling up to few more levels
 	playerXp += amount;
 	while (playerXp >= xpToNextLvl) {
 		level++;

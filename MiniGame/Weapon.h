@@ -1,10 +1,9 @@
-#include <string>
-using std::string;
 #pragma once
+#include <string>
 class Weapon
 {
 public:
-	string name;
+	std::string name;
 	int minDamage;
 	int maxDamage;
 	short critChance;
@@ -12,7 +11,7 @@ public:
 	int lvlReq;
 	bool isBought;
 
-	Weapon(string name, int minDamage,	int maxDamage,	short critChance,	int price,	int lvlReq,	bool isBought);
+	Weapon(std::string name, int minDamage,	int maxDamage,	short critChance,	int price,	int lvlReq,	bool isBought);
 
 
 };
