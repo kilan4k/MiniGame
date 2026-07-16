@@ -1,18 +1,20 @@
 #include "Player.h"
+#include "Weapon.h"
 #include <cstdlib>
 #include <string>
 #include <iostream>
 using std::cout, std::cin, std::string, std::endl;
 
 
-Player::Player(float hp, Weapon* currentWeapon, short critChance, short armor)
-	:hp(hp), minDamage(minDamage), maxDamage(maxDamage), critChance(critChance), armor(armor)
+Player::Player(int level, int money, Weapon* currentWeapon, short armor)
+	:level(level),money(money),maxHp(90+level*10), hp(90 + level * 10), currentWeapon(currentWeapon), armor(armor)
 {}
 int Player::CalculateDamage() {
-	
+	int minDamage = getMinDamage();
+	int maxDamage = getMaxDamage();
 	int damage = rand() % (1+maxDamage - minDamage) + minDamage; // Damage between min and max
 	//cout << "Random Damage got: " << damage<<"\n";
-	damage = rand() % 100 < critChance ? round((float)damage * 1.5) : damage; // damage after crit + 50% 
+	damage = rand() % 100 < getCritChance() ? round((float)damage * 1.5) : damage; // damage after crit + 50% 
 	//cout << "Damage after critChance: " << damage<<"\n";
 	return damage;
 }
@@ -32,4 +34,13 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		playerXp -= xpToNextLvl;
 		xpToNextLvl = 100 * level * 1.5;
 	}
+}
+int Player::getMinDamage()const {
+	return currentWeapon->minDamage+(level*2);
+}
+int Player::getMaxDamage()const {
+	return currentWeapon->maxDamage + (level * 2);
+}
+int Player::getCritChance() const {
+	return currentWeapon->critChance;
 }
