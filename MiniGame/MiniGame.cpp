@@ -32,7 +32,7 @@ int main()
 {
     srand(time(0));
     
-
+    //Declaring different objects
     //Enemy types
     Enemy* pCurrentEnemy;
     Enemy rat = Enemy("Rat", 25, 5, 10, 10, 0, 5, 10);
@@ -71,21 +71,26 @@ int main()
     empty.name = "New character"; 
     Player bandit = Player(1, 50, &weapons[KNIFE], 0);
     bandit.name = "Bandit";
-    Player punchman = Player(1, 50, &weapons[FISTS], 1);
+    Player punchman = Player(1, 0, &weapons[FISTS], 1);
     punchman.name = "Punchman";
     Player archer = Player(10, 0, &weapons[BOW], 0);
     archer.name = "Archer";
-    vector<Player> players = { empty, bandit, punchman, archer};
+    Player lvlPunchman = Player(10, 50, &weapons[FISTS], 0);
+    lvlPunchman.name = "Leveled up Punchman";
+    Player lumberjack = Player(1, 0, &weapons[AXE], 0);
+    lumberjack.name = "Lumberjack";
+    Player robber = Player(1, 100, &weapons[FISTS], 0);
+    robber.name = "Robber";
+
+    vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
     //printPlayerStats(bandit);
     //printEnemyCatalogue(enemies);
     //printWeaponCatalogue(weapons);
     Player* myPlayer = playerCreation(weapons,players);
-    printPlayerStats(*myPlayer);
+    //printPlayerStats(*myPlayer);
     //*myPlayer->currentWeapon = deadlystf;
-    myPlayer->AddXp(200000);
-    printPlayerStats(*myPlayer);
     cin.get();
-    delete myPlayer;
+    //delete myPlayer;
     return 0;
 }
 
@@ -106,12 +111,12 @@ Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {/
    cin >> choice;
    switch (choice) {
     case '1':
-        cout << "Which of available characters you would like to choose? Enter its name: ";
+        cout << "======Which of available characters you would like to choose?======\nEnter its name: ";
         std::getline(cin >> std::ws, cName);
         for (const auto& character : playerTypes) {
             if (toLowerString(character.name) == toLowerString(cName)) { // checking if user's input equals any name of a character
                 hasChosen = true;
-                cout << "\nExcellent choice! You have successfully chosen a character called " << character.name << ". Now enter your nickname: ";
+                cout << "\nExcellent choice!\n\n======You have successfully chosen a character called " << character.name << ".======\n\nNow enter your nickname: ";
                 std::getline(cin>>std::ws, nickname);
                 
                 cout << "Welcome to this dangerous world, " << nickname << " and I wish you good luck on this journey!\n\n";
