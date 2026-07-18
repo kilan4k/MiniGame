@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Weapon.h"
+#include "Enemy.h"
 #include <cstdlib>
 #include <string>
 #include <iostream>
@@ -12,9 +13,11 @@ Player::Player(int level, int money, Weapon* currentWeapon, short armor)
 int Player::CalculateDamage() {
 	int minDamage = getMinDamage();
 	int maxDamage = getMaxDamage();
+	bool getCrit= rand() % 100 < getCritChance();
 	int damage = rand() % (1+maxDamage - minDamage) + minDamage; // Damage between min and max
 	//cout << "Random Damage got: " << damage<<"\n";
-	damage = rand() % 100 < getCritChance() ? round((float)damage * 1.5) : damage; // damage after crit + 50% 
+	damage = getCrit? round((float)damage * 1.5) : damage; // damage after crit + 50% 
+	if (getCrit) cout << "[CRITICAL DAMAGE]"; // !!!!!GOTTA FIX TMRW!!!!!!!!
 	//cout << "Damage after critChance: " << damage<<"\n";
 	return damage;
 }
@@ -35,6 +38,18 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		xpToNextLvl = 100 * level * 1.5;
 	}
 }
+void Player::Attack(Enemy& target) {
+	int possibleDamage = CalculateDamage();
+	int finalDamage = target.TakeDamage(possibleDamage);
+	int blockedDamage = possibleDamage - finalDamage;
+	std::cout << "\n[COMBAT] Player " << name << " attacks " << target.name << "\n";
+	std::cout << "--> Raw damage: " << possibleDamage << "\n";
+	if (blockedDamage > 0) {
+		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
+	}
+	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << "hp.\n";
+}
+
 int Player::getMinDamage()const {
 	return currentWeapon->minDamage+(level*2);
 }
@@ -44,3 +59,4 @@ int Player::getMaxDamage()const {
 int Player::getCritChance() const {
 	return currentWeapon->critChance;
 }
+

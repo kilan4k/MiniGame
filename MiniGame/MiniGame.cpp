@@ -7,6 +7,9 @@
 #include <iostream>
 #include <ctime>
 using std::cout, std::cin, std::string, std::endl, std::vector;
+
+
+
 std::string toLowerString(std::string str);
 void printPlayerStats(const Player& player);
 void printEnemyCatalogue(const vector<Enemy>& enemies);
@@ -83,16 +86,25 @@ int main()
     robber.name = "Robber";
 
     vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
-    //printPlayerStats(bandit);
+
+    Player* myPlayer = playerCreation(weapons,players);
+
+    printPlayerStats(*myPlayer);
+    myPlayer->Attack(zombie);
+    myPlayer->Attack(zombie);
+
     //printEnemyCatalogue(enemies);
     //printWeaponCatalogue(weapons);
-    Player* myPlayer = playerCreation(weapons,players);
     //printPlayerStats(*myPlayer);
     //*myPlayer->currentWeapon = deadlystf;
     cin.get();
+    
     //delete myPlayer;
     return 0;
 }
+
+
+
 
 
 Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {// creating player's character

@@ -19,6 +19,7 @@ public:
 	int TakeDamage(int damage);
 	bool isAlive();
 	void AddXp(int amount);
+	void Attack(class Enemy& target);
 	int getMinDamage()const;
 	int getMaxDamage()const;
 	int getCritChance()const;
