@@ -76,7 +76,7 @@ int main()
     bandit.name = "Bandit";
     Player punchman = Player(1, 0, &weapons[FISTS], 1);
     punchman.name = "Punchman";
-    Player archer = Player(10, 0, &weapons[BOW], 0);
+    Player archer = Player(1, 0, &weapons[BOW], 0);
     archer.name = "Archer";
     Player lvlPunchman = Player(10, 50, &weapons[FISTS], 0);
     lvlPunchman.name = "Leveled up Punchman";
@@ -90,12 +90,24 @@ int main()
     Player* myPlayer = playerCreation(weapons,players);
 
     printPlayerStats(*myPlayer);
-    pCurrentEnemy = new Enemy(demon);
-    while (pCurrentEnemy->isAlive()) {
+    pCurrentEnemy = new Enemy(zombie);
+    while (myPlayer != nullptr && pCurrentEnemy != nullptr &&(pCurrentEnemy->isAlive() and myPlayer->isAlive())) {
+        
         myPlayer->Attack(*pCurrentEnemy);
+        if (!pCurrentEnemy->isAlive()) {
+            std::cout << pCurrentEnemy->name << " is dead.\n";        
+            break;
+        }
+        pCurrentEnemy->Attack(*myPlayer);
+        if (!myPlayer->isAlive()) {
+            std::cout << myPlayer->name << " is dead.\n";
+            break;
+        }        
     }
-    std::cout << pCurrentEnemy->name << " is dead.\n";
-    delete pCurrentEnemy;
+    if (!myPlayer->isAlive()) delete myPlayer;
+    if (!pCurrentEnemy->isAlive()) delete pCurrentEnemy;
+ 
+    
     
 
     //printEnemyCatalogue(enemies);

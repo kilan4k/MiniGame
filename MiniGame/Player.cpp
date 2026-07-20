@@ -10,7 +10,7 @@ using std::cout, std::cin, std::string, std::endl;
 Player::Player(int level, int money, Weapon* currentWeapon, short armor)
 	:level(level),money(money),maxHp(90+level*10), hp(90 + level * 10), currentWeapon(currentWeapon), armor(armor)
 {}
-std::pair<int, int >Player::CalculateDamage(){
+std::pair<int, int> Player::CalculateDamage(){
 	int minDamage = getMinDamage();
 	int maxDamage = getMaxDamage();
 	bool getCrit= rand() % 100 < getCritChance();
@@ -27,17 +27,17 @@ void Player::Attack(Enemy& target) {
 	bool isCrit = afterCritDamage > baseDamage; // if final damage > base damage => its a crit
 	int finalDamage = target.TakeDamage(afterCritDamage);
 	int blockedDamage = afterCritDamage - finalDamage;
-	std::cout << "\n[COMBAT] Player " << name << " attacks " << target.name << "\n";
+	std::cout << "\n[COMBAT, PLAYER'S TURN] Player " << name << " attacks " << target.name << "\n";
 	
 	std::cout << "--> Base damage: " << baseDamage << "\n";
 	if (isCrit) cout << "[CRITICAL DAMAGE]\n--> Damage after crit: "<<afterCritDamage<<"\n";
 	if (blockedDamage > 0) {
 		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
 	}
-	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << "hp.\n";
+	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << " HP.\n\n";
 }
 int Player::TakeDamage(int damage) {
-	damage = armor <= 4 ? damage - damage * armor / 5 : damage - damage * 4 / 5; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
+	damage = armor <= 4 ? damage - damage * ((float)armor / 5.0) : damage - damage * 4.0 / 5.0; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
 	//cout << "Damage after armor: " << damage << "\n"; 
 	hp -= damage<hp?damage:hp; // if dmg is greater than hp then u cry man
 	return damage;

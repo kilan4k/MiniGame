@@ -18,9 +18,9 @@ public:
 	Player(int level, int money, Weapon* currentWeapon, short armor); 
 	std::pair<int, int >CalculateDamage();
 	int TakeDamage(int damage);
+	void Attack(class Enemy& target);
 	bool isAlive();
 	void AddXp(int amount);
-	void Attack(class Enemy& target);
 	int getMinDamage()const;
 	int getMaxDamage()const;
 	int getCritChance()const;
