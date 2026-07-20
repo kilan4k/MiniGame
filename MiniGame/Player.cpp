@@ -64,3 +64,100 @@ int Player::getCritChance() const {
 	return currentWeapon->critChance;
 }
 
+void Player::HealPlayer() {
+	const int HEAL_PRICE_PERHP = 0+(level*2); 
+	int totalCost = HEAL_PRICE_PERHP * (maxHp - hp);
+	char choice; // for checkin Y and N
+	int numChoice; // for choosing hp
+	bool leaving = false;
+	std::cout << "\nYour balance is " << money << "$\n";
+	if (hp == maxHp) {
+		std::cout << "You already have max HP of " << maxHp<<"\n";
+	}
+	while (!leaving && hp!=maxHp) { // repeating ts till user leaves menu
+		if (money >= totalCost) {
+			std::cout << "\nAre you sure you want to spend " << HEAL_PRICE_PERHP << "$ per hp to heal yourself to your max HP of " << maxHp << "\n";
+			std::cout << "Healing to " << maxHp << " will cost you " << totalCost << "$\n";
+			std::cout << "Type 'Y' if you agree, Type 'N' if you do not or want to heal to a specific number of HP\n";
+			std::cin >> choice;
+
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+			switch (choice) {
+			case 'Y':
+				choice = ' ';
+				money -= totalCost;
+				hp = maxHp;
+				std::cout << "You're successfully healed! Your HP now is " << hp<<"!\n";
+				leaving = true;
+				break;
+
+			case 'N':
+				choice = ' ';
+				std::cout << "Type '-1' if you want to leave this menu, Type a number " << hp + 1 << '-' << maxHp << " to choose HP to heal you for.\n";
+				std::cin >> numChoice;
+
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				if (numChoice == -1) leaving = true;
+				else if ( (numChoice > hp && numChoice <= maxHp) ) { // checking if input number is available number to heal
+					std::cout << "Healing to " << numChoice << " HP will cost you " << HEAL_PRICE_PERHP * (numChoice - hp)<<"$" <<
+					"\nType 'Y' if you agree to heal, type 'N' to leave this menu\n";
+					std::cin >> choice;
+					std::cin.clear();
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+					if (choice == 'Y') {
+					money -= HEAL_PRICE_PERHP * (numChoice - hp );
+					std::cout << "You have successfully healed to " << numChoice<< " HP! And spent "<< HEAL_PRICE_PERHP * (numChoice - hp) << "$\n";
+					hp = numChoice;
+					leaving = true;
+					}
+					else {
+						leaving = true;
+					}
+				}
+				else {
+					std::cout << "Error! Try again!\n";
+				}
+				break;
+			default:
+				std::cout << "Error! Try again!\n";
+					break;
+			}
+		}
+		else 
+		{
+			if (money >= HEAL_PRICE_PERHP) {
+			std::cout << "\nYou have not enough money to heal you to " << maxHp << " HP (that costs " << totalCost << "$)\n";
+			std::cout << "Heal Price per 1 HP = "<<HEAL_PRICE_PERHP<<"\n";
+			std::cout << "Type '-1' if you want to leave this menu, Type a number " << hp + 1 << '-' <<(int) (hp + ((float)money/(float)HEAL_PRICE_PERHP ))<< " to choose HP to heal you for.\n";
+			std::cin >> numChoice;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			if (numChoice == -1) leaving = true;
+			else if (numChoice>hp && numChoice<=(hp + ((float)money / (float)HEAL_PRICE_PERHP))) {
+				std::cout << "Healing to " << numChoice << " HP will cost you " << HEAL_PRICE_PERHP * (numChoice - hp)<<"$" <<
+				"\nType 'Y' if you agree to heal, type 'N' to leave this menu\n";
+				std::cin >> choice;
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				if (choice == 'Y') {
+					money -= HEAL_PRICE_PERHP * (numChoice - hp);
+					std::cout << "You have successfully healed to " << numChoice << " HP! And spent " << HEAL_PRICE_PERHP * (numChoice - hp) << "$\n";
+					hp = numChoice;
+					leaving = true;
+				}
+			}
+			else {
+				std::cout << "Error! Try again!\n";
+			}	
+		}
+			else {
+				std::cout<<"\nYou don't even have enough money to heal you for 1 HP lol (it's "<<HEAL_PRICE_PERHP<<"$ per 1 HP" << "\n";
+				leaving = true;
+			}
+		}
+	}
+	
+}

@@ -24,6 +24,6 @@ public:
 	int getMinDamage()const;
 	int getMaxDamage()const;
 	int getCritChance()const;
-
+	void HealPlayer();
 };
 

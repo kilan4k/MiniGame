@@ -88,9 +88,16 @@ int main()
     vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
 
     Player* myPlayer = playerCreation(weapons,players);
-
+    myPlayer->money = 200;
+    myPlayer->AddXp(250);
     printPlayerStats(*myPlayer);
+  
     pCurrentEnemy = new Enemy(zombie);
+    pCurrentEnemy->Attack(*myPlayer);
+    
+    myPlayer->HealPlayer();
+    printPlayerStats(*myPlayer);
+    /*
     while (myPlayer != nullptr && pCurrentEnemy != nullptr &&(pCurrentEnemy->isAlive() and myPlayer->isAlive())) {
         
         myPlayer->Attack(*pCurrentEnemy);
@@ -106,7 +113,7 @@ int main()
     }
     if (!myPlayer->isAlive()) delete myPlayer;
     if (!pCurrentEnemy->isAlive()) delete pCurrentEnemy;
- 
+ */
     
     
 
@@ -216,7 +223,8 @@ void printPlayerStats(const Player& player) { // Printing character or player st
     cout << "\n\n\n============= CHARACTER STATS =============\n";
     cout << "\n-------------------------------------------\n";
     cout << "| " << player.name << ":\n";
-    cout << "| HP: " << 90 + player.level * 10 << "\n";
+    cout << "| Current HP: " << player.hp<< "\n";
+    cout << "| Max HP: " << player.maxHp<< "\n";
     cout << "| Level: " << player.level << "\n";
     cout << "| Weapon: " << player.currentWeapon->name<< "\n";
     cout << "| Damage: " << player.getMinDamage()<<"-"<<player.getMaxDamage() << "\n";
