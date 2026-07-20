@@ -1,4 +1,5 @@
 #pragma once
+#include <utility>
 #include <string>
 class Player
 {
@@ -15,7 +16,7 @@ public:
 	int money = 0;
 
 	Player(int level, int money, Weapon* currentWeapon, short armor); 
-	int CalculateDamage();
+	std::pair<int, int >CalculateDamage();
 	int TakeDamage(int damage);
 	bool isAlive();
 	void AddXp(int amount);

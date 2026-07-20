@@ -10,16 +10,31 @@ using std::cout, std::cin, std::string, std::endl;
 Player::Player(int level, int money, Weapon* currentWeapon, short armor)
 	:level(level),money(money),maxHp(90+level*10), hp(90 + level * 10), currentWeapon(currentWeapon), armor(armor)
 {}
-int Player::CalculateDamage() {
+std::pair<int, int >Player::CalculateDamage(){
 	int minDamage = getMinDamage();
 	int maxDamage = getMaxDamage();
 	bool getCrit= rand() % 100 < getCritChance();
-	int damage = rand() % (1+maxDamage - minDamage) + minDamage; // Damage between min and max
+	int baseDamage = rand() % (1+maxDamage - minDamage) + minDamage; // Damage between min and max
 	//cout << "Random Damage got: " << damage<<"\n";
-	damage = getCrit? round((float)damage * 1.5) : damage; // damage after crit + 50% 
-	if (getCrit) cout << "[CRITICAL DAMAGE]"; // !!!!!GOTTA FIX TMRW!!!!!!!!
+	int finalDamage= getCrit? round((float)baseDamage* 1.5) : baseDamage; // damage after crit + 50% 
 	//cout << "Damage after critChance: " << damage<<"\n";
-	return damage;
+	return { finalDamage,baseDamage};
+}
+void Player::Attack(Enemy& target) {
+	auto damageData = CalculateDamage();
+	int afterCritDamage = damageData.first;
+	int baseDamage = damageData.second;
+	bool isCrit = afterCritDamage > baseDamage; // if final damage > base damage => its a crit
+	int finalDamage = target.TakeDamage(afterCritDamage);
+	int blockedDamage = afterCritDamage - finalDamage;
+	std::cout << "\n[COMBAT] Player " << name << " attacks " << target.name << "\n";
+	
+	std::cout << "--> Base damage: " << baseDamage << "\n";
+	if (isCrit) cout << "[CRITICAL DAMAGE]\n--> Damage after crit: "<<afterCritDamage<<"\n";
+	if (blockedDamage > 0) {
+		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
+	}
+	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << "hp.\n";
 }
 int Player::TakeDamage(int damage) {
 	damage = armor <= 4 ? damage - damage * armor / 5 : damage - damage * 4 / 5; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
@@ -37,17 +52,6 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		playerXp -= xpToNextLvl;
 		xpToNextLvl = 100 * level * 1.5;
 	}
-}
-void Player::Attack(Enemy& target) {
-	int possibleDamage = CalculateDamage();
-	int finalDamage = target.TakeDamage(possibleDamage);
-	int blockedDamage = possibleDamage - finalDamage;
-	std::cout << "\n[COMBAT] Player " << name << " attacks " << target.name << "\n";
-	std::cout << "--> Raw damage: " << possibleDamage << "\n";
-	if (blockedDamage > 0) {
-		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
-	}
-	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << "hp.\n";
 }
 
 int Player::getMinDamage()const {

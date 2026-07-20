@@ -90,8 +90,13 @@ int main()
     Player* myPlayer = playerCreation(weapons,players);
 
     printPlayerStats(*myPlayer);
-    myPlayer->Attack(zombie);
-    myPlayer->Attack(zombie);
+    pCurrentEnemy = new Enemy(demon);
+    while (pCurrentEnemy->isAlive()) {
+        myPlayer->Attack(*pCurrentEnemy);
+    }
+    std::cout << pCurrentEnemy->name << " is dead.\n";
+    delete pCurrentEnemy;
+    
 
     //printEnemyCatalogue(enemies);
     //printWeaponCatalogue(weapons);
