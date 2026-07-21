@@ -84,7 +84,7 @@ void Player::HealPlayer() {
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-			switch (choice) {
+			switch (toupper(choice)) {
 			case 'Y':
 				choice = ' ';
 				money -= totalCost;
@@ -107,7 +107,7 @@ void Player::HealPlayer() {
 					std::cin >> choice;
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-					if (choice == 'Y') {
+					if (toupper(choice) == 'Y') {
 					money -= HEAL_PRICE_PERHP * (numChoice - hp );
 					std::cout << "You have successfully healed to " << numChoice<< " HP! And spent "<< HEAL_PRICE_PERHP * (numChoice - hp) << "$\n";
 					hp = numChoice;
@@ -131,18 +131,18 @@ void Player::HealPlayer() {
 			if (money >= HEAL_PRICE_PERHP) {
 			std::cout << "\nYou have not enough money to heal you to " << maxHp << " HP (that costs " << totalCost << "$)\n";
 			std::cout << "Heal Price per 1 HP = "<<HEAL_PRICE_PERHP<<"\n";
-			std::cout << "Type '-1' if you want to leave this menu, Type a number " << hp + 1 << '-' <<(int) (hp + ((float)money/(float)HEAL_PRICE_PERHP ))<< " to choose HP to heal you for.\n";
+			std::cout << "Type '-1' if you want to leave this menu, Type a number " << hp + 1 << '-' <<(int) (hp + (money/HEAL_PRICE_PERHP ))<< " to choose HP to heal you for.\n";
 			std::cin >> numChoice;
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			if (numChoice == -1) leaving = true;
-			else if (numChoice>hp && numChoice<=(hp + ((float)money / (float)HEAL_PRICE_PERHP))) {
+			else if (numChoice>hp && numChoice<=(hp + (money / HEAL_PRICE_PERHP))) {
 				std::cout << "Healing to " << numChoice << " HP will cost you " << HEAL_PRICE_PERHP * (numChoice - hp)<<"$" <<
 				"\nType 'Y' if you agree to heal, type 'N' to leave this menu\n";
 				std::cin >> choice;
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-				if (choice == 'Y') {
+				if (toupper(choice) == 'Y') {
 					money -= HEAL_PRICE_PERHP * (numChoice - hp);
 					std::cout << "You have successfully healed to " << numChoice << " HP! And spent " << HEAL_PRICE_PERHP * (numChoice - hp) << "$\n";
 					hp = numChoice;
