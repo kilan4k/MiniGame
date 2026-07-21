@@ -51,6 +51,8 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		level++;
 		playerXp -= xpToNextLvl;
 		xpToNextLvl = 100 * level * 1.5;
+		maxHp = (90 + level * 10);
+		hp = hp + 10 > maxHp ? maxHp : hp+10;
 	}
 }
 
