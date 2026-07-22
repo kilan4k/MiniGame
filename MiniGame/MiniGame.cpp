@@ -117,7 +117,7 @@ int main()
     
     
 
-    //printEnemyCatalogue(enemies);
+    printEnemyCatalogue(enemies);
     printWeaponCatalogue(weapons);
     //printPlayerStats(*myPlayer);
     //*myPlayer->currentWeapon = deadlystf;
@@ -196,34 +196,40 @@ std::string toLowerString(std::string str) {
 }
 void printEnemyCatalogue(const vector<Enemy>& enemies) { // Printing every enemy in game just so that user knows what to deal with
     cout << "\n\n\n============= ENEMIES MANUAL ==============\n";
-    for (const auto& enemy : enemies) {
-        cout << "\n-------------------------------------------\n";
-        cout << "| " << enemy.name << ":\n";
-        cout << "| HP: " << enemy.maxHp << "\n";
-        cout << "| Basic damage: " << enemy.minDamage<<"-"<<enemy.maxDamage << "\n";
-        cout << "| Critical damage chance: " << enemy.critChance<< "%\n";
-        cout << "| Armor class: " << enemy.armor<< "\n";
-        cout << "| Money drop: " << enemy.money<< "$\n";
-        cout << "| EXP drop: " << enemy.xpReward;
+    {
+        int i = 1;
+        for (const auto& enemy : enemies) {
+            cout << "\n-------------------------------------------\n";
+            cout << "| " <<i++<<". " << enemy.name << ":\n";
+            cout << "| HP: " << enemy.maxHp << "\n";
+            cout << "| Basic damage: " << enemy.minDamage << "-" << enemy.maxDamage << "\n";
+            cout << "| Critical damage chance: " << enemy.critChance << "%\n";
+            cout << "| Armor class: " << enemy.armor << "\n";
+            cout << "| Money drop: " << enemy.money << "$\n";
+            cout << "| EXP drop: " << enemy.xpReward;
+        }
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
 void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon catalogue which may also be used as a shop
     cout << "\n\n\n=============== WEAPON SHOP ===============\n";
-    for (const auto& weapon : weapons) {
-        cout << "\n-------------------------------------------\n";
-        cout << "| " << weapon.name<<":\n";
-        cout<<"| Basic damage: " << weapon.minDamage << "-" << weapon.maxDamage<<"\n";
-        cout << "| Critical damage chance: " << weapon.critChance << "%\n";
-        cout << "| Price: " << weapon.price << "$\n";
-        cout << "| Available on player level: " << weapon.lvlReq<< "\n";
-        if (weapon.isBought) {
-            cout << "| You own this weapon";
-        }
-        else {
-            cout << "| You don't own this weapon";
-        }
+    {
+        int i = 1;
+        for (const auto& weapon : weapons) {
+            cout << "\n-------------------------------------------\n";
+            cout << "| " <<i++<<". " << weapon.name << ":\n";
+            cout << "| Basic damage: " << weapon.minDamage << "-" << weapon.maxDamage << "\n";
+            cout << "| Critical damage chance: " << weapon.critChance << "%\n";
+            cout << "| Price: " << weapon.price << "$\n";
+            cout << "| Available on player level: " << weapon.lvlReq << "\n";
+            if (weapon.isBought) {
+                cout << "| You own this weapon";
+            }
+            else {
+                cout << "| You don't own this weapon";
+            }
 
+        }
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
