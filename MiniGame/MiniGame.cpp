@@ -15,6 +15,7 @@ void printPlayerStats(const Player& player);
 void printEnemyCatalogue(const vector<Enemy>& enemies);
 void printWeaponCatalogue(const vector<Weapon>& weapons);
 Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes);
+void openShop(Player& player, vector<Weapon>& weapons);
 
 enum WeaponIndex {
     FISTS = 0,
@@ -116,9 +117,10 @@ int main()
  */
     
     
-
-    printEnemyCatalogue(enemies);
-    printWeaponCatalogue(weapons);
+    openShop(*myPlayer, weapons);
+    printPlayerStats(*myPlayer);
+    //printEnemyCatalogue(enemies);
+    //printWeaponCatalogue(weapons);
     //printPlayerStats(*myPlayer);
     //*myPlayer->currentWeapon = deadlystf;
     cin.get();
@@ -130,7 +132,99 @@ int main()
 
 
 
+void openShop(Player& player, vector<Weapon>& weapons){
+    cout << "\n\n\n=============== WEAPON SHOP ===============\n";
+    string choice;
+    int numChoice;
+    bool isLeaving = false;
+    cout << "Welcome to the shop, here you can examine every weapons' statistics or buy new weapon\n";
+    while (!isLeaving) {
 
+    cout << "Type '1' to show weapon list and therefore buy a weapon;\nType '2' to show stats for every weapon;\nType '-1' to leave the shop\n";
+    cin >> numChoice;
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    switch (numChoice) {
+    case 1:
+    {
+        int i = 1;
+        for (const auto& weapon : weapons) {
+            cout << i++ << ". " << weapon.name;
+            if (!weapon.isBought) {
+                cout<<"; Price: " << weapon.price << "; Level required: " << weapon.lvlReq << "; Can buy - "<< ((player.level >= weapon.lvlReq && player.money >= weapon.price)? "Yes": "No");
+            }
+            else {
+                cout << "; You own this weapon!";
+            }
+            cout << "\n";
+        }
+    }
+        cout << "\n!Before buying a weapon make sure you have enough money and level!\n";
+        cout << "To buy a weapon, type its number or its name:\n";
+        std::getline(cin >> std::ws, choice);
+        {
+            bool found = false;
+            int i = 1;
+            
+            for (auto& weapon : weapons) {
+                string indexStr = std::to_string(i++);
+                if ((toLowerString(choice) == toLowerString(weapon.name) || indexStr == choice)) {
+                    found = true;
+                    if (weapon.isBought) {
+                        cout << "You already own " << weapon.name << "!\nDo you want to equip it? 'Y' for yes, 'N' for no:\n";
+                        std::getline(cin >> std::ws, choice);
+                        if (toLowerString(choice) == "y") {
+                            player.currentWeapon = &weapon;
+                            cout << "Successfully equipped " << weapon.name << "!\n";
+                        }
+                        break;
+                    }
+                    if (player.money >= weapon.price) {
+                        if (player.level >= weapon.lvlReq) {
+                        cout << "You have enough money to buy " << weapon.name << ". Type 'Y' if you want to buy it; Type 'N' if you don't want to buy it\n";
+                        std::getline(cin >> std::ws, choice);
+                        if (toLowerString(choice) == "y") {
+                            weapon.isBought = true;
+                            player.money -= weapon.price;
+                            player.currentWeapon = &weapon;
+                            cout << "Successfully bought " << weapon.name << " for "<<weapon.price<<"$\nThis weapon is now equipped. (if you want to change equipped weapon, go to inventory from menu)\n";
+                            break;
+                        }
+                        else if (toLowerString(choice) == "n") {
+                            break;
+                        }
+                        else {
+                            cout << "Error! Try again!\n\n";
+                            break;
+                        }
+                        }
+                        else {
+                            cout << "Your level is not enough to buy " << weapon.name << "!\n";
+                        }
+                    }
+                    else {
+                        cout << "You have not enough money to buy " << weapon.name << "!\n";
+                    }
+                    
+
+                }
+            }
+            if (!found) cout << "ERROR! Weapon is not found!\n";
+        }
+        break;
+    case 2: printWeaponCatalogue(weapons);
+        break;
+    case -1:
+        isLeaving = true;
+        break;
+    default:cout << "Error! Try again\n";
+        break;
+
+    }
+    }
+
+    cout << "\n-------------------------------------------\n\n\n";
+}
 Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {// creating player's character
     cout << "======= WELCOME TO CHARACTER CREATOR ======\n"; 
     bool hasChosen = false;
@@ -165,6 +259,7 @@ Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {/
                     cout << "Welcome to this dangerous world, " << nickname << " and I wish you good luck on this journey!\n\n";
                     Player* newPlayer = new Player(character.level, character.money, character.currentWeapon, character.armor);
                     newPlayer->name = nickname;
+                    newPlayer->currentWeapon->isBought = true;
                     return newPlayer;
                     break;
                 }
@@ -212,8 +307,8 @@ void printEnemyCatalogue(const vector<Enemy>& enemies) { // Printing every enemy
     cout << "\n-------------------------------------------\n\n\n";
 }
 void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon catalogue which may also be used as a shop
-    cout << "\n\n\n=============== WEAPON SHOP ===============\n";
-    {
+    {   
+        cout << "\nWeapon Stats:\n";
         int i = 1;
         for (const auto& weapon : weapons) {
             cout << "\n-------------------------------------------\n";
@@ -231,7 +326,7 @@ void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon ca
 
         }
     }
-    cout << "\n-------------------------------------------\n\n\n";
+    cout << "\n-------------------------------------------\n\n";
 }
 void printPlayerStats(const Player& player) { // Printing character or player stats 
     cout << "\n\n\n============= CHARACTER STATS =============\n";
@@ -240,7 +335,7 @@ void printPlayerStats(const Player& player) { // Printing character or player st
     cout << "| Current HP: " << player.hp<< "\n";
     cout << "| Max HP: " << player.maxHp<< "\n";
     cout << "| Level: " << player.level << "\n";
-    cout << "| Weapon: " << player.currentWeapon->name<< "\n";
+    cout << "| Equipped Weapon: " << player.currentWeapon->name<< "\n";
     cout << "| Damage: " << player.getMinDamage()<<"-"<<player.getMaxDamage() << "\n";
     cout << "| Armor class: " << player.armor<< "\n";
     cout << "| Money: " << player.money<< "\n";

@@ -9,7 +9,9 @@ using std::cout, std::cin, std::string, std::endl;
 
 Player::Player(int level, int money, Weapon* currentWeapon, short armor)
 	:level(level),money(money),maxHp(90+level*10), hp(90 + level * 10), currentWeapon(currentWeapon), armor(armor)
-{}
+{
+	
+}
 std::pair<int, int> Player::CalculateDamage(){
 	int minDamage = getMinDamage();
 	int maxDamage = getMaxDamage();
@@ -54,6 +56,7 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		xpToNextLvl = 100 * level * 1.5;
 		maxHp = (90 + level * 10);
 		hp = hp + 10 > maxHp ? maxHp : hp+10;
+		cout << "HP: " << hp<<"\n";
 	}
 }
 
