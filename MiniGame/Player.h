@@ -1,14 +1,15 @@
 #pragma once
 #include <utility>
 #include <string>
+
 class Player
 {
-	friend class Weapon;
+	
 public:
 	std::string name;
 	float maxHp = 100;
 	float hp;
-	Weapon* currentWeapon;
+	class Weapon* currentWeapon;
 	short armor;
 	int level;
 	int playerXp = 0;

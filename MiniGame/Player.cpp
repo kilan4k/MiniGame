@@ -49,6 +49,7 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 	playerXp += amount;
 	while (playerXp >= xpToNextLvl) {
 		level++;
+		std::cout << "\n[LEVEL] you leveled up to " << level << " level\n";
 		playerXp -= xpToNextLvl;
 		xpToNextLvl = 100 * level * 1.5;
 		maxHp = (90 + level * 10);

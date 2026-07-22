@@ -89,12 +89,12 @@ int main()
 
     Player* myPlayer = playerCreation(weapons,players);
     myPlayer->money = 200;
-    myPlayer->AddXp(250);
+    
     printPlayerStats(*myPlayer);
   
     pCurrentEnemy = new Enemy(zombie);
     pCurrentEnemy->Attack(*myPlayer);
-    
+    myPlayer->AddXp(250);
     myPlayer->HealPlayer();
     printPlayerStats(*myPlayer);
     /*
@@ -118,7 +118,7 @@ int main()
     
 
     //printEnemyCatalogue(enemies);
-    //printWeaponCatalogue(weapons);
+    printWeaponCatalogue(weapons);
     //printPlayerStats(*myPlayer);
     //*myPlayer->currentWeapon = deadlystf;
     cin.get();
@@ -140,28 +140,36 @@ Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {/
     while (!hasChosen) { //we'll be asking everytime till user chooses a character
 
     cout << "You can choose any of these characters: \n\n";
-   for (const auto& character : playerTypes) { // showing every character
-        cout << character.name<<"\n"; 
+    {
+        int i = 1;
+        for (const auto& character : playerTypes) { // showing every character
+            cout << i++ << ". " << character.name << "\n";
+        }
     }
+    
    cout << "\nEnter '1' to choose a character\nEnter '2' to show stats for each character\n";
    cin >> choice;
    switch (choice) {
     case '1':
-        cout << "======Which of available characters you would like to choose?======\nEnter its name: ";
+        cout << "======Which of available characters you would like to choose?======\nEnter its name or its number: ";
         std::getline(cin >> std::ws, cName);
-        for (const auto& character : playerTypes) {
-            if (toLowerString(character.name) == toLowerString(cName)) { // checking if user's input equals any name of a character
-                hasChosen = true;
-                cout << "\nExcellent choice!\n\n======You have successfully chosen a character called " << character.name << ".======\n\nNow enter your nickname: ";
-                std::getline(cin>>std::ws, nickname);
-                
-                cout << "Welcome to this dangerous world, " << nickname << " and I wish you good luck on this journey!\n\n";
-                Player* newPlayer = new Player(character.level, character.money, character.currentWeapon, character.armor);
-                newPlayer->name= nickname;
-                return newPlayer;
-                break;
+        {
+            int i = 1;
+            for (const auto& character : playerTypes) {
+                string indexStr = std::to_string(i++);
+                if ((toLowerString(character.name) == toLowerString(cName)) || (indexStr == cName)) { // checking if user's input equals any name of a character
+                    hasChosen = true;
+                    cout << "\nExcellent choice!\n\n======You have successfully chosen a character called " << character.name << ".======\n\nNow enter your nickname: ";
+                    std::getline(cin >> std::ws, nickname);
+
+                    cout << "Welcome to this dangerous world, " << nickname << " and I wish you good luck on this journey!\n\n";
+                    Player* newPlayer = new Player(character.level, character.money, character.currentWeapon, character.armor);
+                    newPlayer->name = nickname;
+                    return newPlayer;
+                    break;
+                }
+
             }
-            
         }
         if (!hasChosen) {
             cout << "\nError! Try again.\n"; // Error in case user inputs some dumb stuff
