@@ -6,16 +6,19 @@
 #include <string>
 #include <iostream>
 #include <ctime>
+#include <random>
 using std::cout, std::cin, std::string, std::endl, std::vector;
 
-
-
+Enemy* getRandomEnemy(vector<Enemy>& enemies);
+void battleSystem(Player& player, Enemy& enemy);
 std::string toLowerString(std::string str);
 void printPlayerStats(const Player& player);
 void printEnemyCatalogue(const vector<Enemy>& enemies);
 void printWeaponCatalogue(const vector<Weapon>& weapons);
 Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes);
 void openShop(Player& player, vector<Weapon>& weapons);
+
+
 
 enum WeaponIndex {
     FISTS = 0,
@@ -32,25 +35,40 @@ enum WeaponIndex {
     DEADSTF = 11
 };
 
+enum EnemyIndex {
+    RAT = 0,
+    SPIDER = 1,
+    ROGUE = 2,
+    SKELETON = 3,
+    ZOMBIE = 4,
+    GOBLIN = 5,
+    BARBARIAN = 6,
+    BEAR = 7,
+    JUGGERNAUT = 8,
+    KNIGHT = 9,
+    DRAGON = 10,
+    DEMON = 11
+};
 int main()
 {
+    
     srand(time(0));
     
     //Declaring different objects
     //Enemy types
-    Enemy* pCurrentEnemy;
-    Enemy rat = Enemy("Rat", 25, 5, 10, 10, 0, 5, 10);
-    Enemy spider = Enemy("Spider", 50, 15, 25, 50, 0, 10, 20);
-    Enemy rogue = Enemy("Rogue", 75, 25, 35, 15, 0, 10, 20);
-    Enemy skeleton = Enemy("Skeleton", 75, 20, 30, 60, 0, 15, 30);
-    Enemy zombie = Enemy("Zombie", 100, 20, 30, 15, 1, 15, 30);
-    Enemy goblin = Enemy("Goblin", 75, 30, 40, 10, 0, 25, 30);
-    Enemy barbarian = Enemy("Barbarian", 100, 20, 40, 5, 1, 30, 50);
-    Enemy bear = Enemy("Bear", 75, 40, 70, 25, 2, 55, 75);
-    Enemy juggernaut = Enemy("Juggernaut", 250, 15, 20, 10, 3, 50, 100);
-    Enemy knight = Enemy("Knight", 150, 40, 65, 25, 2, 75, 100);
-    Enemy dragon = Enemy("Dragon", 300, 30, 60, 35, 1, 100, 120);
-    Enemy demon = Enemy("Demon", 400, 60, 100, 40, 1, 120, 200);
+    
+    Enemy rat = Enemy("Rat", 25, 5, 10, 10, 0, 5, 10); // 0
+    Enemy spider = Enemy("Spider", 50, 15, 25, 50, 0, 10, 20);// 1
+    Enemy rogue = Enemy("Rogue", 75, 25, 35, 15, 0, 10, 20);// 2
+    Enemy skeleton = Enemy("Skeleton", 75, 20, 30, 60, 0, 15, 30);// 3
+    Enemy zombie = Enemy("Zombie", 100, 20, 30, 15, 1, 15, 30);// 4
+    Enemy goblin = Enemy("Goblin", 75, 30, 40, 10, 0, 25, 30);// 5
+    Enemy barbarian = Enemy("Barbarian", 100, 20, 40, 5, 1, 30, 50);// 6
+    Enemy bear = Enemy("Bear", 75, 40, 70, 25, 2, 55, 75);// 7
+    Enemy juggernaut = Enemy("Juggernaut", 250, 15, 20, 10, 3, 50, 100);// 8
+    Enemy knight = Enemy("Knight", 150, 40, 65, 25, 2, 75, 100);// 9
+    Enemy dragon = Enemy("Dragon", 300, 30, 60, 35, 1, 100, 120);// 10
+    Enemy demon = Enemy("Demon", 400, 60, 100, 40, 1, 120, 200);// 11
 
     vector<Enemy> enemies = {rat, spider, rogue, skeleton, zombie, goblin, barbarian, bear, juggernaut, knight, dragon, demon};
 
@@ -88,7 +106,11 @@ int main()
 
     vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
 
-    Player* myPlayer = playerCreation(weapons,players);
+    //Player* myPlayer = playerCreation(weapons,players);
+    Enemy* pCurrentEnemy = getRandomEnemy(enemies);
+    std::cout << pCurrentEnemy->name << "\n";
+        
+    /*
     myPlayer->money = 200;
     
     printPlayerStats(*myPlayer);
@@ -98,6 +120,7 @@ int main()
     myPlayer->AddXp(250);
     myPlayer->HealPlayer();
     printPlayerStats(*myPlayer);
+    */
     /*
     while (myPlayer != nullptr && pCurrentEnemy != nullptr &&(pCurrentEnemy->isAlive() and myPlayer->isAlive())) {
         
@@ -117,8 +140,8 @@ int main()
  */
     
     
-    openShop(*myPlayer, weapons);
-    printPlayerStats(*myPlayer);
+    //openShop(*myPlayer, weapons);
+    //printPlayerStats(*myPlayer);
     //printEnemyCatalogue(enemies);
     //printWeaponCatalogue(weapons);
     //printPlayerStats(*myPlayer);
@@ -129,9 +152,44 @@ int main()
     return 0;
 }
 
+Enemy* getRandomEnemy(vector<Enemy>& enemies) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(1, 100);
+    int randDifficulty = dist(gen);
+    
+    const int randEasy = 60;
+    const int randMed = 85;
+    const int randHard = 100;
+
+    if (randDifficulty <= randEasy) {
+        //cout << "EASY ";
+        //cout << randDifficulty << "\n";
+        std::uniform_int_distribution<int> easyChance(0, 5);
+        int enemyNum = easyChance(gen);
+        return new Enemy(enemies[enemyNum]);
+    }
+    else if (randDifficulty <= randMed) {
+        //cout << "MEDIUM ";
+        //cout << randDifficulty << "\n";
+        std::uniform_int_distribution<int> medChance(6, 8);
+        int enemyNum = medChance(gen);
+        return new Enemy(enemies[enemyNum]);
+
+    }
+    else {
+        //cout << "HARD ";
+        //cout << randDifficulty<<"\n";
+        std::uniform_int_distribution<int> hardChance(9, 11);
+        int enemyNum = hardChance(gen);
+        return new Enemy(enemies[enemyNum]);
+    }
+    
+}
+void battleSystem(Player& player, Enemy* enemy) {
 
 
-
+}
 void openShop(Player& player, vector<Weapon>& weapons){
     cout << "\n\n\n=============== WEAPON SHOP ===============\n";
     string choice;
@@ -258,6 +316,7 @@ Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {/
                     Player* newPlayer = new Player(character.level, character.money, character.currentWeapon, character.armor);
                     newPlayer->name = nickname;
                     newPlayer->currentWeapon->isBought = true;
+                    std::cout << "-------------------------------------------\n";
                     return newPlayer;
                     break;
                 }
@@ -279,6 +338,7 @@ Player* playerCreation( vector<Weapon>& weapons, vector<Player>& playerTypes) {/
    }
     
     }
+    std::cout << "-------------------------------------------\n";
     return nullptr;
 }
 std::string toLowerString(std::string str) {
