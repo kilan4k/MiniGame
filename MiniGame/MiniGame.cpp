@@ -205,8 +205,6 @@ void openShop(Player& player, vector<Weapon>& weapons){
                     else {
                         cout << "You have not enough money to buy " << weapon.name << "!\n";
                     }
-                    
-
                 }
             }
             if (!found) cout << "ERROR! Weapon is not found!\n";

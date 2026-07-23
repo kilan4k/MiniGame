@@ -23,6 +23,7 @@ std::pair<int, int> Player::CalculateDamage(){
 	return { finalDamage,baseDamage};
 }
 void Player::Attack(Enemy& target) {
+	std::cout << "\n-------------------------------------------";
 	auto damageData = CalculateDamage();
 	int afterCritDamage = damageData.first;
 	int baseDamage = damageData.second;
@@ -36,7 +37,8 @@ void Player::Attack(Enemy& target) {
 	if (blockedDamage > 0) {
 		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
 	}
-	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << " HP.\n\n";
+	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << " HP.";
+	std::cout << "\n-------------------------------------------\n\n\n";
 }
 int Player::TakeDamage(int damage) {
 	damage = armor <= 4 ? damage - damage * ((float)armor / 5.0) : damage - damage * 4.0 / 5.0; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
@@ -48,6 +50,7 @@ bool Player::isAlive() { // Checking if Player's alive
 	return hp > 0;
 }
 void Player::AddXp(int amount) { // Adding XP to a player, if levels up then reduces xp required for lvl in case they have xp for leveling up to few more levels
+	std::cout << "\n-------------------------------------------";
 	playerXp += amount;
 	while (playerXp >= xpToNextLvl) {
 		level++;
@@ -56,8 +59,9 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		xpToNextLvl = 100 * level * 1.5;
 		maxHp = (90 + level * 10);
 		hp = hp + 10 > maxHp ? maxHp : hp+10;
-		cout << "HP: " << hp<<"\n";
+		cout << "HP: " << hp;
 	}
+	std::cout << "\n-------------------------------------------\n" << "\n";
 }
 
 int Player::getMinDamage()const {
@@ -76,6 +80,8 @@ void Player::HealPlayer() {
 	char choice; // for checkin Y and N
 	int numChoice; // for choosing hp
 	bool leaving = false;
+	std::cout << "\n-------------------------------------------\n";
+	std::cout << "[HEALING MENU]\n";
 	std::cout << "\nYour balance is " << money << "$\n";
 	if (hp == maxHp) {
 		std::cout << "You already have max HP of " << maxHp<<"\n";
@@ -165,5 +171,5 @@ void Player::HealPlayer() {
 			}
 		}
 	}
-	
+	std::cout << "-------------------------------------------\n";
 }
