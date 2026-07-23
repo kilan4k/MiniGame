@@ -9,8 +9,9 @@
 #include <random>
 using std::cout, std::cin, std::string, std::endl, std::vector;
 
+void clearInput();
 Enemy* getRandomEnemy(vector<Enemy>& enemies);
-void battleSystem(Player& player, Enemy& enemy);
+void battleSystem(Player& player, Enemy* enemy);
 std::string toLowerString(std::string str);
 void printPlayerStats(const Player& player);
 void printEnemyCatalogue(const vector<Enemy>& enemies);
@@ -105,11 +106,11 @@ int main()
     robber.name = "Robber";
 
     vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
-
-    //Player* myPlayer = playerCreation(weapons,players);
+    
+    Player* myPlayer = playerCreation(weapons,players);
     Enemy* pCurrentEnemy = getRandomEnemy(enemies);
     std::cout << pCurrentEnemy->name << "\n";
-        
+    battleSystem(*myPlayer, pCurrentEnemy);
     /*
     myPlayer->money = 200;
     
@@ -147,11 +148,13 @@ int main()
     //printPlayerStats(*myPlayer);
     //*myPlayer->currentWeapon = deadlystf;
     cin.get();
-    
-    //delete myPlayer;
+    delete myPlayer;
     return 0;
 }
-
+void clearInput() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 Enemy* getRandomEnemy(vector<Enemy>& enemies) {
     static std::random_device rd;
     static std::mt19937 gen(rd());
@@ -187,8 +190,44 @@ Enemy* getRandomEnemy(vector<Enemy>& enemies) {
     
 }
 void battleSystem(Player& player, Enemy* enemy) {
+    cout << "\n\n=============== BATTLE MENU ===============\n\n";
+    cout << "\n-------------------------------------------\n";
+    char choice;
+    int numChoice;
+    const int fleeingChance = 75;
+    bool fleeing = false;
+    bool isLeaving = false;
+    bool choiceMade = false;
+    
+    while (!choiceMade) {
+        cout << "\nType 'Y' if you agree to fight;\nType 'N' if you want to escape;\nType 'R' to show battle rules:\n";
+        cin >> choice;
+        clearInput();
+        switch (toupper(choice)) {
+        case 'Y':
+            choiceMade= true;
+            break;
+        case 'N':
+            cout << "Leaving this menu...";
+            choiceMade = true;
+            isLeaving = true;
+            break;
+        case 'R':
+            cout << "Battle rules:\n";
+            cout << "Every turn player and enemy attack each other only one time";
+            break;
+        default:
+            cout << "Error! Try again!\n";
+            break;
+        }
+    }
+   
+    while (!isLeaving) {
 
 
+
+    }
+    cout << "\n-------------------------------------------\n\n\n";
 }
 void openShop(Player& player, vector<Weapon>& weapons){
     cout << "\n\n\n=============== WEAPON SHOP ===============\n";
@@ -200,8 +239,7 @@ void openShop(Player& player, vector<Weapon>& weapons){
 
     cout << "Type '1' to show weapon list and therefore buy a weapon;\nType '2' to show stats for every weapon;\nType '-1' to leave the shop\n";
     cin >> numChoice;
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    clearInput();
     switch (numChoice) {
     case 1:
     {
