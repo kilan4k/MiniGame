@@ -257,11 +257,11 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
             enemy->Attack(player);
         }
         if (player.hp <= 0) {
-            isLeaving = !isLeaving;
+            isLeaving = true;
             break;
         }
         if (enemy->hp <= 0) {
-            isLeaving = !isLeaving;
+            isLeaving = true;
             break;
         }
         while (!choiceMade) {
@@ -286,10 +286,12 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
     if (player.hp <= 0) {
         cout << "!!!You died!!!\n";
         cout << player.name << " was defeated.\n\n";
+        
     }
     if (enemy->hp <= 0) {
         cout << "!!!You won!!!\n";
         cout << enemy->name << " was defeated.\n\n";
+        delete enemy;
         player.money += enemy->money;
         player.AddXp(enemy->xpReward);
         cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
