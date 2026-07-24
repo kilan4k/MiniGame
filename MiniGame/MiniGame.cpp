@@ -11,7 +11,7 @@ using std::cout, std::cin, std::string, std::endl, std::vector;
 
 void clearInput();
 Enemy* getRandomEnemy(vector<Enemy>& enemies);
-void battleSystem(Player& player, Enemy* enemy);
+void battleSystem(Player& player, Enemy*& enemy,vector<Enemy>& enemies);
 std::string toLowerString(std::string str);
 void printPlayerStats(const Player& player);
 void printEnemyCatalogue(const vector<Enemy>& enemies);
@@ -108,9 +108,10 @@ int main()
     vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
     
     Player* myPlayer = playerCreation(weapons,players);
-    Enemy* pCurrentEnemy = getRandomEnemy(enemies);
-    std::cout << pCurrentEnemy->name << "\n";
-    battleSystem(*myPlayer, pCurrentEnemy);
+    Enemy* pCurrentEnemy=nullptr;
+    battleSystem(*myPlayer, pCurrentEnemy, enemies);
+
+
     /*
     myPlayer->money = 200;
     
@@ -138,9 +139,7 @@ int main()
     }
     if (!myPlayer->isAlive()) delete myPlayer;
     if (!pCurrentEnemy->isAlive()) delete pCurrentEnemy;
- */
-    
-    
+ */    
     //openShop(*myPlayer, weapons);
     //printPlayerStats(*myPlayer);
     //printEnemyCatalogue(enemies);
@@ -148,21 +147,26 @@ int main()
     //printPlayerStats(*myPlayer);
     //*myPlayer->currentWeapon = deadlystf;
     cin.get();
-    delete myPlayer;
+    if (myPlayer != nullptr) delete myPlayer;
+    if (pCurrentEnemy != nullptr) delete pCurrentEnemy;
     return 0;
 }
 void clearInput() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
+} //END OF MAIN
+
+
+
+
 Enemy* getRandomEnemy(vector<Enemy>& enemies) {
     static std::random_device rd;
     static std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dist(1, 100);
     int randDifficulty = dist(gen);
     
-    const int randEasy = 60;
-    const int randMed = 85;
+    const int randEasy = 70;
+    const int randMed = 90;
     const int randHard = 100;
 
     if (randDifficulty <= randEasy) {
@@ -189,9 +193,8 @@ Enemy* getRandomEnemy(vector<Enemy>& enemies) {
     }
     
 }
-void battleSystem(Player& player, Enemy* enemy) {
+void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
     cout << "\n\n=============== BATTLE MENU ===============\n\n";
-    cout << "\n-------------------------------------------\n";
     char choice;
     int numChoice;
     const int fleeingChance = 75;
@@ -199,8 +202,13 @@ void battleSystem(Player& player, Enemy* enemy) {
     bool isLeaving = false;
     bool choiceMade = false;
     
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    
+    
     while (!choiceMade) {
-        cout << "\nType 'Y' if you agree to fight;\nType 'N' if you want to escape;\nType 'R' to show battle rules:\n";
+        cout << "\n-------------------------------------------\n";
+        cout << "Type 'Y' if you agree to fight;\nType 'N' if you want to escape;\nType 'R' to show battle rules:\n";
         cin >> choice;
         clearInput();
         switch (toupper(choice)) {
@@ -208,24 +216,83 @@ void battleSystem(Player& player, Enemy* enemy) {
             choiceMade= true;
             break;
         case 'N':
-            cout << "Leaving this menu...";
+            cout << "Leaving this menu...\n";
             choiceMade = true;
             isLeaving = true;
-            break;
+            cout << "\n-------------------------------------------\n\n\n";
+            return;
         case 'R':
+            cout << "\n-------------------------------------------\n";
             cout << "Battle rules:\n";
-            cout << "Every turn player and enemy attack each other only one time";
+            cout << "Every turn player and enemy attack each other only one time\nPlayer attacks enemy first, then enemy attacks.\nit only works otherwise if you try to flee away and fails.\nFlee chance = " << fleeingChance << "%\n";
             break;
         default:
             cout << "Error! Try again!\n";
             break;
         }
     }
-   
+    cout << "-------------------------------------------\n";
+    enemy = getRandomEnemy(enemies);
+    cout << "\nYour enemy is " << enemy->name<<"\n";
     while (!isLeaving) {
+        choice = ' ';
+        choiceMade = false;
+        if (fleeing) {
+            std::uniform_int_distribution<int> dist(1, 100);
+            int randChecking = dist(gen);
 
-
-
+            if (randChecking <= fleeingChance) {
+                cout << "\nYou've successfully fleed the battle!\n";
+                isLeaving = true;
+                break;
+            }
+            else {
+                cout << "\nYou failed to flee! Now " << enemy->name << " will attack you first!\n";
+                enemy->Attack(player);
+                player.Attack(*enemy);
+            }
+        }
+        else {
+            player.Attack(*enemy);
+            enemy->Attack(player);
+        }
+        if (player.hp <= 0) {
+            isLeaving = !isLeaving;
+            break;
+        }
+        if (enemy->hp <= 0) {
+            isLeaving = !isLeaving;
+            break;
+        }
+        while (!choiceMade) {
+        cout << "\nType 'Y' if you want to continue the fight\nType 'N' if you want to try to flee with " << fleeingChance << "% chance:\n";
+        cin >> choice;
+        clearInput();
+        if (toupper(choice)=='Y') {
+            choiceMade = true;
+            continue;
+        }
+        else if (toupper(choice) == 'N') {
+            fleeing = true;
+            choiceMade = true;
+            continue;
+        }
+        else {
+            cout << "Error! Wrong input!\n";
+        }
+        }
+        
+    }
+    if (player.hp <= 0) {
+        cout << "!!!You died!!!\n";
+        cout << player.name << " was defeated.\n\n";
+    }
+    if (enemy->hp <= 0) {
+        cout << "!!!You won!!!\n";
+        cout << enemy->name << " was defeated.\n\n";
+        player.money += enemy->money;
+        player.AddXp(enemy->xpReward);
+        cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
     }
     cout << "\n-------------------------------------------\n\n\n";
 }

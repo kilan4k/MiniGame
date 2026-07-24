@@ -28,6 +28,7 @@ std::pair<int, int> Enemy::CalculateDamage() {
 	return { finalDamage, baseDamage };
 }
 void Enemy::Attack(class Player& target) {
+	if (hp > 0) {
 	std::cout << "\n-------------------------------------------";
 	auto damageData = CalculateDamage();
 	int afterCritDamage = damageData.first;
@@ -44,6 +45,7 @@ void Enemy::Attack(class Player& target) {
 	}
 	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving player with " << target.hp << " HP.";
 	std::cout << "\n-------------------------------------------\n\n\n";
+	}
 }
 int Enemy::TakeDamage(int damage) {
 	damage = armor <= 4 ? damage - damage *( (float)armor / 5.0 ): damage - damage * 4.0 / 5.0; // Damage reduces if there's armor. Can't be armor class greater than 4 tho

@@ -23,6 +23,8 @@ std::pair<int, int> Player::CalculateDamage(){
 	return { finalDamage,baseDamage};
 }
 void Player::Attack(Enemy& target) {
+	if (hp > 0) {
+
 	std::cout << "\n-------------------------------------------";
 	auto damageData = CalculateDamage();
 	int afterCritDamage = damageData.first;
@@ -39,6 +41,7 @@ void Player::Attack(Enemy& target) {
 	}
 	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << " HP.";
 	std::cout << "\n-------------------------------------------\n\n\n";
+	}
 }
 int Player::TakeDamage(int damage) {
 	damage = armor <= 4 ? damage - damage * ((float)armor / 5.0) : damage - damage * 4.0 / 5.0; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
@@ -50,9 +53,10 @@ bool Player::isAlive() { // Checking if Player's alive
 	return hp > 0;
 }
 void Player::AddXp(int amount) { // Adding XP to a player, if levels up then reduces xp required for lvl in case they have xp for leveling up to few more levels
-	std::cout << "\n-------------------------------------------";
+	
 	playerXp += amount;
 	while (playerXp >= xpToNextLvl) {
+		std::cout << "\n-------------------------------------------";
 		level++;
 		std::cout << "\n[LEVEL] you leveled up to " << level << " level\n";
 		playerXp -= xpToNextLvl;
@@ -60,8 +64,8 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		maxHp = (90 + level * 10);
 		hp = hp + 10 > maxHp ? maxHp : hp+10;
 		cout << "HP: " << hp;
+		std::cout << "\n-------------------------------------------\n" << "\n";
 	}
-	std::cout << "\n-------------------------------------------\n" << "\n";
 }
 
 int Player::getMinDamage()const {
