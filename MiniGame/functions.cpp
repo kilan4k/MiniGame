@@ -43,9 +43,10 @@ Enemy* getRandomEnemy(vector<Enemy>& enemies) {
 
 }
 void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
-    cout << "\n\n=============== BATTLE MENU ===============\n\n";
+    cout << "\n\n==================================================\n";
+    cout <<     "                    BATTLE MENU";
+    cout <<   "\n==================================================\n";
     char choice;
-    int numChoice;
     const int fleeingChance = 75;
     bool fleeing = false;
     bool isLeaving = false;
@@ -88,10 +89,12 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
         if (fleeing) {
 
             int randChecking = getRandomNumber(1, 100);
+            cout << randChecking;
             if (randChecking <= fleeingChance) {
                 cout << "\nYou've successfully fleed the battle!\n";
                 delete enemy;
                 isLeaving = true;
+
                 break;
             }
             else {
@@ -136,6 +139,7 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
         cout << player.name << " was defeated.\n\n";
 
     }
+    if (enemy != nullptr) {
     if (enemy->hp <= 0) {
         cout << "!!!You won!!!\n";
         cout << enemy->name << " was defeated.\n\n";
@@ -144,10 +148,13 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
         cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
         delete enemy;
     }
+    }
     cout << "\n-------------------------------------------\n\n\n";
 }
 void openShop(Player& player, vector<Weapon>& weapons) {
-    cout << "\n\n\n=============== WEAPON SHOP ===============\n";
+    cout << "\n\n\n==================================================\n";
+    cout <<       "                     WEAPON SHOP";
+    cout <<     "\n==================================================\n";
     string choice;
     int numChoice;
     bool isLeaving = false;
@@ -237,7 +244,9 @@ void openShop(Player& player, vector<Weapon>& weapons) {
     cout << "\n-------------------------------------------\n\n\n";
 }
 Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {// creating player's character
-    cout << "======= WELCOME TO CHARACTER CREATOR ======\n";
+    cout << "\n\n==================================================\n";
+    cout <<     "           WELCOME TO CHARACTER CREATOR";
+    cout <<   "\n==================================================\n";
     bool hasChosen = false;
     char choice;
     string cName;
@@ -254,9 +263,13 @@ Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {//
 
         cout << "\nEnter '1' to choose a character\nEnter '2' to show stats for each character\n";
         cin >> choice;
+        clearInput();
         switch (choice) {
         case '1':
-            cout << "======Which of available characters you would like to choose?======\nEnter its name or its number: ";
+            cout << "\n--------------------------------------------------\n";
+            cout << "Which of available characters you would like to choose?";
+            cout << "\n--------------------------------------------------\n";
+            cout<<"\nEnter its name or its number : ";
             std::getline(cin >> std::ws, cName);
             {
                 int i = 1;
@@ -303,7 +316,9 @@ std::string toLowerString(std::string str) {
     return str;
 }
 void printEnemyCatalogue(const vector<Enemy>& enemies) { // Printing every enemy in game just so that user knows what to deal with
-    cout << "\n\n\n============= ENEMIES MANUAL ==============\n";
+    cout << "\n\n\n==================================================\n";
+    cout <<       "                   ENEMIES MANUAL";
+    cout <<     "\n==================================================\n";
     {
         int i = 1;
         for (const auto& enemy : enemies) {
@@ -321,7 +336,9 @@ void printEnemyCatalogue(const vector<Enemy>& enemies) { // Printing every enemy
 }
 void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon catalogue which may also be used as a shop
     {
-        cout << "\nWeapon Stats:\n";
+        cout << "\n\n\n==================================================\n";
+        cout <<       "                    WEAPON STATS";
+        cout <<     "\n==================================================\n";
         int i = 1;
         for (const auto& weapon : weapons) {
             cout << "\n-------------------------------------------\n";
@@ -339,10 +356,12 @@ void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon ca
 
         }
     }
-    cout << "\n-------------------------------------------\n\n";
+    cout << "\n-------------------------------------------\n\n\n";
 }
 void printPlayerStats(const Player& player) { // Printing character or player stats 
-    cout << "\n\n\n============= CHARACTER STATS =============\n";
+    cout << "\n\n\n==================================================\n";
+    cout <<       "                CHARACTER STATS";
+    cout <<     "\n==================================================\n";
     cout << "\n-------------------------------------------\n";
     cout << "| " << player.name << ":\n";
     cout << "| Current HP: " << player.hp << "\n";
@@ -354,7 +373,7 @@ void printPlayerStats(const Player& player) { // Printing character or player st
     cout << "| Money: " << player.money << "\n";
     cout << "| XP: " << player.playerXp << "\n";
     cout << "| XP left for next level: " << player.xpToNextLvl;
-    cout << "\n-------------------------------------------\n\n\n";
+    cout << "\n-------------------------------------------\n\n";
 
 }
 int getRandomNumber(int num1, int num2) {

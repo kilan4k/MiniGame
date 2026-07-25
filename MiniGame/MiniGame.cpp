@@ -90,10 +90,16 @@ int main()
     robber.name = "Robber";
 
     vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
-    
     Player* myPlayer = playerCreation(weapons,players);
+    myPlayer->money += 100;
+    myPlayer->AddXp(5000);
     Enemy* pCurrentEnemy=nullptr;
+    while(myPlayer!=nullptr){
     battleSystem(*myPlayer, pCurrentEnemy, enemies);
+    openShop(*myPlayer, weapons);
+    printPlayerStats(*myPlayer);
+    myPlayer->HealPlayer();
+    }
 
 
     /*

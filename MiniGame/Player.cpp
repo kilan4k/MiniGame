@@ -80,14 +80,15 @@ int Player::getCritChance() const {
 }
 
 void Player::HealPlayer() {
-	const int HEAL_PRICE_PERHP = 0+(level*2); 
-	int totalCost = HEAL_PRICE_PERHP * (maxHp - hp);
+	const double HEAL_PRICE_PERHP = 0+(/*level * */ 0.5);
+	int totalCost = round( HEAL_PRICE_PERHP * (maxHp - hp));
 	char choice; // for checkin Y and N
 	int numChoice; // for choosing hp
 	bool leaving = false;
 	std::cout << "\n-------------------------------------------\n";
 	std::cout << "[HEALING MENU]\n";
 	std::cout << "\nYour balance is " << money << "$\n";
+	std::cout << "Your HP is " << hp << "\n";
 	if (hp == maxHp) {
 		std::cout << "You already have max HP of " << maxHp<<"\n";
 	}
