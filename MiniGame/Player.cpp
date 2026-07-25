@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Weapon.h"
 #include "Enemy.h"
+#include "functions.h"
 #include <cstdlib>
 #include <string>
 #include <iostream>
@@ -15,8 +16,8 @@ Player::Player(int level, int money, Weapon* currentWeapon, short armor)
 std::pair<int, int> Player::CalculateDamage(){
 	int minDamage = getMinDamage();
 	int maxDamage = getMaxDamage();
-	bool getCrit= rand() % 100 < getCritChance();
-	int baseDamage = rand() % (1+maxDamage - minDamage) + minDamage; // Damage between min and max
+	bool getCrit= getRandomNumber(1,100) < getCritChance();
+	int baseDamage = getRandomNumber(minDamage, maxDamage);
 	//cout << "Random Damage got: " << damage<<"\n";
 	int finalDamage= getCrit? round((float)baseDamage* 1.5) : baseDamage; // damage after crit + 50% 
 	//cout << "Damage after critChance: " << damage<<"\n";

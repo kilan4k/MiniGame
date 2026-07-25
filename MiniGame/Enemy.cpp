@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "functions.h"
 #include <cstdlib>
 #include <string>
 #include <iostream>
@@ -20,8 +21,8 @@ Enemy::Enemy(string name, float maxHp, int minDamage, int maxDamage, short critC
 {}
 
 std::pair<int, int> Enemy::CalculateDamage() {
-	int baseDamage = rand() % (1 + maxDamage - minDamage) + minDamage; // Damage between min and max
-	bool getCrit = rand() % 100 < critChance;
+	int baseDamage = getRandomNumber(minDamage, maxDamage);
+	bool getCrit = getRandomNumber(1,100);
 	//cout << "Random Damage got: " << damage<<"\n";
 	int finalDamage = getCrit ? round((float)baseDamage * 1.5) : baseDamage; // damage after crit + 50% 
 	//cout << "Damage after critChance: " << damage<<"\n";
