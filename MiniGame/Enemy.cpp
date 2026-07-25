@@ -45,7 +45,7 @@ void Enemy::Attack(class Player& target) {
 		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
 	}
 	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving player with " << target.hp << " HP.";
-	std::cout << "\n-------------------------------------------\n\n\n";
+	std::cout << "\n-------------------------------------------\n\n";
 	}
 }
 int Enemy::TakeDamage(int damage) {

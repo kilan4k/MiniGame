@@ -1,7 +1,7 @@
 #pragma once
 #include <utility>
 #include <string>
-
+#define NEXT_LEVEL_XP_FORMULA 20*level*1.25;
 class Player
 {
 	
@@ -13,7 +13,7 @@ public:
 	short armor;
 	int level;
 	int playerXp = 0;
-	int xpToNextLvl = 100*level*1.5;
+	int xpToNextLvl = NEXT_LEVEL_XP_FORMULA;
 	int money = 0;
 
 	Player(int level, int money, Weapon* currentWeapon, short armor); 

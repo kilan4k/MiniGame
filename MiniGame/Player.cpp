@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 #define MAX_HP_FORMULA 90+((level * 10) * 1.2)
-#define NEXT_LEVEL_XP_FORMULA 100*level*1.25;
+#define NEXT_LEVEL_XP_FORMULA 20*level*1.25;
 using std::cout, std::cin, std::string, std::endl;
 
 
@@ -43,7 +43,7 @@ void Player::Attack(Enemy& target) {
 		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
 	}
 	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << " HP.";
-	std::cout << "\n-------------------------------------------\n\n\n";
+	std::cout << "\n-------------------------------------------\n\n";
 	}
 }
 int Player::TakeDamage(int damage) {
@@ -70,10 +70,9 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		cout << "\nMax HP: " << maxHp;
 		cout << "\nCurrent XP: " << playerXp;
 		cout << "\nXP to next " << level + 1 << " level: " << xpToNextLvl;
-		std::cout << "\n-------------------------------------------\n" << "\n";
+		std::cout << "\n-------------------------------------------\n";
 	}
 }
-
 int Player::getMinDamage()const {
 	return currentWeapon->minDamage+(level*2);
 }
@@ -85,7 +84,7 @@ int Player::getCritChance() const {
 }
 
 void Player::HealPlayer() {
-	const double HEAL_PRICE_PERHP = 0+(/*level * */ 0.5);
+	const double HEAL_PRICE_PERHP = 0+((double)level*0.1 + 0.25);
 	int totalCost = round( HEAL_PRICE_PERHP * (maxHp - hp));
 	char choice; // for checkin Y and N
 	int numChoice; // for choosing hp

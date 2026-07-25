@@ -10,6 +10,7 @@
 #include <random>
 
 using std::cout, std::cin, std::string, std::endl, std::vector;
+
 Enemy* getRandomEnemy(vector<Enemy>& enemies) {
 
     int randDifficulty = getRandomNumber(1, 100);
@@ -58,6 +59,7 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
     while (!choiceMade) {
         cout << "\n-------------------------------------------\n";
         cout << "Type 'Y' if you agree to fight;\nType 'N' if you want to escape;\nType 'R' to show battle rules:\n";
+        cout << "-------------------------------------------\n";
         cin >> choice;
         clearInput();
         switch (toupper(choice)) {
@@ -65,18 +67,18 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
             choiceMade = true;
             break;
         case 'N':
-            cout << "Leaving this menu...\n";
+            cout << "Leaving this menu...";
             choiceMade = true;
             isLeaving = true;
             cout << "\n-------------------------------------------\n\n\n";
             return;
         case 'R':
-            cout << "\n-------------------------------------------\n";
+            cout << "\n\n-------------------------------------------\n";
             cout << "Battle rules:\n";
-            cout << "Every turn player and enemy attack each other only one time\nPlayer attacks enemy first, then enemy attacks.\nit only works otherwise if you try to flee away and fails.\nFlee chance = " << fleeingChance << "%\n";
+            cout << "Every turn player and enemy attack each other only one time\nPlayer attacks enemy first, then enemy attacks.\nit only works otherwise if you try to flee away and fails.\nFlee chance = " << fleeingChance << "%";
             break;
         default:
-            cout << "Error! Try again!\n";
+            cout << "Error! Try again!";
             break;
         }
     }
@@ -86,6 +88,7 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
     while (!isLeaving) {
         choice = ' ';
         choiceMade = false;
+        
         if (fleeing) {
             int randChecking = getRandomNumber(1, 100);
             //cout << randChecking;
@@ -96,6 +99,7 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
             }
             else {
                 cout << "\nYou failed to flee! Now " << enemy->name << " will attack you first!\n";
+                fleeing = false;
                 enemy->Attack(player);
                 player.Attack(*enemy);
             }
@@ -113,7 +117,9 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
             break;
         }
         while (!choiceMade) {
-            cout << "\nType 'Y' if you want to continue the fight\nType 'N' if you want to try to flee with " << fleeingChance << "% chance:\n";
+            cout << "-------------------------------------------\n";
+            cout << "Type 'Y' if you want to continue the fight\nType 'N' if you want to try to flee with " << fleeingChance << "% chance\n";
+            cout << "-------------------------------------------\n";
             cin >> choice;
             clearInput();
             if (toupper(choice) == 'Y') {
@@ -131,20 +137,23 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
         }
     }
     if (player.hp <= 0) {
-        cout << "!!!You died!!!\n";
+        cout << "YOU DIED\n";
         cout << player.name << " was defeated.\n\n";
+
     }
     if (enemy != nullptr) {
         if (enemy->hp <= 0) {
-            cout << "!!!You won!!!\n";
+            cout << "YOU WON\n";
             cout << enemy->name << " was defeated.\n\n";
+            cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
             player.money += enemy->money;
             player.AddXp(enemy->xpReward);
-            cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
             delete enemy;
+            enemy = nullptr;
         }
         else {
             delete enemy;
+            enemy = nullptr;
         }
     }
     cout << "\n-------------------------------------------\n\n\n";
@@ -158,14 +167,16 @@ void openShop(Player& player, vector<Weapon>& weapons) {
     bool isLeaving = false;
     cout << "Welcome to the shop, here you can examine every weapons' statistics or buy new weapon\n";
     while (!isLeaving) {
-
+        cout << "-------------------------------------------\n";
         cout << "Type '1' to show weapon list and therefore buy a weapon;\nType '2' to show stats for every weapon;\nType '-1' to leave the shop\n";
+        cout << "-------------------------------------------\n";
         cin >> numChoice;
         clearInput();
         switch (numChoice) {
         case 1:
         {
             int i = 1;
+            cout << "\n-------------------------------------------\n";
             for (const auto& weapon : weapons) {
                 cout << i++ << ". " << weapon.name;
                 if (!weapon.isBought) {
@@ -176,10 +187,13 @@ void openShop(Player& player, vector<Weapon>& weapons) {
                 }
                 cout << "\n";
             }
+            cout << "-------------------------------------------\n";
         }
-        cout << "\n!Before buying a weapon make sure you have enough money and level!\n";
-        cout << "To buy a weapon, type its number or its name:\n";
+        cout << "\n-------------------------------------------\n";
+        cout << "!Before buying a weapon make sure you have enough money and level!\n";
+        cout << "To buy a weapon, type its number or its name: ";
         std::getline(cin >> std::ws, choice);
+        cout << "-------------------------------------------\n";
         {
             bool found = false;
             int i = 1;
@@ -242,7 +256,7 @@ void openShop(Player& player, vector<Weapon>& weapons) {
     cout << "\n-------------------------------------------\n\n\n";
 }
 Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {// creating player's character
-    cout << "\n\n==================================================\n";
+    cout << "\n==================================================\n";
     cout <<     "           WELCOME TO CHARACTER CREATOR";
     cout <<   "\n==================================================\n";
     bool hasChosen = false;
@@ -253,10 +267,12 @@ Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {//
 
         cout << "You can choose any of these characters: \n\n";
         {
+            cout << "-------------------------------------------\n";
             int i = 1;
             for (const auto& character : playerTypes) { // showing every character
                 cout << i++ << ". " << character.name << "\n";
             }
+            cout << "-------------------------------------------\n";
         }
 
         cout << "\nEnter '1' to choose a character\nEnter '2' to show stats for each character\n";
@@ -267,7 +283,7 @@ Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {//
             cout << "\n--------------------------------------------------\n";
             cout << "Which of available characters you would like to choose?";
             cout << "\n--------------------------------------------------\n";
-            cout<<"\nEnter its name or its number : ";
+            cout<<"\nEnter its name or its number: ";
             std::getline(cin >> std::ws, cName);
             {
                 int i = 1;
@@ -375,9 +391,54 @@ void printPlayerStats(const Player& player) { // Printing character or player st
 
 }
 int getRandomNumber(int num1, int num2) {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
+    static std::mt19937 gen(static_cast<unsigned int>(std::time(nullptr)));
     std::uniform_int_distribution<int> dist(num1, num2);
     int randNum = dist(gen);
     return randNum;
+}
+void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, std::vector<Player> players) {
+    player = playerCreation(weapons, players);
+    cout << "[BONUS FOR PLAYING ALPHA]\n";
+    cout << "Adding 100$\n";
+    player->money += 100;
+    bool LeavingGame = false;
+    while (!LeavingGame ) {
+        if (player->hp <= 0) { LeavingGame = true; break; }
+
+        {
+            cout << "\n\n==================================================\n";
+            cout << "                    GAME MENU";
+            cout <<   "\n==================================================\n";
+        }//console output
+        char choice;
+        cout << "\n-------------------------------------------\n";
+        cout << "Type '1' to battle\nType '2' to open shop menu\nType 'S' to print player's stats\nType 'H' to open heal menu\nType 'E' to show every enemy stat in game\nType 'Q' to quit the game";
+        cout << "\n-------------------------------------------\n";
+        cin >> choice;
+        clearInput();
+        //cout << toupper(choice);
+        switch (toupper(choice) ) {
+        case '1': battleSystem(*player, enemy, enemies);
+            break;
+        case '2': openShop(*player, weapons);
+            break;
+        case 'S': printPlayerStats(*player);
+            break;
+        case 'H': player->HealPlayer();
+            break;
+        case 'E': printEnemyCatalogue(enemies);
+            break;
+        case 'Q': LeavingGame = true;
+            break;
+        default:
+            cout << "Error! Try again!\n";
+            break;
+        }
+
+
+    }
+}
+void clearInput() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }

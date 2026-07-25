@@ -19,4 +19,4 @@ void printWeaponCatalogue(const std::vector<Weapon>& weapons);
 Player* playerCreation(std::vector<Weapon>& weapons, std::vector<Player>& playerTypes);
 void openShop(Player& player, std::vector<Weapon>& weapons);
 int getRandomNumber(int num1, int num2);
-
+void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, std::vector<Player> players);

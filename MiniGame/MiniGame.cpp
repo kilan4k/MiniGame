@@ -42,18 +42,18 @@ int main()
     //Declaring different objects
     //Enemy types
     
-    Enemy rat = Enemy("Rat", 25, 5, 10, 10, 0, 5, 10); // 0
-    Enemy spider = Enemy("Spider", 50, 15, 25, 50, 0, 10, 20);// 1
-    Enemy rogue = Enemy("Rogue", 75, 25, 35, 15, 0, 10, 20);// 2
-    Enemy skeleton = Enemy("Skeleton", 75, 20, 30, 60, 0, 15, 30);// 3
-    Enemy zombie = Enemy("Zombie", 100, 20, 30, 15, 1, 15, 30);// 4
-    Enemy goblin = Enemy("Goblin", 75, 30, 40, 10, 0, 25, 30);// 5
-    Enemy barbarian = Enemy("Barbarian", 100, 20, 40, 5, 1, 30, 50);// 6
-    Enemy bear = Enemy("Bear", 75, 40, 70, 25, 2, 55, 75);// 7
-    Enemy juggernaut = Enemy("Juggernaut", 250, 15, 20, 10, 3, 50, 100);// 8
-    Enemy knight = Enemy("Knight", 150, 40, 65, 25, 2, 75, 100);// 9
-    Enemy dragon = Enemy("Dragon", 300, 30, 60, 35, 1, 100, 120);// 10
-    Enemy demon = Enemy("Demon", 400, 60, 100, 40, 1, 120, 200);// 11
+    Enemy rat = Enemy("Rat", 25, 5, 10, 10, 0, 10, 10); // 0
+    Enemy spider = Enemy("Spider", 50, 15, 25, 50, 0, 20, 20);// 1
+    Enemy rogue = Enemy("Rogue", 75, 25, 35, 15, 0, 20, 20);// 2
+    Enemy skeleton = Enemy("Skeleton", 75, 20, 30, 60, 0, 30, 30);// 3
+    Enemy zombie = Enemy("Zombie", 100, 20, 30, 15, 1, 30, 30);// 4
+    Enemy goblin = Enemy("Goblin", 75, 30, 40, 10, 0, 50, 30);// 5
+    Enemy barbarian = Enemy("Barbarian", 100, 20, 40, 5, 1, 60, 50);// 6
+    Enemy bear = Enemy("Bear", 75, 40, 70, 25, 2, 105, 75);// 7
+    Enemy juggernaut = Enemy("Juggernaut", 250, 15, 20, 10, 3, 100, 100);// 8
+    Enemy knight = Enemy("Knight", 150, 40, 65, 25, 2, 150, 100);// 9
+    Enemy dragon = Enemy("Dragon", 300, 30, 60, 35, 1, 200, 120);// 10
+    Enemy demon = Enemy("Demon", 400, 60, 100, 40, 1, 240, 200);// 11
 
     vector<Enemy> enemies = {rat, spider, rogue, skeleton, zombie, goblin, barbarian, bear, juggernaut, knight, dragon, demon};
 
@@ -90,18 +90,24 @@ int main()
     robber.name = "Robber";
 
     vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
-    Player* myPlayer = playerCreation(weapons,players);
+
+    //Player and Enemy defining
+    Player* myPlayer = nullptr;
+    Enemy* pCurrentEnemy = nullptr;
+
+    //Game loop
+    gamePlaying(myPlayer, pCurrentEnemy, enemies, weapons, players);
+
+    /*
     myPlayer->money += 100;
     myPlayer->AddXp(5000);
-    Enemy* pCurrentEnemy=nullptr;
     while(myPlayer->hp>0){
     battleSystem(*myPlayer, pCurrentEnemy, enemies);
     openShop(*myPlayer, weapons);
     printPlayerStats(*myPlayer);
     myPlayer->HealPlayer();
     }
-
-
+    */
     /*
     myPlayer->money = 200;
     
@@ -136,16 +142,14 @@ int main()
     //printWeaponCatalogue(weapons);
     //printPlayerStats(*myPlayer);
     //*myPlayer->currentWeapon = deadlystf;
-    cin.get();
+    cout << "\n[GAME ENDS]\n\n";
+    clearInput();
     cin.get();
     if (myPlayer != nullptr) delete myPlayer;
-    if (pCurrentEnemy != nullptr) delete pCurrentEnemy;
+    if (pCurrentEnemy != nullptr) pCurrentEnemy = nullptr;
     return 0;
 }
-void clearInput() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-} //END OF MAIN
+//END OF MAIN
 
 
 
