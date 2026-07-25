@@ -94,7 +94,7 @@ int main()
     myPlayer->money += 100;
     myPlayer->AddXp(5000);
     Enemy* pCurrentEnemy=nullptr;
-    while(myPlayer!=nullptr){
+    while(myPlayer->hp>0){
     battleSystem(*myPlayer, pCurrentEnemy, enemies);
     openShop(*myPlayer, weapons);
     printPlayerStats(*myPlayer);

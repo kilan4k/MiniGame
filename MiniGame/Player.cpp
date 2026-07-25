@@ -5,11 +5,13 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
+#define MAX_HP_FORMULA 90+((level * 10) * 1.2)
+#define NEXT_LEVEL_XP_FORMULA 100*level*1.25;
 using std::cout, std::cin, std::string, std::endl;
 
 
 Player::Player(int level, int money, Weapon* currentWeapon, short armor)
-	:level(level),money(money),maxHp(90+level*10), hp(90 + level * 10), currentWeapon(currentWeapon), armor(armor)
+	:level(level),money(money),maxHp(MAX_HP_FORMULA), hp(MAX_HP_FORMULA), currentWeapon(currentWeapon), armor(armor)
 {
 	
 }
@@ -62,9 +64,12 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		std::cout << "\n[LEVEL] you leveled up to " << level << " level\n";
 		playerXp -= xpToNextLvl;
 		xpToNextLvl = 100 * level * 1.5;
-		maxHp = (90 + level * 10);
+		maxHp = MAX_HP_FORMULA;
 		hp = hp + 10 > maxHp ? maxHp : hp+10;
 		cout << "HP: " << hp;
+		cout << "\nMax HP: " << maxHp;
+		cout << "\nCurrent XP: " << playerXp;
+		cout << "\nXP to next " << level + 1 << " level: " << xpToNextLvl;
 		std::cout << "\n-------------------------------------------\n" << "\n";
 	}
 }

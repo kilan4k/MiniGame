@@ -44,8 +44,8 @@ Enemy* getRandomEnemy(vector<Enemy>& enemies) {
 }
 void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
     cout << "\n\n==================================================\n";
-    cout <<     "                    BATTLE MENU";
-    cout <<   "\n==================================================\n";
+    cout << "                    BATTLE MENU";
+    cout << "\n==================================================\n";
     char choice;
     const int fleeingChance = 75;
     bool fleeing = false;
@@ -87,14 +87,11 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
         choice = ' ';
         choiceMade = false;
         if (fleeing) {
-
             int randChecking = getRandomNumber(1, 100);
-            cout << randChecking;
+            //cout << randChecking;
             if (randChecking <= fleeingChance) {
                 cout << "\nYou've successfully fleed the battle!\n";
-                delete enemy;
                 isLeaving = true;
-
                 break;
             }
             else {
@@ -132,22 +129,23 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
                 cout << "Error! Wrong input!\n";
             }
         }
-
     }
     if (player.hp <= 0) {
         cout << "!!!You died!!!\n";
         cout << player.name << " was defeated.\n\n";
-
     }
     if (enemy != nullptr) {
-    if (enemy->hp <= 0) {
-        cout << "!!!You won!!!\n";
-        cout << enemy->name << " was defeated.\n\n";
-        player.money += enemy->money;
-        player.AddXp(enemy->xpReward);
-        cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
-        delete enemy;
-    }
+        if (enemy->hp <= 0) {
+            cout << "!!!You won!!!\n";
+            cout << enemy->name << " was defeated.\n\n";
+            player.money += enemy->money;
+            player.AddXp(enemy->xpReward);
+            cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
+            delete enemy;
+        }
+        else {
+            delete enemy;
+        }
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
