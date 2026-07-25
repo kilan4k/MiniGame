@@ -22,7 +22,7 @@ Enemy::Enemy(string name, float maxHp, int minDamage, int maxDamage, short critC
 
 std::pair<int, int> Enemy::CalculateDamage() {
 	int baseDamage = getRandomNumber(minDamage, maxDamage);
-	bool getCrit = getRandomNumber(1,100);
+	bool getCrit = getRandomNumber(1,100) < critChance;
 	//cout << "Random Damage got: " << damage<<"\n";
 	int finalDamage = getCrit ? round((float)baseDamage * 1.5) : baseDamage; // damage after crit + 50% 
 	//cout << "Damage after critChance: " << damage<<"\n";

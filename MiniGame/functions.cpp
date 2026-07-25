@@ -90,6 +90,7 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
             int randChecking = getRandomNumber(1, 100);
             if (randChecking <= fleeingChance) {
                 cout << "\nYou've successfully fleed the battle!\n";
+                delete enemy;
                 isLeaving = true;
                 break;
             }
