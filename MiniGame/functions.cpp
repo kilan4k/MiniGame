@@ -400,7 +400,7 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
     player = playerCreation(weapons, players);
     cout << "[BONUS FOR PLAYING ALPHA]\n";
     cout << "Adding 100$\n";
-    player->money += 10000;
+    player->money += 100;
     bool LeavingGame = false;
     while (!LeavingGame ) {
         if (player->hp <= 0) { LeavingGame = true; break; }
