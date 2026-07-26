@@ -26,5 +26,6 @@ public:
 	int getMaxDamage()const;
 	int getCritChance()const;
 	void HealPlayer();
+	int getArmorPrice(short armorClass);
 };
 

@@ -5,8 +5,9 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#define MAX_HP_FORMULA 90+((level * 10) * 1.2)
-#define NEXT_LEVEL_XP_FORMULA 20*level*1.25;
+#define MAX_HP_FORMULA 90+((level * 10) * 1.1)
+#define NEXT_LEVEL_XP_FORMULA 10*level*1.25;
+
 using std::cout, std::cin, std::string, std::endl;
 
 
@@ -47,7 +48,7 @@ void Player::Attack(Enemy& target) {
 	}
 }
 int Player::TakeDamage(int damage) {
-	damage = armor <= 4 ? damage - damage * ((float)armor / 5.0) : damage - damage * 4.0 / 5.0; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
+	damage = armor <= 4 ? damage - damage * (armorClassFormula(armor)) : damage - damage * 4.0 / 5.0; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
 	//cout << "Damage after armor: " << damage << "\n"; 
 	hp -= damage<hp?damage:hp; // if dmg is greater than hp then u cry man
 	return damage;
@@ -63,7 +64,7 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		level++;
 		std::cout << "\n[LEVEL] you leveled up to " << level << " level\n";
 		playerXp -= xpToNextLvl;
-		xpToNextLvl = 100 * level * 1.5;
+		xpToNextLvl =NEXT_LEVEL_XP_FORMULA;
 		maxHp = MAX_HP_FORMULA;
 		hp = hp + 10 > maxHp ? maxHp : hp+10;
 		cout << "HP: " << hp;
@@ -82,7 +83,6 @@ int Player::getMaxDamage()const {
 int Player::getCritChance() const {
 	return currentWeapon->critChance;
 }
-
 void Player::HealPlayer() {
 	const double HEAL_PRICE_PERHP = 0+((double)level*0.1 + 0.25);
 	int totalCost = round( HEAL_PRICE_PERHP * (maxHp - hp));
@@ -182,4 +182,7 @@ void Player::HealPlayer() {
 		}
 	}
 	std::cout << "-------------------------------------------\n";
+}
+int Player::getArmorPrice(short armorClass) {
+	return armorClass * armorClass * 100;
 }

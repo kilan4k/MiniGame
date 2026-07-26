@@ -6,11 +6,11 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-
 #include <random>
 
-using std::cout, std::cin, std::string, std::endl, std::vector;
 
+
+using std::cout, std::cin, std::string, std::endl, std::vector;
 Enemy* getRandomEnemy(vector<Enemy>& enemies) {
 
     int randDifficulty = getRandomNumber(1, 100);
@@ -400,7 +400,7 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
     player = playerCreation(weapons, players);
     cout << "[BONUS FOR PLAYING ALPHA]\n";
     cout << "Adding 100$\n";
-    player->money += 100;
+    player->money += 10000;
     bool LeavingGame = false;
     while (!LeavingGame ) {
         if (player->hp <= 0) { LeavingGame = true; break; }
@@ -412,7 +412,7 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
         }//console output
         char choice;
         cout << "\n-------------------------------------------\n";
-        cout << "Type '1' to battle\nType '2' to open shop menu\nType 'S' to print player's stats\nType 'H' to open heal menu\nType 'E' to show every enemy stat in game\nType 'Q' to quit the game";
+        cout << "Type '1' to battle\nType '2' to open shop menu\nType 'S' to print player's stats\nType 'H' to open heal menu\nType 'A' to open armor shop\nType 'E' to show every enemy stat in game\nType 'Q' to quit the game";
         cout << "\n-------------------------------------------\n";
         cin >> choice;
         clearInput();
@@ -425,6 +425,8 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
         case 'S': printPlayerStats(*player);
             break;
         case 'H': player->HealPlayer();
+            break;
+        case 'A': armorShop(*player);
             break;
         case 'E': printEnemyCatalogue(enemies);
             break;
@@ -441,4 +443,53 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
 void clearInput() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+void armorShop(Player& player) {
+    cout << "\n\n==================================================\n";
+    cout <<     "                     ARMOR SHOP";
+    cout <<   "\n==================================================\n\n";
+    cout << "\n-------------------------------------------\n";
+    bool isLeaving = false;
+    char choice;
+    while (!isLeaving) {
+        cout << "Your current Armor class is " << player.armor << "\n";
+        if (player.armor > 0) {
+            cout << "Your armor reflects " << armorClassFormula(player.armor) * 100 << "% damage\n";
+        }
+        if (player.armor < 4) {
+            cout << "To buy " << player.armor + 1 << " armor class you have to spend " << player.getArmorPrice(player.armor + 1) << "$ and it will reflect " << armorClassFormula(player.armor + 1) * 100 << "% damage\n";
+            if (player.getArmorPrice(player.armor + 1) > player.money) {
+                cout << "You have not enough money to buy " << player.armor + 1 << " armor class!\n";
+                isLeaving = true;
+                continue;
+            }
+        }
+        else {
+            cout << "You own max level of armor! It deflects " << armorClassFormula(player.armor) * 100 << "% damage\n";
+            isLeaving = true;
+            continue;
+        }
+        cout << "Type 'Y' if you want to buy next armor class\nType 'N' if you don't want to buy next armor class\n";
+        cout << "-------------------------------------------\n";
+        cin >> choice;
+        clearInput();
+        switch (toupper(choice)) {
+        case 'Y':
+            player.armor++;
+            player.money -= player.getArmorPrice(player.armor);
+            cout << "You successfully bought " << player.armor << " class for " << player.getArmorPrice(player.armor) << "$\n";
+            break;
+        case 'N':
+            isLeaving = true;
+            continue;
+            break;
+        default:
+            cout << "Error! Try again\n";
+            break;
+        }
+    }
+    cout << "-------------------------------------------\n\n\n";
+}
+double armorClassFormula(short armor) {
+    return static_cast<double>(armor) / 5.0;
 }

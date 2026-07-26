@@ -49,7 +49,7 @@ void Enemy::Attack(class Player& target) {
 	}
 }
 int Enemy::TakeDamage(int damage) {
-	damage = armor <= 4 ? damage - damage *( (float)armor / 5.0 ): damage - damage * 4.0 / 5.0; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
+	damage = armor <= 4 ? damage - damage *(armorClassFormula(armor)): damage - damage * 4.0 / 5.0; // Damage reduces if there's armor. Can't be armor class greater than 4 tho
 	//cout << "Damage after armor: " << damage << "\n"; 
 	hp -= damage < hp ? damage : hp; // if dmg is greater than hp then u cry man
 	return damage;
