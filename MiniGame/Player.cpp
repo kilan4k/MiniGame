@@ -84,7 +84,7 @@ int Player::getCritChance() const {
 	return currentWeapon->critChance;
 }
 void Player::HealPlayer() {
-	const double HEAL_PRICE_PERHP = 0+((double)level*0.1 + 0.25);
+	const double HEAL_PRICE_PERHP = 0+(static_cast<double>( level*0.05 + 0.25));
 	int totalCost = round( HEAL_PRICE_PERHP * (maxHp - hp));
 	char choice; // for checkin Y and N
 	int numChoice; // for choosing hp

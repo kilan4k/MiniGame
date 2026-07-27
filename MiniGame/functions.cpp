@@ -53,9 +53,6 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
     bool isLeaving = false;
     bool choiceMade = false;
 
-
-
-
     while (!choiceMade) {
         cout << "\n-------------------------------------------\n";
         cout << "Type 'Y' if you agree to fight;\nType 'N' if you want to escape;\nType 'R' to show battle rules:\n";
@@ -147,7 +144,8 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
             cout << enemy->name << " was defeated.\n\n";
             cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
             player.money += enemy->money;
-            player.AddXp(enemy->xpReward);
+            player.AddXp((enemy->xpReward)*(player.level*5+100)/100);
+            player.kills++;
             delete enemy;
             enemy = nullptr;
         }
@@ -383,6 +381,7 @@ void printPlayerStats(const Player& player) { // Printing character or player st
     cout << "| Level: " << player.level << "\n";
     cout << "| Equipped Weapon: " << player.currentWeapon->name << "\n";
     cout << "| Damage: " << player.getMinDamage() << "-" << player.getMaxDamage() << "\n";
+    cout << "| Kills: "<< player.kills<<"\n";
     cout << "| Armor class: " << player.armor << "\n";
     cout << "| Money: " << player.money << "\n";
     cout << "| XP: " << player.playerXp << "\n";

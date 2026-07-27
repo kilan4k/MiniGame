@@ -15,7 +15,7 @@ public:
 	int playerXp = 0;
 	int xpToNextLvl = NEXT_LEVEL_XP_FORMULA;
 	int money = 0;
-
+	int kills = 0;
 	Player(int level, int money, Weapon* currentWeapon, short armor); 
 	std::pair<int, int >CalculateDamage();
 	int TakeDamage(int damage);
