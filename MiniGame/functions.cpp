@@ -143,7 +143,7 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
             cout << "YOU WON\n";
             cout << enemy->name << " was defeated.\n\n";
             cout << "You get " << enemy->xpReward << "xp\nYou get " << enemy->money << "$\n";
-            player.money += enemy->money;
+            player.money += (enemy->money)*(player.level*7+100)/100;
             player.AddXp((enemy->xpReward)*(player.level*5+100)/100);
             player.kills++;
             delete enemy;
