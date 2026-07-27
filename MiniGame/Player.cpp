@@ -5,8 +5,8 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#define MAX_HP_FORMULA 90+((level * 10) * 1.1)
-#define NEXT_LEVEL_XP_FORMULA 10*level*1.25;
+#define MAX_HP_FORMULA (90+((level * 10) * 1.1))
+#define NEXT_LEVEL_XP_FORMULA (10*level*1.25)
 
 using std::cout, std::cin, std::string, std::endl;
 
