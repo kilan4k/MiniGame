@@ -13,7 +13,7 @@
 
 using std::cout, std::cin, std::string, std::endl, std::vector;
 
-void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, std::vector<Player> players) {
+void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, const std::vector<Player> players) {
     player = playerCreation(weapons, players);
     cout << "[BONUS FOR PLAYING ALPHA]\n";
     cout << "Adding 100$\n";
@@ -202,7 +202,7 @@ Enemy* getRandomEnemy(vector<Enemy>& enemies) {
     }
 
 }
-Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {// creating player's character
+Player* playerCreation(vector<Weapon>& weapons, const vector<Player>& playerTypes) {// creating player's character
     cout << "\n==================================================\n";
     cout <<     "           WELCOME TO CHARACTER CREATOR";
     cout <<   "\n==================================================\n";
