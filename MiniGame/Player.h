@@ -4,7 +4,11 @@
 #define NEXT_LEVEL_XP_FORMULA 20*level*1.25;
 class Player
 {
-	
+private:
+
+
+
+
 public:
 	std::string name;
 	float maxHp = 100;

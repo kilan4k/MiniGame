@@ -8,40 +8,51 @@
 #include <iostream>
 #include <random>
 
-
-
 using std::cout, std::cin, std::string, std::endl, std::vector;
-Enemy* getRandomEnemy(vector<Enemy>& enemies) {
 
-    int randDifficulty = getRandomNumber(1, 100);
+void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, std::vector<Player> players) {
+    player = playerCreation(weapons, players);
+    cout << "[BONUS FOR PLAYING ALPHA]\n";
+    cout << "Adding 100$\n";
+    player->money += 100;
+    bool LeavingGame = false;
+    while (!LeavingGame ) {
+        if (player->hp <= 0) { LeavingGame = true; break; }
 
-    const int randEasy = 70;
-    const int randMed = 90;
-    const int randHard = 100;
-    int easyEnemies = 5;
-    int mediumEnemies = 8;
-    int hardEnemies = 11;
-    if (randDifficulty <= randEasy) {
-        //cout << "EASY ";
-        //cout << randDifficulty << "\n";
-        int enemyNum = getRandomNumber(0,easyEnemies);
-        return new Enemy(enemies[enemyNum]);
+        {
+            cout << "\n\n==================================================\n";
+            cout << "                    GAME MENU";
+            cout <<   "\n==================================================\n";
+        }//console output
+        char choice;
+        cout << "\n-------------------------------------------\n";
+        cout << "Type '1' to battle\nType '2' to open shop menu\nType 'S' to print player's stats\nType 'H' to open heal menu\nType 'A' to open armor shop\nType 'E' to show every enemy stat in game\nType 'Q' to quit the game";
+        cout << "\n-------------------------------------------\n";
+        cin >> choice;
+        clearInput();
+        //cout << toupper(choice);
+        switch (toupper(choice) ) {
+        case '1': battleSystem(*player, enemy, enemies);
+            break;
+        case '2': openShop(*player, weapons);
+            break;
+        case 'S': printPlayerStats(*player);
+            break;
+        case 'H': player->HealPlayer();
+            break;
+        case 'A': armorShop(*player);
+            break;
+        case 'E': printEnemyCatalogue(enemies);
+            break;
+        case 'Q': LeavingGame = true;
+            break;
+        default:
+            cout << "Error! Try again!\n";
+            break;
+        }
+
+
     }
-    else if (randDifficulty <= randMed) {
-        //cout << "MEDIUM ";
-        //cout << randDifficulty << "\n";
-        int enemyNum = getRandomNumber(easyEnemies+1,mediumEnemies);
-        return new Enemy(enemies[enemyNum]);
-
-    }
-    else {
-        //cout << "HARD ";
-        //cout << randDifficulty<<"\n";
-        
-        int enemyNum = getRandomNumber(mediumEnemies+1,hardEnemies);
-        return new Enemy(enemies[enemyNum]);
-    }
-
 }
 void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
     cout << "\n\n==================================================\n";
@@ -156,102 +167,37 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
-void openShop(Player& player, vector<Weapon>& weapons) {
-    cout << "\n\n\n==================================================\n";
-    cout <<       "                     WEAPON SHOP";
-    cout <<     "\n==================================================\n";
-    string choice;
-    int numChoice;
-    bool isLeaving = false;
-    cout << "Welcome to the shop, here you can examine every weapons' statistics or buy new weapon\n";
-    while (!isLeaving) {
-        cout << "-------------------------------------------\n";
-        cout << "Type '1' to show weapon list and therefore buy a weapon;\nType '2' to show stats for every weapon;\nType '-1' to leave the shop\n";
-        cout << "-------------------------------------------\n";
-        cin >> numChoice;
-        clearInput();
-        switch (numChoice) {
-        case 1:
-        {
-            int i = 1;
-            cout << "\n-------------------------------------------\n";
-            for (const auto& weapon : weapons) {
-                cout << i++ << ". " << weapon.name;
-                if (!weapon.isBought) {
-                    cout << "; Price: " << weapon.price << "; Level required: " << weapon.lvlReq << "; Can buy - " << ((player.level >= weapon.lvlReq && player.money >= weapon.price) ? "Yes" : "No");
-                }
-                else {
-                    cout << "; You own this weapon!";
-                }
-                cout << "\n";
-            }
-            cout << "-------------------------------------------\n";
-        }
-        cout << "\n-------------------------------------------\n";
-        cout << "!Before buying a weapon make sure you have enough money and level!\n";
-        cout << "To buy a weapon, type its number or its name: ";
-        std::getline(cin >> std::ws, choice);
-        cout << "-------------------------------------------\n";
-        {
-            bool found = false;
-            int i = 1;
+Enemy* getRandomEnemy(vector<Enemy>& enemies) {
 
-            for (auto& weapon : weapons) {
-                string indexStr = std::to_string(i++);
-                if ((toLowerString(choice) == toLowerString(weapon.name) || indexStr == choice)) {
-                    found = true;
-                    if (weapon.isBought) {
-                        cout << "You already own " << weapon.name << "!\nDo you want to equip it? 'Y' for yes, 'N' for no:\n";
-                        std::getline(cin >> std::ws, choice);
-                        if (toLowerString(choice) == "y") {
-                            player.currentWeapon = &weapon;
-                            cout << "Successfully equipped " << weapon.name << "!\n";
-                        }
-                        break;
-                    }
-                    if (player.money >= weapon.price) {
-                        if (player.level >= weapon.lvlReq) {
-                            cout << "You have enough money to buy " << weapon.name << ". Type 'Y' if you want to buy it; Type 'N' if you don't want to buy it\n";
-                            std::getline(cin >> std::ws, choice);
-                            if (toLowerString(choice) == "y") {
-                                weapon.isBought = true;
-                                player.money -= weapon.price;
-                                player.currentWeapon = &weapon;
-                                cout << "Successfully bought " << weapon.name << " for " << weapon.price << "$\nThis weapon is now equipped. (if you want to change equipped weapon, go to inventory from menu)\n";
-                                break;
-                            }
-                            else if (toLowerString(choice) == "n") {
-                                break;
-                            }
-                            else {
-                                cout << "Error! Try again!\n\n";
-                                break;
-                            }
-                        }
-                        else {
-                            cout << "Your level is not enough to buy " << weapon.name << "!\n";
-                        }
-                    }
-                    else {
-                        cout << "You have not enough money to buy " << weapon.name << "!\n";
-                    }
-                }
-            }
-            if (!found) cout << "ERROR! Weapon is not found!\n";
-        }
-        break;
-        case 2: printWeaponCatalogue(weapons);
-            break;
-        case -1:
-            isLeaving = true;
-            break;
-        default:cout << "Error! Try again\n";
-            break;
+    int randDifficulty = getRandomNumber(1, 100);
 
-        }
+    const int randEasy = 70;
+    const int randMed = 90;
+    const int randHard = 100;
+    int easyEnemies = 5;
+    int mediumEnemies = 8;
+    int hardEnemies = 11;
+    if (randDifficulty <= randEasy) {
+        //cout << "EASY ";
+        //cout << randDifficulty << "\n";
+        int enemyNum = getRandomNumber(0,easyEnemies);
+        return new Enemy(enemies[enemyNum]);
+    }
+    else if (randDifficulty <= randMed) {
+        //cout << "MEDIUM ";
+        //cout << randDifficulty << "\n";
+        int enemyNum = getRandomNumber(easyEnemies+1,mediumEnemies);
+        return new Enemy(enemies[enemyNum]);
+
+    }
+    else {
+        //cout << "HARD ";
+        //cout << randDifficulty<<"\n";
+        
+        int enemyNum = getRandomNumber(mediumEnemies+1,hardEnemies);
+        return new Enemy(enemies[enemyNum]);
     }
 
-    cout << "\n-------------------------------------------\n\n\n";
 }
 Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {// creating player's character
     cout << "\n==================================================\n";
@@ -295,7 +241,7 @@ Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {//
                         cout << "Welcome to this dangerous world, " << nickname << " and I wish you good luck on this journey!\n\n";
                         Player* newPlayer = new Player(character.level, character.money, character.currentWeapon, character.armor);
                         newPlayer->name = nickname;
-                        newPlayer->currentWeapon->isBought = true;
+                        newPlayer->currentWeapon->setIsBought(true);
                         std::cout << "-------------------------------------------\n";
                         return newPlayer;
                         break;
@@ -320,12 +266,6 @@ Player* playerCreation(vector<Weapon>& weapons, vector<Player>& playerTypes) {//
     }
     std::cout << "-------------------------------------------\n";
     return nullptr;
-}
-std::string toLowerString(std::string str) {
-    for (char& c : str) {
-        c = std::tolower(static_cast<unsigned char>(c)); // for loop to turn string into a lowercase string obv
-    }
-    return str;
 }
 void printEnemyCatalogue(const vector<Enemy>& enemies) { // Printing every enemy in game just so that user knows what to deal with
     cout << "\n\n\n==================================================\n";
@@ -354,12 +294,12 @@ void printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon ca
         int i = 1;
         for (const auto& weapon : weapons) {
             cout << "\n-------------------------------------------\n";
-            cout << "| " << i++ << ". " << weapon.name << ":\n";
-            cout << "| Basic damage: " << weapon.minDamage << "-" << weapon.maxDamage << "\n";
-            cout << "| Critical damage chance: " << weapon.critChance << "%\n";
-            cout << "| Price: " << weapon.price << "$\n";
-            cout << "| Available on player level: " << weapon.lvlReq << "\n";
-            if (weapon.isBought) {
+            cout << "| " << i++ << ". " << weapon.getName() << ":\n";
+            cout << "| Basic damage: " << weapon.getMinDMG()<< "-" << weapon.getMaxDMG()<< "\n";
+            cout << "| Critical damage chance: " << weapon.getCritChance()<< "%\n";
+            cout << "| Price: " << weapon.getPrice()<< "$\n";
+            cout << "| Available on player level: " << weapon.getLvlReq()<< "\n";
+            if (weapon.getIsBought()) {
                 cout << "| You own this weapon";
             }
             else {
@@ -379,7 +319,7 @@ void printPlayerStats(const Player& player) { // Printing character or player st
     cout << "| Current HP: " << player.hp << "\n";
     cout << "| Max HP: " << player.maxHp << "\n";
     cout << "| Level: " << player.level << "\n";
-    cout << "| Equipped Weapon: " << player.currentWeapon->name << "\n";
+    cout << "| Equipped Weapon: " << player.currentWeapon->getName() << "\n";
     cout << "| Damage: " << player.getMinDamage() << "-" << player.getMaxDamage() << "\n";
     cout << "| Kills: "<< player.kills<<"\n";
     cout << "| Armor class: " << player.armor << "\n";
@@ -389,59 +329,102 @@ void printPlayerStats(const Player& player) { // Printing character or player st
     cout << "\n-------------------------------------------\n\n";
 
 }
-int getRandomNumber(int num1, int num2) {
-    static std::mt19937 gen(static_cast<unsigned int>(std::time(nullptr)));
-    std::uniform_int_distribution<int> dist(num1, num2);
-    int randNum = dist(gen);
-    return randNum;
-}
-void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, std::vector<Player> players) {
-    player = playerCreation(weapons, players);
-    cout << "[BONUS FOR PLAYING ALPHA]\n";
-    cout << "Adding 100$\n";
-    player->money += 100;
-    bool LeavingGame = false;
-    while (!LeavingGame ) {
-        if (player->hp <= 0) { LeavingGame = true; break; }
-
-        {
-            cout << "\n\n==================================================\n";
-            cout << "                    GAME MENU";
-            cout <<   "\n==================================================\n";
-        }//console output
-        char choice;
-        cout << "\n-------------------------------------------\n";
-        cout << "Type '1' to battle\nType '2' to open shop menu\nType 'S' to print player's stats\nType 'H' to open heal menu\nType 'A' to open armor shop\nType 'E' to show every enemy stat in game\nType 'Q' to quit the game";
-        cout << "\n-------------------------------------------\n";
-        cin >> choice;
+void openShop(Player& player, vector<Weapon>& weapons) {
+    cout << "\n\n\n==================================================\n";
+    cout <<       "                     WEAPON SHOP";
+    cout <<     "\n==================================================\n";
+    string choice;
+    int numChoice;
+    bool isLeaving = false;
+    cout << "Welcome to the shop, here you can examine every weapons' statistics or buy new weapon\n";
+    while (!isLeaving) {
+        cout << "-------------------------------------------\n";
+        cout << "Type '1' to show weapon list and therefore buy a weapon;\nType '2' to show stats for every weapon;\nType '-1' to leave the shop\n";
+        cout << "-------------------------------------------\n";
+        cin >> numChoice;
         clearInput();
-        //cout << toupper(choice);
-        switch (toupper(choice) ) {
-        case '1': battleSystem(*player, enemy, enemies);
-            break;
-        case '2': openShop(*player, weapons);
-            break;
-        case 'S': printPlayerStats(*player);
-            break;
-        case 'H': player->HealPlayer();
-            break;
-        case 'A': armorShop(*player);
-            break;
-        case 'E': printEnemyCatalogue(enemies);
-            break;
-        case 'Q': LeavingGame = true;
-            break;
-        default:
-            cout << "Error! Try again!\n";
-            break;
+        switch (numChoice) {
+        case 1:
+        {
+            int i = 1;
+            cout << "\n-------------------------------------------\n";
+            for (const auto& weapon : weapons) {
+                cout << i++ << ". " << weapon.getName();
+                if (!weapon.getIsBought()) {
+                    cout << "; Price: " << weapon.getPrice() << "; Level required: " << weapon.getLvlReq()<< "; Can buy - " << ((player.level >= weapon.getLvlReq() && player.money >= weapon.getPrice()) ? "Yes" : "No");
+                }
+                else {
+                    cout << "; You own this weapon!";
+                }
+                cout << "\n";
+            }
+            cout << "-------------------------------------------\n";
         }
+        cout << "\n-------------------------------------------\n";
+        cout << "!Before buying a weapon make sure you have enough money and level!\n";
+        cout << "To buy a weapon, type its number or its name: ";
+        std::getline(cin >> std::ws, choice);
+        cout << "-------------------------------------------\n";
+        {
+            bool found = false;
+            int i = 1;
 
+            for (auto& weapon : weapons) {
+                string indexStr = std::to_string(i++);
+                if ((toLowerString(choice) == toLowerString(weapon.getName()) || indexStr == choice)) {
+                    found = true;
+                    if (weapon.getIsBought()) {
+                        cout << "You already own " << weapon.getName()<< "!\nDo you want to equip it? 'Y' for yes, 'N' for no:\n";
+                        std::getline(cin >> std::ws, choice);
+                        if (toLowerString(choice) == "y") {
+                            player.currentWeapon = &weapon;
+                            cout << "Successfully equipped " << weapon.getName()<< "!\n";
+                        }
+                        break;
+                    }
+                    if (player.money >= weapon.getPrice()) {
+                        if (player.level >= weapon.getLvlReq()) {
+                            cout << "You have enough money to buy " << weapon.getName()<< ". Type 'Y' if you want to buy it; Type 'N' if you don't want to buy it\n";
+                            std::getline(cin >> std::ws, choice);
+                            if (toLowerString(choice) == "y") {
+                                weapon.setIsBought(true);
+                                player.money -= weapon.getPrice();
+                                player.currentWeapon = &weapon;
+                                cout << "Successfully bought " << weapon.getName()<< " for " << weapon.getPrice()<< "$\nThis weapon is now equipped. (if you want to change equipped weapon, go to inventory from menu)\n";
+                                break;
+                            }
+                            else if (toLowerString(choice) == "n") {
+                                break;
+                            }
+                            else {
+                                cout << "Error! Try again!\n\n";
+                                break;
+                            }
+                        }
+                        else {
+                            cout << "Your level is not enough to buy " << weapon.getName()<< "!\n";
+                        }
+                    }
+                    else {
+                        cout << "You have not enough money to buy " << weapon.getName() << "!\n";
+                    }
+                }
+            }
+            if (!found) cout << "ERROR! Weapon is not found!\n";
+        }
+        break;
+        case 2: printWeaponCatalogue(weapons);
+            break;
+        case -1:
+            isLeaving = true;
+            break;
+        default:cout << "Error! Try again\n";
+            break;
 
+        }
     }
-}
-void clearInput() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    cout << "\n-------------------------------------------\n\n\n";
 }
 void armorShop(Player& player) {
     cout << "\n\n==================================================\n";
@@ -489,6 +472,24 @@ void armorShop(Player& player) {
     }
     cout << "-------------------------------------------\n\n\n";
 }
+
+
+std::string toLowerString(std::string str) {
+    for (char& c : str) {
+        c = std::tolower(static_cast<unsigned char>(c)); // for loop to turn string into a lowercase string obv
+    }
+    return str;
+}
+void clearInput() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 double armorClassFormula(short armor) {
     return static_cast<double>(armor) / 5.0;
+}
+int getRandomNumber(int num1, int num2) {
+    static std::mt19937 gen(static_cast<unsigned int>(std::time(nullptr)));
+    std::uniform_int_distribution<int> dist(num1, num2);
+    int randNum = dist(gen);
+    return randNum;
 }

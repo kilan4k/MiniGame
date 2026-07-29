@@ -75,13 +75,13 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 	}
 }
 int Player::getMinDamage()const {
-	return currentWeapon->minDamage+(level*2);
+	return currentWeapon->getMinDMG() + (level * 2);
 }
 int Player::getMaxDamage()const {
-	return currentWeapon->maxDamage + (level * 2);
+	return currentWeapon->getMaxDMG() + (level * 2);
 }
 int Player::getCritChance() const {
-	return currentWeapon->critChance;
+	return currentWeapon->getCritChance();
 }
 void Player::HealPlayer() {
 	const double HEAL_PRICE_PERHP = 0+(static_cast<double>( level*0.05 + 0.25));
