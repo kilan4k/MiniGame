@@ -16,7 +16,7 @@ Player::Player(int level, int money, Weapon* currentWeapon, short armor)
 {
 	
 }
-std::pair<int, int> Player::CalculateDamage(){
+std::pair<int, int> Player::CalculateDamage()const{
 	int minDamage = getMinDamage();
 	int maxDamage = getMaxDamage();
 	bool getCrit= getRandomNumber(1,100) < getCritChance();
@@ -36,14 +36,14 @@ void Player::Attack(Enemy& target) {
 	bool isCrit = afterCritDamage > baseDamage; // if final damage > base damage => its a crit
 	int finalDamage = target.TakeDamage(afterCritDamage);
 	int blockedDamage = afterCritDamage - finalDamage;
-	std::cout << "\n[COMBAT, PLAYER'S TURN] Player " << name << " attacks " << target.name << "\n";
+	std::cout << "\n[COMBAT, PLAYER'S TURN] Player " << name << " attacks " << target.getName()<< "\n";
 	
 	std::cout << "--> Base damage: " << baseDamage << "\n";
 	if (isCrit) cout << "[CRITICAL DAMAGE]\n--> Damage after crit: "<<afterCritDamage<<"\n";
 	if (blockedDamage > 0) {
-		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
+		std::cout << "--> " << target.getName() << "'s armor (" << target.getArmor()<< " class) blocked " << blockedDamage << " damage.\n";
 	}
-	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.hp << " HP.";
+	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving enemy with " << target.getHp()<< " HP.";
 	std::cout << "\n-------------------------------------------\n\n";
 	}
 }
@@ -53,7 +53,7 @@ int Player::TakeDamage(int damage) {
 	hp -= damage<hp?damage:hp; // if dmg is greater than hp then u cry man
 	return damage;
 }
-bool Player::isAlive() { // Checking if Player's alive
+bool Player::isAlive()const { // Checking if Player's alive
 	return hp > 0;
 }
 void Player::AddXp(int amount) { // Adding XP to a player, if levels up then reduces xp required for lvl in case they have xp for leveling up to few more levels
@@ -183,6 +183,25 @@ void Player::HealPlayer() {
 	}
 	std::cout << "-------------------------------------------\n";
 }
-int Player::getArmorPrice(short armorClass) {
+int Player::getArmorPrice(short armorClass) const{
 	return armorClass * armorClass * 100;
 }
+
+std::string Player::getName()const { return name; }
+void Player::setName(string sName) { name = sName; }
+float Player::getMaxHp()const { return maxHp; }
+float Player::getHp()const { return hp; }
+Weapon* Player::getCurrentWeapon()const { return currentWeapon; }
+void Player::setCurrentWeapon(Weapon& weapon) {
+	currentWeapon = &weapon;
+}
+short Player::getArmor()const { return armor; }
+void Player::setArmor(short num){ armor = num; }
+int Player::getLevel()const { return level; }
+int Player::getPlayerXp()const { return playerXp; }
+int Player::getXpToNextLvl()const { return xpToNextLvl; }
+int Player::getMoney()const { return money; }
+void Player::addMoney(int num) { if (num > 0)money += num; }
+void Player::spendMoney(int num) { if (num > 0) money -= num; }
+int Player::getKills()const { return kills; }
+void Player::addKills(int num){ kills+=num; }

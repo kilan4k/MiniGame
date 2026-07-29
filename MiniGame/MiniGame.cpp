@@ -75,19 +75,19 @@ int main()
 
     //Player types (and declaring names beneath cus i'm a lazy man to edit a constructor but it ain't a big deal ig)
     Player empty = Player(1, 0, &weapons[FISTS], 0);
-    empty.name = "New character"; 
+    empty.setName("New character");
     Player bandit = Player(1, 50, &weapons[KNIFE], 0);
-    bandit.name = "Bandit";
+    bandit.setName("Bandit");
     Player punchman = Player(1, 0, &weapons[FISTS], 1);
-    punchman.name = "Punchman";
+    punchman.setName("Punchman");
     Player archer = Player(1, 0, &weapons[BOW], 0);
-    archer.name = "Archer";
+    archer.setName("Archer");
     Player lvlPunchman = Player(10, 50, &weapons[FISTS], 0);
-    lvlPunchman.name = "Leveled up Punchman";
+    lvlPunchman.setName("Leveled up Punchman");
     Player lumberjack = Player(1, 0, &weapons[AXE], 0);
-    lumberjack.name = "Lumberjack";
+    lumberjack.setName("Lumberjack");
     Player robber = Player(1, 100, &weapons[FISTS], 0);
-    robber.name = "Robber";
+    robber.setName("Robber");
 
     vector<Player> players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber};
 

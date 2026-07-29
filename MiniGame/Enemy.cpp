@@ -20,7 +20,7 @@ Enemy::Enemy(string name, float maxHp, int minDamage, int maxDamage, short critC
 	: name(name), hp(maxHp),maxHp(maxHp), minDamage(minDamage),maxDamage(maxDamage),critChance(critChance),armor(armor),money(money), xpReward(xpReward) 
 {}
 
-std::pair<int, int> Enemy::CalculateDamage() {
+std::pair<int, int> Enemy::CalculateDamage() const{
 	int baseDamage = getRandomNumber(minDamage, maxDamage);
 	bool getCrit = getRandomNumber(1,100) < critChance;
 	//cout << "Random Damage got: " << damage<<"\n";
@@ -37,14 +37,14 @@ void Enemy::Attack(class Player& target) {
 	bool isCrit = afterCritDamage > baseDamage; // if final damage > base damage => its a crit
 	int finalDamage = target.TakeDamage(afterCritDamage);
 	int blockedDamage = afterCritDamage - finalDamage;
-	std::cout << "\n[COMBAT, ENEMY's TURN] Enemy " << name << " attacks Player " << target.name << "\n";
+	std::cout << "\n[COMBAT, ENEMY's TURN] Enemy " << name << " attacks Player " << target.getName()<< "\n";
 
 	std::cout << "--> Base damage: " << baseDamage << "\n";
 	if (isCrit) cout << "[CRITICAL DAMAGE]\n--> Damage after crit: " << afterCritDamage << "\n";
 	if (blockedDamage > 0) {
-		std::cout << "--> " << target.name << "'s armor (" << target.armor << " class) blocked " << blockedDamage << " damage.\n";
+		std::cout << "--> " << target.getName() << "'s armor (" << target.getArmor()<< " class) blocked " << blockedDamage << " damage.\n";
 	}
-	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving player with " << target.hp << " HP.";
+	std::cout << "--> Result: Dealt " << finalDamage << " damage leaving player with " << target.getHp()<< " HP.";
 	std::cout << "\n-------------------------------------------\n\n";
 	}
 }
@@ -55,7 +55,16 @@ int Enemy::TakeDamage(int damage) {
 	return damage;
 }
 
-bool Enemy::isAlive() {
+bool Enemy::isAlive() const{
 	return hp > 0;
 }
-
+std::string Enemy::getName()const { return name; }
+float Enemy::getHp()const { return hp; }
+float Enemy::getMaxHp()const { return maxHp; }
+int Enemy::getMinDamage()const { return minDamage; }
+int Enemy::getMaxDamage()const { return maxDamage; }
+short Enemy::getCritChance()const { return critChance; }
+short Enemy::getArmor()const { return armor; }
+int Enemy::getMoney()const { return money; }
+int Enemy::getXpReward()const {
+	return xpReward;}

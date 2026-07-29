@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
+#include <utility>
 class Enemy
 {
-public:
+private:
 	std::string name;
 	float hp;
 	float maxHp;
@@ -12,13 +13,24 @@ public:
 	short armor;
 	int money;
 	int xpReward;
+
+public:
 	Enemy();
 	Enemy(std::string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor,int money,int xpReward);
-	std::pair<int, int> CalculateDamage();
+	std::pair<int, int> CalculateDamage()const;
 	void Attack(class Player& target);
 	int TakeDamage(int damage);
-	bool isAlive();
-
+	
+	bool isAlive()const;
+	std::string getName()const;
+	float getHp()const;
+	float getMaxHp()const;
+	int getMinDamage()const;
+	int getMaxDamage()const;
+	short getCritChance()const;
+	short getArmor()const;
+	int getMoney()const;
+	int getXpReward()const;
 
 };
 
