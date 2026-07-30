@@ -16,6 +16,7 @@ std::string toLowerString(std::string str);
 void printPlayerStats(const Player& player);
 void printEnemyCatalogue(const std::vector<Enemy>& enemies);
 void printWeaponCatalogue(const std::vector<Weapon>& weapons);
+void inventorySystem(Player& player);
 Player* playerCreation(std::vector<Weapon>& weapons, const std::vector<Player>& playerTypes);
 void openShop(Player& player, std::vector<Weapon>& weapons);
 int getRandomNumber(int num1, int num2);

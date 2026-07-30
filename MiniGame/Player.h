@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include <compare>
 #include <utility>
 #include <string>
 #define NEXT_LEVEL_XP_FORMULA 10*level*1.25
@@ -9,6 +11,7 @@ private:
 	float maxHp = 100;
 	float hp;
 	class Weapon* currentWeapon;
+	std::vector<Weapon> inventory;
 	short armor;
 	int level;
 	int playerXp = 0;
@@ -17,6 +20,10 @@ private:
 	int kills = 0;
 
 public:
+	bool operator==(const Player& other)const {
+		return name == other.name;
+	}
+
 	Player(int level, int money, Weapon* currentWeapon, short armor); 
 	std::pair<int, int>CalculateDamage()const;
 	int TakeDamage(int damage);
@@ -29,6 +36,11 @@ public:
 	int getArmorPrice(short armorClass)const;
 	bool isAlive()const;
 
+
+	const std::vector<Weapon>& getInventory() const;
+	std::vector<Weapon>& getInventory();
+
+	void addWeaponToInventory(const Weapon& weapon);
 	std::string getName()const;
 	void setName(std::string sName);
 	float getMaxHp()const;

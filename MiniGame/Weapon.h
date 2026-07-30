@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <compare>
 class Weapon
 {
 private:
@@ -11,6 +12,13 @@ private:
 	int lvlReq;
 	bool isBought;
 public:
+	bool operator==(const Weapon& other)const {
+		return name == other.name;
+	}
+	bool operator!=(const Weapon& other)const {
+		return name != other.name;
+	}
+
 	Weapon(std::string name, int minDamage,	int maxDamage,	short critChance,	int price,	int lvlReq,	bool isBought);
 	std::string getName() const;
 	int getMinDMG() const;

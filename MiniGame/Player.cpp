@@ -186,7 +186,15 @@ void Player::HealPlayer() {
 int Player::getArmorPrice(short armorClass) const{
 	return armorClass * armorClass * 100;
 }
-
+std::vector<Weapon>& Player::getInventory() {
+	return inventory;
+}
+const std::vector<Weapon>& Player::getInventory() const {
+	return inventory;
+}
+void Player::addWeaponToInventory(const Weapon& weapon) {
+	inventory.push_back(weapon);
+}
 std::string Player::getName()const { return name; }
 void Player::setName(string sName) { name = sName; }
 float Player::getMaxHp()const { return maxHp; }

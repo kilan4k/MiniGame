@@ -29,7 +29,7 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
         }//console output
         char choice;
         cout << "\n-------------------------------------------\n";
-        cout << "Type '1' to battle\nType '2' to open shop menu\nType 'S' to print player's stats\nType 'H' to open heal menu\nType 'A' to open armor shop\nType 'E' to show every enemy stat in game\nType 'Q' to quit the game";
+        cout << "Type '1' to battle\nType '2' to open shop menu\nType 'S' to print player's stats\nType 'H' to open heal menu\nType 'I' to open inventory\nType 'A' to open armor shop\nType 'E' to show every enemy stat in game\nType 'Q' to quit the game";
         cout << "\n-------------------------------------------\n";
         cin >> choice;
         clearInput();
@@ -42,6 +42,8 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
         case 'S': printPlayerStats(*player);
             break;
         case 'H': player->HealPlayer();
+            break;
+        case 'I': inventorySystem(*player);
             break;
         case 'A': armorShop(*player);
             break;
@@ -245,6 +247,7 @@ Player* playerCreation(vector<Weapon>& weapons, const vector<Player>& playerType
                         Player* newPlayer = new Player(character.getLevel(), character.getMoney(), character.getCurrentWeapon(), character.getArmor());
                         newPlayer->setName(nickname);
                         newPlayer->getCurrentWeapon()->setIsBought(true);
+                        newPlayer->addWeaponToInventory(*character.getCurrentWeapon());
                         std::cout << "-------------------------------------------\n";
                         return newPlayer;
                         break;
@@ -332,6 +335,66 @@ void printPlayerStats(const Player& player) { // Printing character or player st
     cout << "\n-------------------------------------------\n\n";
 
 }
+void inventorySystem(Player& player ) {
+    cout << "\n\n\n==================================================\n";
+    cout << "                CHARACTER INVENTORY";
+    cout << "\n==================================================\n";
+    string choice;
+    bool isLeaving = false;
+
+    while (!isLeaving) {
+        cout << "\nYou're in inventory menu.\nType '-1' to leave this menu\nType number of weapon or its name to choose it";
+        {
+            int i = 1;
+            for (const Weapon& weapon : player.getInventory()) {
+                cout << "\n-------------------------------------------\n";
+                cout << i++ << ". " << weapon.getName();
+                if (weapon == *player.getCurrentWeapon()) {
+                    cout << ". This weapon is equipped now!";
+                }
+                cout << "\n-------------------------------------------\n";
+            }
+
+        }
+        getline(cin >> std::ws, choice);
+        {
+            int i = 1;
+            bool isFound = false;
+            if (choice == "-1") {
+                break;
+                isLeaving = true;
+            }
+            else {
+
+                for (Weapon& weapon : player.getInventory()) {
+                    if (toLowerString(choice)==toLowerString(weapon.getName()) or choice == std::to_string(i)) {
+                        isFound = true;
+                        if(weapon == *player.getCurrentWeapon()){
+                            cout << "\n-------------------------------------------\n";
+                            cout << "Already equipped.";
+                            cout << "\n-------------------------------------------\n";
+                        }
+                        else {
+                        player.setCurrentWeapon(weapon);
+                        cout << "\n-------------------------------------------\n";
+                        cout << "Succesffuly equipped " << weapon.getName();
+                        cout << "\n-------------------------------------------\n";
+                        }                        
+                        break;
+                    }
+                    i++;
+                }
+                if (!isFound) {
+                    cout << "\n-------------------------------------------\n";
+                    cout << "Couldn't find a weapon";
+                    cout << "\n-------------------------------------------\n";
+                }
+            }
+        }
+    }
+
+    cout << "-------------------------------------------\n";
+}
 void openShop(Player& player, vector<Weapon>& weapons) {
     cout << "\n\n\n==================================================\n";
     cout <<       "                     WEAPON SHOP";
@@ -394,6 +457,7 @@ void openShop(Player& player, vector<Weapon>& weapons) {
                                 player.spendMoney(weapon.getPrice());
                                 player.setCurrentWeapon(weapon);
                                 cout << "Successfully bought " << weapon.getName()<< " for " << weapon.getPrice()<< "$\nThis weapon is now equipped. (if you want to change equipped weapon, go to inventory from menu)\n";
+                                player.addWeaponToInventory(weapon);
                                 break;
                             }
                             else if (toLowerString(choice) == "n") {

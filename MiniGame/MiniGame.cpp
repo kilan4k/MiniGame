@@ -58,7 +58,7 @@ int main()
     vector<Enemy> enemies = {rat, spider, rogue, skeleton, zombie, goblin, barbarian, bear, juggernaut, knight, dragon, demon};
 
     //Weapon types
-    Weapon fists = Weapon("Fists", 10, 20, 5, 0, 0, true); //0
+    Weapon fists = Weapon("Fists", 10, 20, 5, 0, 0, false); //0
     Weapon knife = Weapon("Knife", 20, 30, 5, 25, 1, false);//1
     Weapon machete = Weapon("Machete", 25,35,10,85,6,false);//2
     Weapon axe = Weapon("Axe", 35,45,35,150,7,false);//3
