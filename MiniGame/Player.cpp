@@ -2,17 +2,15 @@
 #include "Weapon.h"
 #include "Enemy.h"
 #include "functions.h"
+#include <cmath>
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#define MAX_HP_FORMULA (90+((level * 10) * 1.1))
-#define NEXT_LEVEL_XP_FORMULA (10*level*1.25)
 
 using std::cout, std::cin, std::string, std::endl;
 
-
 Player::Player(int level, int money, Weapon* currentWeapon, short armor)
-	:level(level),money(money),maxHp(MAX_HP_FORMULA), hp(MAX_HP_FORMULA), currentWeapon(currentWeapon), armor(armor)
+	:level(level),money(money),maxHp(getMaxHpFormula()), hp(getMaxHpFormula()), currentWeapon(currentWeapon), armor(armor)
 {
 	
 }
@@ -64,8 +62,8 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		level++;
 		std::cout << "\n[LEVEL] you leveled up to " << level << " level\n";
 		playerXp -= xpToNextLvl;
-		xpToNextLvl =NEXT_LEVEL_XP_FORMULA;
-		maxHp = MAX_HP_FORMULA;
+		xpToNextLvl =getLevelXpFormula();
+		maxHp = getMaxHpFormula();
 		hp = hp + 10 > maxHp ? maxHp : hp+10;
 		cout << "HP: " << hp;
 		cout << "\nMax HP: " << maxHp;
@@ -74,18 +72,9 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		std::cout << "\n-------------------------------------------\n";
 	}
 }
-int Player::getMinDamage()const {
-	return currentWeapon->getMinDMG() + (level * 2);
-}
-int Player::getMaxDamage()const {
-	return currentWeapon->getMaxDMG() + (level * 2);
-}
-int Player::getCritChance() const {
-	return currentWeapon->getCritChance();
-}
 void Player::HealPlayer() {
-	const double HEAL_PRICE_PERHP = 0+(static_cast<double>( level*0.05 + 0.25));
-	int totalCost = round( HEAL_PRICE_PERHP * (maxHp - hp));
+	const float HEAL_PRICE_PERHP = (static_cast<float>(level) * HEAL_COST_PER_LVL + BASE_HEAL_COST);
+	int totalCost = round(HEAL_PRICE_PERHP * (maxHp - hp));
 	char choice; // for checkin Y and N
 	int numChoice; // for choosing hp
 	bool leaving = false;
@@ -94,9 +83,9 @@ void Player::HealPlayer() {
 	std::cout << "\nYour balance is " << money << "$\n";
 	std::cout << "Your HP is " << hp << "\n";
 	if (hp == maxHp) {
-		std::cout << "You already have max HP of " << maxHp<<"\n";
+		std::cout << "You already have max HP of " << maxHp << "\n";
 	}
-	while (!leaving && hp!=maxHp) { // repeating ts till user leaves menu
+	while (!leaving && hp != maxHp) { // repeating ts till user leaves menu
 		if (money >= totalCost) {
 			std::cout << "\nAre you sure you want to spend " << HEAL_PRICE_PERHP << "$ per hp to heal yourself to your max HP of " << maxHp << "\n";
 			std::cout << "Healing to " << maxHp << " will cost you " << totalCost << "$\n";
@@ -111,7 +100,7 @@ void Player::HealPlayer() {
 				choice = ' ';
 				money -= totalCost;
 				hp = maxHp;
-				std::cout << "You're successfully healed! Your HP now is " << hp<<"!\n";
+				std::cout << "You're successfully healed! Your HP now is " << hp << "!\n";
 				leaving = true;
 				break;
 
@@ -123,17 +112,17 @@ void Player::HealPlayer() {
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				if (numChoice == -1) leaving = true;
-				else if ( (numChoice > hp && numChoice <= maxHp) ) { // checking if input number is available number to heal
-					std::cout << "Healing to " << numChoice << " HP will cost you " << HEAL_PRICE_PERHP * (numChoice - hp)<<"$" <<
-					"\nType 'Y' if you agree to heal, type 'N' to leave this menu\n";
+				else if ((numChoice > hp && numChoice <= maxHp)) { // checking if input number is available number to heal
+					std::cout << "Healing to " << numChoice << " HP will cost you " << HEAL_PRICE_PERHP * (numChoice - hp) << "$" <<
+						"\nType 'Y' if you agree to heal, type 'N' to leave this menu\n";
 					std::cin >> choice;
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					if (toupper(choice) == 'Y') {
-					money -= HEAL_PRICE_PERHP * (numChoice - hp );
-					std::cout << "You have successfully healed to " << numChoice<< " HP! And spent "<< HEAL_PRICE_PERHP * (numChoice - hp) << "$\n";
-					hp = numChoice;
-					leaving = true;
+						money -= HEAL_PRICE_PERHP * (numChoice - hp);
+						std::cout << "You have successfully healed to " << numChoice << " HP! And spent " << HEAL_PRICE_PERHP * (numChoice - hp) << "$\n";
+						hp = numChoice;
+						leaving = true;
 					}
 					else {
 						leaving = true;
@@ -145,54 +134,67 @@ void Player::HealPlayer() {
 				break;
 			default:
 				std::cout << "Error! Try again!\n";
-					break;
+				break;
 			}
 		}
-		else 
+		else
 		{
 			if (money >= HEAL_PRICE_PERHP) {
-			std::cout << "\nYou have not enough money to heal you to " << maxHp << " HP (that costs " << totalCost << "$)\n";
-			std::cout << "Heal Price per 1 HP = "<<HEAL_PRICE_PERHP<<"\n";
-			std::cout << "Type '-1' if you want to leave this menu, Type a number " << hp + 1 << '-' <<(int) (hp + (money/HEAL_PRICE_PERHP ))<< " to choose HP to heal you for.\n";
-			std::cin >> numChoice;
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			if (numChoice == -1) leaving = true;
-			else if (numChoice>hp && numChoice<=(hp + (money / HEAL_PRICE_PERHP))) {
-				std::cout << "Healing to " << numChoice << " HP will cost you " << HEAL_PRICE_PERHP * (numChoice - hp)<<"$" <<
-				"\nType 'Y' if you agree to heal, type 'N' to leave this menu\n";
-				std::cin >> choice;
+				std::cout << "\nYou have not enough money to heal you to " << maxHp << " HP (that costs " << totalCost << "$)\n";
+				std::cout << "Heal Price per 1 HP = " << HEAL_PRICE_PERHP << "\n";
+				std::cout << "Type '-1' if you want to leave this menu, Type a number " << hp + 1 << '-' << (int)(hp + (money / HEAL_PRICE_PERHP)) << " to choose HP to heal you for.\n";
+				std::cin >> numChoice;
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-				if (toupper(choice) == 'Y') {
-					money -= HEAL_PRICE_PERHP * (numChoice - hp);
-					std::cout << "You have successfully healed to " << numChoice << " HP! And spent " << HEAL_PRICE_PERHP * (numChoice - hp) << "$\n";
-					hp = numChoice;
-					leaving = true;
+				if (numChoice == -1) leaving = true;
+				else if (numChoice > hp && numChoice <= (hp + (money / HEAL_PRICE_PERHP))) {
+					std::cout << "Healing to " << numChoice << " HP will cost you " << HEAL_PRICE_PERHP * (numChoice - hp) << "$" <<
+						"\nType 'Y' if you agree to heal, type 'N' to leave this menu\n";
+					std::cin >> choice;
+					std::cin.clear();
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+					if (toupper(choice) == 'Y') {
+						money -= HEAL_PRICE_PERHP * (numChoice - hp);
+						std::cout << "You have successfully healed to " << numChoice << " HP! And spent " << HEAL_PRICE_PERHP * (numChoice - hp) << "$\n";
+						hp = numChoice;
+						leaving = true;
+					}
+				}
+				else {
+					std::cout << "Error! Try again!\n";
 				}
 			}
 			else {
-				std::cout << "Error! Try again!\n";
-			}	
-		}
-			else {
-				std::cout<<"\nYou don't even have enough money to heal you for 1 HP lol (it's "<<HEAL_PRICE_PERHP<<"$ per 1 HP" << "\n";
+				std::cout << "\nYou don't even have enough money to heal you for 1 HP lol (it's " << HEAL_PRICE_PERHP << "$ per 1 HP" << "\n";
 				leaving = true;
 			}
 		}
 	}
 	std::cout << "-------------------------------------------\n";
 }
+
+
+std::vector<Weapon*>& Player::getInventory() {
+	return inventory;
+}
+const std::vector<Weapon*>& Player::getInventory() const {
+	return inventory;
+}
+
+int Player::getMinDamage()const {
+	return currentWeapon->getMinDMG() + (level * 2);
+}
+int Player::getMaxDamage()const {
+	return currentWeapon->getMaxDMG() + (level * 2);
+}
+int Player::getCritChance() const {
+	return currentWeapon->getCritChance();
+}
 int Player::getArmorPrice(short armorClass) const{
 	return armorClass * armorClass * 100;
 }
-std::vector<Weapon>& Player::getInventory() {
-	return inventory;
-}
-const std::vector<Weapon>& Player::getInventory() const {
-	return inventory;
-}
-void Player::addWeaponToInventory(const Weapon& weapon) {
+
+void Player::addWeaponToInventory(Weapon* weapon) {
 	inventory.push_back(weapon);
 }
 std::string Player::getName()const { return name; }
@@ -200,8 +202,8 @@ void Player::setName(string sName) { name = sName; }
 float Player::getMaxHp()const { return maxHp; }
 float Player::getHp()const { return hp; }
 Weapon* Player::getCurrentWeapon()const { return currentWeapon; }
-void Player::setCurrentWeapon(Weapon& weapon) {
-	currentWeapon = &weapon;
+void Player::setCurrentWeapon(Weapon* weapon) {
+	currentWeapon = weapon;
 }
 short Player::getArmor()const { return armor; }
 void Player::setArmor(short num){ armor = num; }

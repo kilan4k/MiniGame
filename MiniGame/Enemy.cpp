@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "functions.h"
 #include <cstdlib>
+#include <cmath>
 #include <string>
 #include <iostream>
 using std::cout, std::cin, std::string, std::endl;

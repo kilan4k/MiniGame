@@ -22,4 +22,6 @@ void openShop(Player& player, std::vector<Weapon>& weapons);
 int getRandomNumber(int num1, int num2);
 void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, const std::vector<Player> players);
 void armorShop(Player& player);
-double  armorClassFormula(short armor);
+constexpr double armorClassFormula(short armor) {
+    return static_cast<double>(armor) / 5.0;
+}

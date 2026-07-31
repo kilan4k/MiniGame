@@ -3,7 +3,7 @@
 #include <compare>
 #include <utility>
 #include <string>
-#define NEXT_LEVEL_XP_FORMULA 10*level*1.25
+
 class Player
 {
 private:
@@ -11,14 +11,23 @@ private:
 	float maxHp = 100;
 	float hp;
 	class Weapon* currentWeapon;
-	std::vector<Weapon> inventory;
+	std::vector<Weapon*> inventory;
 	short armor;
 	int level;
 	int playerXp = 0;
-	int xpToNextLvl = NEXT_LEVEL_XP_FORMULA;
+	int xpToNextLvl = getLevelXpFormula();
 	int money = 0;
 	int kills = 0;
+	static constexpr float BASE_HEAL_COST = 0.25f;
+	static constexpr float HEAL_COST_PER_LVL = 0.05f;
+	
 
+	constexpr float getMaxHpFormula() const {
+		return 90.0f + ((level * 10.0f) * 1.1f);
+	}
+	constexpr int getLevelXpFormula()const {
+		return static_cast<int>(10 * level * 1.25);
+	}
 public:
 	bool operator==(const Player& other)const {
 		return name == other.name;
@@ -37,16 +46,16 @@ public:
 	bool isAlive()const;
 
 
-	const std::vector<Weapon>& getInventory() const;
-	std::vector<Weapon>& getInventory();
+	const std::vector<Weapon*>& getInventory() const;
+	std::vector<Weapon*>& getInventory();
 
-	void addWeaponToInventory(const Weapon& weapon);
+	void addWeaponToInventory(Weapon* weapon);
 	std::string getName()const;
 	void setName(std::string sName);
 	float getMaxHp()const;
 	float getHp()const;
 	Weapon* getCurrentWeapon()const;
-	void setCurrentWeapon(Weapon& weapon);
+	void setCurrentWeapon(Weapon* weapon);
 	short getArmor()const;
 	void setArmor(short num);
 	int getLevel()const;
