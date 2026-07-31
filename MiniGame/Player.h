@@ -8,14 +8,13 @@ class Player
 {
 private:
 	std::string name;
-	float maxHp = 100;
-	float hp;
 	class Weapon* currentWeapon;
 	std::vector<Weapon*> inventory;
 	short armor;
 	int level;
+	float maxHp = 100;
+	float hp;
 	int playerXp = 0;
-	int xpToNextLvl = getLevelXpFormula();
 	int money = 0;
 	int kills = 0;
 	static constexpr float BASE_HEAL_COST = 0.25f;
@@ -28,6 +27,7 @@ private:
 	constexpr int getLevelXpFormula()const {
 		return static_cast<int>(10 * level * 1.25);
 	}
+	int xpToNextLvl = getLevelXpFormula();
 public:
 	bool operator==(const Player& other)const {
 		return name == other.name;

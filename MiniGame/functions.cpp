@@ -23,7 +23,7 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
         if (player->getHp() <= 0) { LeavingGame = true; break; }
 
         {
-            cout << "\n\n==================================================\n";
+            cout << "\n==================================================\n";
             cout << "                    GAME MENU";
             cout << "\n==================================================\n";
         }//console output
