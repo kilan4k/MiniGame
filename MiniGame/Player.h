@@ -18,7 +18,7 @@ private:
 	int money = 0;
 	int kills = 0;
 	static constexpr float BASE_HEAL_COST = 0.25f;
-	static constexpr float HEAL_COST_PER_LVL = 0.05f;
+	static constexpr float HEAL_COST_PER_LVL = 0.02f;
 	
 
 	constexpr float getMaxHpFormula() const {
