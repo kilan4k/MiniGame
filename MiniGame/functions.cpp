@@ -9,11 +9,11 @@
 #include <random>
 #include <limits>
 #include <utility>
-
+#include <memory>
 
 using std::cout, std::cin, std::string, std::endl, std::vector;
 
-void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, const std::vector<Player> players) {
+void gamePlaying(Player*& player, std::vector<Enemy>& enemies, std::vector<Weapon>& weapons, const std::vector<Player> players) {
     player = playerCreation(weapons, players);
     cout << "[BONUS FOR PLAYING ALPHA]\n";
     cout << "Adding 100$\n";
@@ -35,7 +35,7 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
         clearInput();
         //cout << toupper(choice);
         switch (toupper(choice)) {
-        case '1': battleSystem(*player, enemy, enemies);
+        case '1': battleSystem(*player, enemies);
             break;
         case '2': openShop(*player, weapons);
             break;
@@ -59,7 +59,7 @@ void gamePlaying(Player*& player, Enemy*& enemy, std::vector<Enemy>& enemies, st
 
     }
 }
-void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
+void battleSystem(Player& player, vector<Enemy>& enemies) {
     cout << "\n\n==================================================\n";
     cout << "                    BATTLE MENU";
     cout << "\n==================================================\n";
@@ -96,7 +96,7 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
         }
     }
     cout << "-------------------------------------------\n";
-    enemy = getRandomEnemy(enemies);
+    std::unique_ptr<Enemy> enemy = getRandomEnemy(enemies);
     cout << "\nYour enemy is " << enemy->getName() << "\n";
     while (!isLeaving) {
         choice = ' ';
@@ -162,17 +162,11 @@ void battleSystem(Player& player, Enemy*& enemy, vector<Enemy>& enemies) {
             player.addMoney((enemy->getMoney()) * (player.getLevel() * 7 + 100) / 100) ;
             player.AddXp((enemy->getXpReward()) * (player.getLevel() * 5 + 100) / 100);
             player.addKills(1);
-            delete enemy;
-            enemy = nullptr;
-        }
-        else {
-            delete enemy;
-            enemy = nullptr;
         }
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
-Enemy* getRandomEnemy(vector<Enemy>& enemies) {
+std::unique_ptr<Enemy> getRandomEnemy(vector<Enemy>& enemies) {
 
     short randDifficulty = getRandomNumber(1, 100);
 
@@ -186,20 +180,20 @@ Enemy* getRandomEnemy(vector<Enemy>& enemies) {
         //cout << "EASY ";
         //cout << randDifficulty << "\n";
         int enemyNum = getRandomNumber(0, MAX_EASY_ENEMY_INDEX);
-        return new Enemy(enemies[enemyNum]);
+        return std::make_unique<Enemy>(enemies[enemyNum]);
     }
     else if (randDifficulty <= RAND_MED_PERC) {
         //cout << "MEDIUM ";
         //cout << randDifficulty << "\n";
         int enemyNum = getRandomNumber(MAX_EASY_ENEMY_INDEX + 1, MAX_MEDIUM_ENEMY_INDEX);
-        return new Enemy(enemies[enemyNum]);
+        return std::make_unique<Enemy>(enemies[enemyNum]);
 
     }
     else {
         //cout << "HARD ";
         //cout << randDifficulty<<"\n";
         int enemyNum = getRandomNumber(MAX_MEDIUM_ENEMY_INDEX + 1, MAX_HARD_ENEMY_INDEX);
-        return new Enemy(enemies[enemyNum]);
+        return std::make_unique<Enemy>(enemies[enemyNum]);
     }
 }
 Player* playerCreation(vector<Weapon>& weapons, const vector<Player>& playerTypes) {// creating player's character

@@ -93,10 +93,10 @@ int main()
 
     //Player and Enemy defining
     Player* myPlayer = nullptr;
-    Enemy* pCurrentEnemy = nullptr;
+    //Enemy* pCurrentEnemy = nullptr;
 
     //Game loop
-    gamePlaying(myPlayer, pCurrentEnemy, enemies, weapons, players);
+    gamePlaying(myPlayer, enemies, weapons, players);
 
     /*
     myPlayer->money += 100;
@@ -146,7 +146,6 @@ int main()
     clearInput();
     cin.get();
     if (myPlayer != nullptr) delete myPlayer;
-    if (pCurrentEnemy != nullptr) pCurrentEnemy = nullptr;
     return 0;
 }
 //END OF MAIN
