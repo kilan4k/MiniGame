@@ -69,3 +69,6 @@ public:
 
 };
 
+constexpr double armorClassFormula(short armor) {
+	return static_cast<double>(armor) / 5.0;
+}

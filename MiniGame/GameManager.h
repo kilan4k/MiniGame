@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include <string>
 #include <vector>
+#include <memory>
 using std::vector,std::string;
 class GameManager
 {
@@ -13,7 +14,7 @@ private:
     vector<Weapon> weapons;
     vector<Player> players;
 
-	Player* myPlayer = nullptr;
+	std::unique_ptr<Player> myPlayer = nullptr;
 
     void declareData();
 public:
@@ -49,7 +50,17 @@ public:
     GameManager();
     ~GameManager();
     void run();
+    void quit();
 
+    void battleSystem(Player& player, vector<Enemy>& enemies);
+    std::unique_ptr<Enemy> getRandomEnemy(vector<Enemy>& enemies);
+    void playerCreation();
+    void printEnemyCatalogue(const vector<Enemy>& enemies);
+    void printWeaponCatalogue(const vector<Weapon>& weapons);
+    void printPlayerStats(const Player& player);
+    void inventorySystem(Player& player);
+    void openShop(Player& player, vector<Weapon>& weapons);
+    void armorShop(Player& player);
 
 };
 
