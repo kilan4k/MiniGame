@@ -15,8 +15,7 @@
 using std::cout, std::cin, std::string, std::endl, std::vector;
 
 GameManager::GameManager() {}
-GameManager::~GameManager() {
-}
+GameManager::~GameManager() {}
 
 void GameManager::declareData() {
    //Declaring different objects
@@ -94,19 +93,19 @@ void GameManager::run() {
         clearInput();
         //cout << toupper(choice);
         switch (toupper(choice)) {
-        case '1': battleSystem(*myPlayer, enemies);
+        case '1': battleSystem();
             break;
-        case '2': openShop(*myPlayer, weapons);
+        case '2': openShop();
             break;
         case 'S': printPlayerStats(*myPlayer);
             break;
         case 'H': myPlayer->HealPlayer();
             break;
-        case 'I': inventorySystem(*myPlayer);
+        case 'I': inventorySystem();
             break;
-        case 'A': armorShop(*myPlayer);
+        case 'A': armorShop();
             break;
-        case 'E': printEnemyCatalogue(enemies);
+        case 'E': printEnemyCatalogue();
             break;
         case 'Q': LeavingGame = true;
             break;
@@ -123,7 +122,7 @@ void GameManager::quit() {
     clearInput();
     cin.get();
 }
-void GameManager::battleSystem(Player& player, vector<Enemy>& enemies) {
+void GameManager::battleSystem() {
     cout << "\n\n==================================================\n";
     cout << "                    BATTLE MENU";
     cout << "\n==================================================\n";
@@ -160,7 +159,7 @@ void GameManager::battleSystem(Player& player, vector<Enemy>& enemies) {
         }
     }
     cout << "-------------------------------------------\n";
-    std::unique_ptr<Enemy> enemy = getRandomEnemy(enemies);
+    std::unique_ptr<Enemy> enemy = getRandomEnemy();
     cout << "\nYour enemy is " << enemy->getName() << "\n";
     while (!isLeaving) {
         choice = ' ';
@@ -177,15 +176,15 @@ void GameManager::battleSystem(Player& player, vector<Enemy>& enemies) {
             else {
                 cout << "\nYou failed to flee! Now " << enemy->getName() << " will attack you first!\n";
                 fleeing = false;
-                enemy->Attack(player);
-                player.Attack(*enemy);
+                enemy->Attack(*myPlayer);
+                myPlayer->Attack(*enemy);
             }
         }
         else {
-            player.Attack(*enemy);
-            enemy->Attack(player);
+            myPlayer->Attack(*enemy);
+            enemy->Attack(*myPlayer);
         }
-        if (player.getHp() <= 0) {
+        if (myPlayer->getHp() <= 0) {
             isLeaving = true;
             break;
         }
@@ -213,9 +212,9 @@ void GameManager::battleSystem(Player& player, vector<Enemy>& enemies) {
             }
         }
     }
-    if (player.getHp() <= 0) {
+    if (myPlayer->getHp() <= 0) {
         cout << "YOU DIED\n";
-        cout << player.getName() << " was defeated.\n\n";
+        cout << myPlayer->getName() << " was defeated.\n\n";
 
     }
     if (enemy != nullptr) {
@@ -223,14 +222,14 @@ void GameManager::battleSystem(Player& player, vector<Enemy>& enemies) {
             cout << "YOU WON\n";
             cout << enemy->getName() << " was defeated.\n\n";
             cout << "You get " << enemy->getXpReward() << "xp\nYou get " << enemy->getMoney() << "$\n";
-            player.addMoney((enemy->getMoney()) * (player.getLevel() * 7 + 100) / 100);
-            player.AddXp((enemy->getXpReward()) * (player.getLevel() * 5 + 100) / 100);
-            player.addKills(1);
+            myPlayer->addMoney((enemy->getMoney()) * (myPlayer->getLevel() * 7 + 100) / 100);
+            myPlayer->AddXp((enemy->getXpReward()) * (myPlayer->getLevel() * 5 + 100) / 100);
+            myPlayer->addKills(1);
         }
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
-std::unique_ptr<Enemy> GameManager::getRandomEnemy(vector<Enemy>& enemies) {
+std::unique_ptr<Enemy> GameManager::getRandomEnemy() {
 
     short randDifficulty = getRandomNumber(1, 100);
 
@@ -327,7 +326,7 @@ void GameManager::playerCreation() {// creating player's character
     }
     std::cout << "-------------------------------------------\n";
 }
-void GameManager::printEnemyCatalogue(const vector<Enemy>& enemies) { // Printing every enemy in game just so that user knows what to deal with
+void GameManager::printEnemyCatalogue()const { // Printing every enemy in game just so that user knows what to deal with
     cout << "\n\n\n==================================================\n";
     cout << "                   ENEMIES MANUAL";
     cout << "\n==================================================\n";
@@ -346,7 +345,7 @@ void GameManager::printEnemyCatalogue(const vector<Enemy>& enemies) { // Printin
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
-void GameManager::printWeaponCatalogue(const vector<Weapon>& weapons) { // Printing Weapon catalogue which may also be used as a shop
+void GameManager::printWeaponCatalogue()const { // Printing Weapon catalogue which may also be used as a shop
     {
         cout << "\n\n\n==================================================\n";
         cout << "                    WEAPON STATS";
@@ -370,7 +369,7 @@ void GameManager::printWeaponCatalogue(const vector<Weapon>& weapons) { // Print
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
-void GameManager::printPlayerStats(const Player& player) { // Printing character or player stats 
+void GameManager::printPlayerStats(const Player& player)const { // Printing character or player stats 
     cout << "\n\n\n==================================================\n";
     cout << "                CHARACTER STATS";
     cout << "\n==================================================\n";
@@ -389,7 +388,7 @@ void GameManager::printPlayerStats(const Player& player) { // Printing character
     cout << "\n-------------------------------------------\n\n";
 
 }
-void GameManager::inventorySystem(Player& player) {
+void GameManager::inventorySystem() {
     cout << "\n\n\n==================================================\n";
     cout << "                CHARACTER INVENTORY";
     cout << "\n==================================================\n";
@@ -400,10 +399,10 @@ void GameManager::inventorySystem(Player& player) {
         cout << "\nYou're in inventory menu.\nType '-1' to leave this menu\nType number of weapon or its name to choose it";
         {
             int i = 1;
-            for (auto weapon : player.getInventory()) {
+            for (auto weapon : myPlayer->getInventory()) {
                 cout << "\n-------------------------------------------\n";
                 cout << i++ << ". " << weapon->getName();
-                if (*weapon == *player.getCurrentWeapon()) {
+                if (*weapon == *myPlayer->getCurrentWeapon()) {
                     cout << ". This weapon is equipped now!";
                 }
                 cout << "\n-------------------------------------------\n";
@@ -420,16 +419,16 @@ void GameManager::inventorySystem(Player& player) {
             }
             else {
 
-                for (Weapon*& weapon : player.getInventory()) {
+                for (Weapon*& weapon : myPlayer->getInventory()) {
                     if (toLowerString(choice) == toLowerString(weapon->getName()) or choice == std::to_string(i)) {
                         isFound = true;
-                        if (*weapon == *player.getCurrentWeapon()) {
+                        if (*weapon == *myPlayer->getCurrentWeapon()) {
                             cout << "\n-------------------------------------------\n";
                             cout << "Already equipped.";
                             cout << "\n-------------------------------------------\n";
                         }
                         else {
-                            player.setCurrentWeapon(weapon);
+                            myPlayer->setCurrentWeapon(weapon);
                             cout << "\n-------------------------------------------\n";
                             cout << "Succesffuly equipped " << weapon->getName();
                             cout << "\n-------------------------------------------\n";
@@ -449,7 +448,7 @@ void GameManager::inventorySystem(Player& player) {
 
     cout << "-------------------------------------------\n";
 }
-void GameManager::openShop(Player& player, vector<Weapon>& weapons) {
+void GameManager::openShop() {
     cout << "\n\n\n==================================================\n";
     cout << "                     WEAPON SHOP";
     cout << "\n==================================================\n";
@@ -471,7 +470,7 @@ void GameManager::openShop(Player& player, vector<Weapon>& weapons) {
             for (const auto& weapon : weapons) {
                 cout << i++ << ". " << weapon.getName();
                 if (!weapon.getIsBought()) {
-                    cout << "; Price: " << weapon.getPrice() << "; Level required: " << weapon.getLvlReq() << "; Can buy - " << ((player.getLevel() >= weapon.getLvlReq() && player.getMoney() >= weapon.getPrice()) ? "Yes" : "No");
+                    cout << "; Price: " << weapon.getPrice() << "; Level required: " << weapon.getLvlReq() << "; Can buy - " << ((myPlayer->getLevel() >= weapon.getLvlReq() && myPlayer->getMoney() >= weapon.getPrice()) ? "Yes" : "No");
                 }
                 else {
                     cout << "; You own this weapon!";
@@ -497,21 +496,21 @@ void GameManager::openShop(Player& player, vector<Weapon>& weapons) {
                         cout << "You already own " << weapon.getName() << "!\nDo you want to equip it? 'Y' for yes, 'N' for no:\n";
                         std::getline(cin >> std::ws, choice);
                         if (toLowerString(choice) == "y") {
-                            player.setCurrentWeapon(&weapon);
+                            myPlayer->setCurrentWeapon(&weapon);
                             cout << "Successfully equipped " << weapon.getName() << "!\n";
                         }
                         break;
                     }
-                    if (player.getMoney() >= weapon.getPrice()) {
-                        if (player.getLevel() >= weapon.getLvlReq()) {
+                    if (myPlayer->getMoney() >= weapon.getPrice()) {
+                        if (myPlayer->getLevel() >= weapon.getLvlReq()) {
                             cout << "You have enough money to buy " << weapon.getName() << ". Type 'Y' if you want to buy it; Type 'N' if you don't want to buy it\n";
                             std::getline(cin >> std::ws, choice);
                             if (toLowerString(choice) == "y") {
                                 weapon.setIsBought(true);
-                                player.spendMoney(weapon.getPrice());
-                                player.setCurrentWeapon(&weapon);
+                                myPlayer->spendMoney(weapon.getPrice());
+                                myPlayer->setCurrentWeapon(&weapon);
                                 cout << "Successfully bought " << weapon.getName() << " for " << weapon.getPrice() << "$\nThis weapon is now equipped. (if you want to change equipped weapon, go to inventory from menu)\n";
-                                player.addWeaponToInventory(&weapon);
+                                myPlayer->addWeaponToInventory(&weapon);
                                 break;
                             }
                             else if (toLowerString(choice) == "n") {
@@ -534,7 +533,7 @@ void GameManager::openShop(Player& player, vector<Weapon>& weapons) {
             if (!found) cout << "ERROR! Weapon is not found!\n";
         }
         break;
-        case 2: printWeaponCatalogue(weapons);
+        case 2: printWeaponCatalogue();
             break;
         case -1:
             isLeaving = true;
@@ -547,7 +546,7 @@ void GameManager::openShop(Player& player, vector<Weapon>& weapons) {
 
     cout << "\n-------------------------------------------\n\n\n";
 }
-void GameManager::armorShop(Player& player) {
+void GameManager::armorShop() {
     cout << "\n\n==================================================\n";
     cout << "                     ARMOR SHOP";
     cout << "\n==================================================\n\n";
@@ -555,20 +554,20 @@ void GameManager::armorShop(Player& player) {
     bool isLeaving = false;
     char choice;
     while (!isLeaving) {
-        cout << "Your current Armor class is " << player.getArmor() << "\n";
-        if (player.getArmor() > 0) {
-            cout << "Your armor reflects " << armorClassFormula(player.getArmor()) * 100 << "% damage\n";
+        cout << "Your current Armor class is " << myPlayer->getArmor() << "\n";
+        if (myPlayer->getArmor() > 0) {
+            cout << "Your armor reflects " << armorClassFormula(myPlayer->getArmor()) * 100 << "% damage\n";
         }
-        if (player.getArmor() < 4) {
-            cout << "To buy " << player.getArmor() + 1 << " armor class you have to spend " << player.getArmorPrice(player.getArmor() + 1) << "$ and it will reflect " << armorClassFormula(player.getArmor() + 1) * 100 << "% damage\n";
-            if (player.getArmorPrice(player.getArmor() + 1) > player.getMoney()) {
-                cout << "You have not enough money to buy " << player.getArmor() + 1 << " armor class!\n";
+        if (myPlayer->getArmor() < 4) {
+            cout << "To buy " << myPlayer->getArmor() + 1 << " armor class you have to spend " << myPlayer->getArmorPrice(myPlayer->getArmor() + 1) << "$ and it will reflect " << armorClassFormula(myPlayer->getArmor() + 1) * 100 << "% damage\n";
+            if (myPlayer->getArmorPrice(myPlayer->getArmor() + 1) > myPlayer->getMoney()) {
+                cout << "You have not enough money to buy " << myPlayer->getArmor() + 1 << " armor class!\n";
                 isLeaving = true;
                 continue;
             }
         }
         else {
-            cout << "You own max level of armor! It deflects " << armorClassFormula(player.getArmor()) * 100 << "% damage\n";
+            cout << "You own max level of armor! It deflects " << armorClassFormula(myPlayer->getArmor()) * 100 << "% damage\n";
             isLeaving = true;
             continue;
         }
@@ -578,9 +577,9 @@ void GameManager::armorShop(Player& player) {
         clearInput();
         switch (toupper(choice)) {
         case 'Y':
-            player.setArmor(player.getArmor() + 1);
-            player.spendMoney(player.getArmorPrice(player.getArmor()));
-            cout << "You successfully bought " << player.getArmor() << " class for " << player.getArmorPrice(player.getArmor()) << "$\n";
+            myPlayer->setArmor(myPlayer->getArmor() + 1);
+            myPlayer->spendMoney(myPlayer->getArmorPrice(myPlayer->getArmor()));
+            cout << "You successfully bought " << myPlayer->getArmor() << " class for " << myPlayer->getArmorPrice(myPlayer->getArmor()) << "$\n";
             break;
         case 'N':
             isLeaving = true;

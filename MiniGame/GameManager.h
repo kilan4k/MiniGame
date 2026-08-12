@@ -52,15 +52,15 @@ public:
     void run();
     void quit();
 
-    void battleSystem(Player& player, vector<Enemy>& enemies);
-    std::unique_ptr<Enemy> getRandomEnemy(vector<Enemy>& enemies);
+    void battleSystem();
+    std::unique_ptr<Enemy> getRandomEnemy();
     void playerCreation();
-    void printEnemyCatalogue(const vector<Enemy>& enemies);
-    void printWeaponCatalogue(const vector<Weapon>& weapons);
-    void printPlayerStats(const Player& player);
-    void inventorySystem(Player& player);
-    void openShop(Player& player, vector<Weapon>& weapons);
-    void armorShop(Player& player);
+    void printEnemyCatalogue()const;
+    void printWeaponCatalogue()const;
+    void printPlayerStats(const Player& player)const;
+    void inventorySystem();
+    void openShop();
+    void armorShop();
 
 };
 
