@@ -18,7 +18,7 @@ Enemy::Enemy() {
 	money = 1;
 }
 Enemy::Enemy(string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor, int money, int xpReward, DifficultyLevel difficulty)
-	: name(name), hp(maxHp),maxHp(maxHp), minDamage(minDamage),maxDamage(maxDamage),critChance(critChance),armor(armor),money(money), xpReward(xpReward), difficulty(difficulty);
+	: name(name), hp(maxHp),maxHp(maxHp), minDamage(minDamage),maxDamage(maxDamage),critChance(critChance),armor(armor),money(money), xpReward(xpReward), difficulty(difficulty)
 {}
 
 std::pair<int, int> Enemy::CalculateDamage() const{
@@ -69,3 +69,6 @@ short Enemy::getArmor()const { return armor; }
 int Enemy::getMoney()const { return money; }
 int Enemy::getXpReward()const {
 	return xpReward;}
+DifficultyLevel Enemy::getDifficulty()const {
+	return difficulty;
+}

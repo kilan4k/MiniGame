@@ -229,9 +229,24 @@ std::unique_ptr<Enemy> GameManager::getRandomEnemy() {
     const short RAND_EASY_PERC = currentConfig.easyEnemyChance;
     const short RAND_MED_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance;
     const short RAND_HARD_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance+currentConfig.hardEnemyChance;
-    constexpr short MAX_EASY_ENEMY_INDEX = 5;
-    constexpr short MAX_MEDIUM_ENEMY_INDEX = 8;
-    constexpr short MAX_HARD_ENEMY_INDEX = 11;
+    int easyNum = 0, medNum = 0, hardNum = 0;
+    for (const auto& enemy : enemies) {
+        if (enemy.getDifficulty() == DifficultyLevel::EASY) {
+            easyNum++;
+            medNum++;
+            hardNum++;
+        }
+        else if (enemy.getDifficulty() == DifficultyLevel::NORMAL) {
+            medNum++;
+            hardNum++;
+        }
+        else if (enemy.getDifficulty() == DifficultyLevel::HARD) {
+            hardNum++;
+        }
+    }
+    const short MAX_EASY_ENEMY_INDEX=easyNum-1;
+    const short MAX_MEDIUM_ENEMY_INDEX = medNum-1;
+    const short MAX_HARD_ENEMY_INDEX = hardNum-1;
     if (randDifficulty <= RAND_EASY_PERC) {
         //cout << "EASY ";
         //cout << randDifficulty << "\n";

@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <utility>
-#include "GameManager.h"
+enum class DifficultyLevel;
+
+
 class Enemy
 {
 private:
@@ -32,6 +34,6 @@ public:
 	short getArmor()const;
 	int getMoney()const;
 	int getXpReward()const;
-
+	DifficultyLevel getDifficulty()const;
 };
 
