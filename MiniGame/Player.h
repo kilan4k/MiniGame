@@ -7,7 +7,6 @@
 class Player
 {
 private:
-	std::string name;
 	class Weapon* currentWeapon;
 	std::vector<Weapon*> inventory;
 	short armor;
@@ -17,6 +16,7 @@ private:
 	int playerXp = 0;
 	int money = 0;
 	int kills = 0;
+	std::string name;
 	static constexpr float BASE_HEAL_COST = 0.25f;
 	static constexpr float HEAL_COST_PER_LVL = 0.02f;
 	
@@ -29,11 +29,12 @@ private:
 	}
 	int xpToNextLvl = getLevelXpFormula();
 public:
+	Player() = default;
 	bool operator==(const Player& other)const {
 		return name == other.name;
 	}
 
-	Player(int level, int money, Weapon* currentWeapon, short armor); 
+	Player(int level, int money, Weapon* currentWeapon, short armor, std::string name); 
 	std::pair<int, int>CalculateDamage()const;
 	int TakeDamage(int damage);
 	void Attack(class Enemy& target);

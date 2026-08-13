@@ -12,6 +12,7 @@ private:
 	int lvlReq;
 	bool isBought;
 public:
+	Weapon() = default;
 	bool operator==(const Weapon& other)const {
 		return name == other.name;
 	}

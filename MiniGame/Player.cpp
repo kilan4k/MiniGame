@@ -9,8 +9,8 @@
 
 using std::cout, std::cin, std::string, std::endl;
 
-Player::Player(int level, int money, Weapon* currentWeapon, short armor)
-	:level(level),money(money),maxHp(getMaxHpFormula()), hp(getMaxHpFormula()), currentWeapon(currentWeapon), armor(armor)
+Player::Player(int level, int money, Weapon* currentWeapon, short armor, std::string name)
+	:level(level), money(money), maxHp(getMaxHpFormula()), hp(getMaxHpFormula()), currentWeapon(currentWeapon), armor(armor), name(name)
 {
 	
 }

@@ -11,8 +11,9 @@
 #include <limits>
 #include <utility>
 #include <memory>
+#include <array>
 
-using std::cout, std::cin, std::string, std::endl, std::vector;
+using std::cout, std::cin, std::string, std::endl, std::vector, std::array;
 
 GameManager::GameManager() {}
 GameManager::~GameManager() {}
@@ -52,23 +53,15 @@ void GameManager::declareData() {
 
     weapons = { fists, knife, machete, axe, hammer, sword, bow, katana, shotgun, firestf, lightsaber, deadlystf };
 
-    //Player types (and declaring names beneath cus i'm a lazy man to edit a constructor but it ain't a big deal ig)
-    Player empty = Player(1, 0, &weapons[WeaponIndex::FISTS], 0);
-    empty.setName("New character");
-    Player bandit = Player(1, 50, &weapons[WeaponIndex::KNIFE], 0);
-    bandit.setName("Bandit");
-    Player punchman = Player(1, 0, &weapons[WeaponIndex::FISTS], 1);
-    punchman.setName("Punchman");
-    Player archer = Player(1, 0, &weapons[WeaponIndex::BOW], 0);
-    archer.setName("Archer");
-    Player lvlPunchman = Player(10, 50, &weapons[WeaponIndex::FISTS], 0);
-    lvlPunchman.setName("Leveled up Punchman");
-    Player lumberjack = Player(1, 0, &weapons[WeaponIndex::AXE], 0);
-    lumberjack.setName("Lumberjack");
-    Player robber = Player(1, 100, &weapons[WeaponIndex::FISTS], 0);
-    robber.setName("Robber");
+    //Player types
+    Player empty = Player(1, 0, &weapons[WeaponIndex::FISTS], 0, "New character");
+    Player bandit = Player(1, 50, &weapons[WeaponIndex::KNIFE], 0, "Bandit");
+    Player punchman = Player(1, 0, &weapons[WeaponIndex::FISTS], 1, "Punchman");
+    Player archer = Player(1, 0, &weapons[WeaponIndex::BOW], 0, "Archer");
+    Player lumberjack = Player(1, 0, &weapons[WeaponIndex::AXE], 0, "Lumberjack");
+    Player robber = Player(1, 100, &weapons[WeaponIndex::FISTS], 0, "Robber");
 
-    players = { empty, bandit, punchman, archer, lvlPunchman, lumberjack, robber };
+    players = { empty, bandit, punchman, archer, lumberjack, robber };
 }
 void GameManager::run() {
     declareData();
@@ -299,8 +292,7 @@ void GameManager::playerCreation() {// creating player's character
                         std::getline(cin >> std::ws, nickname);
 
                         cout << "Welcome to this dangerous world, " << nickname << " and I wish you good luck on this journey!\n\n";
-                        myPlayer = std::make_unique<Player>(character.getLevel(), character.getMoney(), character.getCurrentWeapon(), character.getArmor());
-                        myPlayer->setName(nickname);
+                        myPlayer = std::make_unique<Player>(character.getLevel(), character.getMoney(), character.getCurrentWeapon(), character.getArmor(), nickname);
                         myPlayer->getCurrentWeapon()->setIsBought(true);
                         myPlayer->addWeaponToInventory(character.getCurrentWeapon());
                         std::cout << "-------------------------------------------\n";

@@ -6,13 +6,14 @@
 #include <string>
 #include <vector>
 #include <memory>
-using std::vector,std::string;
+#include <array>
+using std::vector,std::string,std::array;
 class GameManager
 {
 private:
-    vector<Enemy> enemies;
-    vector<Weapon> weapons;
-    vector<Player> players;
+    array<Enemy, 12> enemies;
+    array<Weapon, 12> weapons;
+    array<Player, 6> players;
 
 	std::unique_ptr<Player> myPlayer = nullptr;
 

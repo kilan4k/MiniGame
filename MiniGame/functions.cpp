@@ -1,8 +1,4 @@
 #include "functions.h"
-#include "Enemy.h"
-#include "Weapon.h"
-#include "Player.h"
-#include <vector>
 #include <cstdlib>
 #include <string>
 #include <iostream>

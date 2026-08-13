@@ -1,8 +1,5 @@
 #pragma once
-#include "Enemy.h"
-#include "Weapon.h"
-#include "Player.h"
-
+#include <string>
 void clearInput();
 std::string toLowerString(std::string str);
 int getRandomNumber(int num1, int num2);
