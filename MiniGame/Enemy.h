@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <utility>
+#include "GameManager.h"
 class Enemy
 {
 private:
@@ -13,10 +14,10 @@ private:
 	short armor;
 	int money;
 	int xpReward;
-
+	DifficultyLevel difficulty;
 public:
 	Enemy();
-	Enemy(std::string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor,int money,int xpReward);
+	Enemy(std::string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor,int money,int xpReward, DifficultyLevel difficulty);
 	std::pair<int, int> CalculateDamage()const;
 	void Attack(class Player& target);
 	int TakeDamage(int damage);

@@ -8,13 +8,29 @@
 #include <memory>
 #include <array>
 using std::vector,std::string,std::array;
+
+enum class DifficultyLevel {
+    EASY,
+    NORMAL,
+    HARD
+};
+
+struct DifficultyConfig {
+    float healCostMultiplier = 1.0f;
+    float enemyHpMultiplier = 1.0f;
+    short easyEnemyChance = 75;
+    short medEnemyChance = 18;
+    short hardEnemyChance = 7;
+};
+
 class GameManager
 {
 private:
     array<Enemy, 12> enemies;
     array<Weapon, 12> weapons;
     array<Player, 6> players;
-
+    DifficultyLevel currentDifficulty = DifficultyLevel::NORMAL;
+    DifficultyConfig currentConfig;
 	std::unique_ptr<Player> myPlayer = nullptr;
 
     void declareData();
@@ -47,6 +63,7 @@ public:
         DRAGON = 10,
         DEMON = 11
     };
+
 
     GameManager();
     ~GameManager();
