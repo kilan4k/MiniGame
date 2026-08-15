@@ -39,7 +39,7 @@ public:
 	int TakeDamage(int damage);
 	void Attack(class Enemy& target);
 	void AddXp(int amount);
-	void HealPlayer();
+	void HealPlayer(float healCostMultiplier);
 	int getMinDamage()const;
 	int getMaxDamage()const;
 	int getCritChance()const;

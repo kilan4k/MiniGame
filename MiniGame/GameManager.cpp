@@ -28,18 +28,18 @@ void GameManager::declareData() {
    //Declaring different objects
    //Enemy types
 
-    Enemy rat = Enemy("Rat", 25, 5, 10, 10, 0, 10, 10, DifficultyLevel::EASY); // 0
-    Enemy spider = Enemy("Spider", 50, 15, 25, 50, 0, 20, 20, DifficultyLevel::EASY);// 1
-    Enemy rogue = Enemy("Rogue", 75, 25, 35, 15, 0, 20, 20, DifficultyLevel::EASY);// 2
-    Enemy skeleton = Enemy("Skeleton", 75, 20, 30, 60, 0, 30, 30, DifficultyLevel::EASY);// 3
-    Enemy zombie = Enemy("Zombie", 100, 20, 30, 15, 1, 30, 30, DifficultyLevel::EASY);// 4
-    Enemy goblin = Enemy("Goblin", 75, 30, 40, 10, 0, 50, 30, DifficultyLevel::EASY);// 5
-    Enemy barbarian = Enemy("Barbarian", 100, 20, 40, 5, 1, 60, 50, DifficultyLevel::NORMAL);// 6
-    Enemy bear = Enemy("Bear", 75, 40, 70, 25, 2, 105, 75, DifficultyLevel::NORMAL);// 7
-    Enemy juggernaut = Enemy("Juggernaut", 250, 15, 20, 10, 3, 100, 100, DifficultyLevel::NORMAL);// 8
-    Enemy knight = Enemy("Knight", 150, 40, 65, 25, 2, 150, 100, DifficultyLevel::HARD);// 9
-    Enemy dragon = Enemy("Dragon", 300, 30, 60, 35, 1, 200, 120, DifficultyLevel::HARD);// 10
-    Enemy demon = Enemy("Demon", 400, 60, 100, 40, 1, 240, 200, DifficultyLevel::HARD);// 11
+    Enemy rat = Enemy("Rat", 25*currentConfig.enemyHpMultiplier, 5, 10, 10, 0, 10, 10, DifficultyLevel::EASY); // 0
+    Enemy spider = Enemy("Spider", 50 * currentConfig.enemyHpMultiplier, 15, 25, 50, 0, 20, 20, DifficultyLevel::EASY);// 1
+    Enemy rogue = Enemy("Rogue", 75 * currentConfig.enemyHpMultiplier, 25, 35, 15, 0, 20, 20, DifficultyLevel::EASY);// 2
+    Enemy skeleton = Enemy("Skeleton", 75 * currentConfig.enemyHpMultiplier, 20, 30, 60, 0, 30, 30, DifficultyLevel::EASY);// 3
+    Enemy zombie = Enemy("Zombie", 100 * currentConfig.enemyHpMultiplier, 20, 30, 15, 1, 30, 30, DifficultyLevel::EASY);// 4
+    Enemy goblin = Enemy("Goblin", 75 * currentConfig.enemyHpMultiplier, 30, 40, 10, 0, 50, 30, DifficultyLevel::EASY);// 5
+    Enemy barbarian = Enemy("Barbarian", 100 * currentConfig.enemyHpMultiplier, 20, 40, 5, 1, 60, 50, DifficultyLevel::NORMAL);// 6
+    Enemy bear = Enemy("Bear", 75 * currentConfig.enemyHpMultiplier, 40, 70, 25, 2, 105, 75, DifficultyLevel::NORMAL);// 7
+    Enemy juggernaut = Enemy("Juggernaut", 250 * currentConfig.enemyHpMultiplier, 15, 20, 10, 3, 100, 100, DifficultyLevel::NORMAL);// 8
+    Enemy knight = Enemy("Knight", 150 * currentConfig.enemyHpMultiplier, 40, 65, 25, 2, 150, 100, DifficultyLevel::HARD);// 9
+    Enemy dragon = Enemy("Dragon", 300 * currentConfig.enemyHpMultiplier, 30, 60, 35, 1, 200, 120, DifficultyLevel::HARD);// 10
+    Enemy demon = Enemy("Demon", 400 * currentConfig.enemyHpMultiplier, 60, 100, 40, 1, 240, 200, DifficultyLevel::HARD);// 11
 
     enemies = { rat, spider, rogue, skeleton, zombie, goblin, barbarian, bear, juggernaut, knight, dragon, demon };
 
@@ -68,7 +68,9 @@ void GameManager::declareData() {
     Player robber = Player(1, 100, &weapons[WeaponIndex::FISTS], 0, "Robber");
 
     players = { empty, bandit, punchman, archer, lumberjack, robber };
-
+    currentConfig.easyNum = 0;
+    currentConfig.medNum = 0;
+    currentConfig.hardNum = 0;
     for (const auto& enemy : enemies) { // finding out number of every diffuclty type for each enemy
         if (enemy.getDifficulty() == DifficultyLevel::EASY) {
             currentConfig.easyNum++;
@@ -123,7 +125,7 @@ void GameManager::run() {
             break;
         case 'S': printPlayerStats();
             break;
-        case 'H': myPlayer->HealPlayer();
+        case 'H': myPlayer->HealPlayer(currentConfig.healCostMultiplier);
             break;
         case 'I': inventorySystem();
             break;

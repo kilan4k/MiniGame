@@ -115,6 +115,5 @@ public:
     void armorShop();
     void chooseDifficulty();
 
-
 };
 

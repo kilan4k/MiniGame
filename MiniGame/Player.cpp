@@ -72,8 +72,8 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		std::cout << "\n-------------------------------------------\n";
 	}
 }
-void Player::HealPlayer() {
-	const float HEAL_PRICE_PERHP = (static_cast<float>(level) * HEAL_COST_PER_LVL + BASE_HEAL_COST);
+void Player::HealPlayer(float healCostMultiplier) {
+	const float HEAL_PRICE_PERHP = (static_cast<float>(level) * HEAL_COST_PER_LVL + BASE_HEAL_COST)*healCostMultiplier;
 	int totalCost = round(HEAL_PRICE_PERHP * (maxHp - hp));
 	char choice; // for checkin Y and N
 	int numChoice; // for choosing hp

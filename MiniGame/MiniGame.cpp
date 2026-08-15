@@ -8,7 +8,6 @@
 #include <iostream>
 using std::cout, std::cin, std::string, std::endl, std::vector;
 
-
 int main()
 { 
     GameManager game;
@@ -16,5 +15,3 @@ int main()
     game.quit();
     return 0;
 }
-
-
