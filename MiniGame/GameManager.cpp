@@ -448,7 +448,7 @@ void GameManager::printPlayerStats()const { // Printing player stats
     cout << "| Armor class: " << myPlayer->getArmor() << "\n";
     cout << "| Money: " << myPlayer->getMoney() << "\n";
     cout << "| XP: " << myPlayer->getPlayerXp() << "\n";
-    cout << "| XP left for next level: " << myPlayer->getXpToNextLvl()<<"\n";
+    cout << "| XP required for next level: " << myPlayer->getXpToNextLvl()<<"\n";
     cout << "| Difficulty: " << currentConfig.difficultyName;
     cout << "\n-------------------------------------------\n\n";
 
