@@ -4,7 +4,7 @@ A C++ text-based RPG console game built using object-oriented principles, dynami
 
 ## Features
 
-* **Character Creation**: Select from 7 starting character archetypes ("New character", "Bandit", "Punchman", "Archer", "Lumberjack", "Robber") by name or list index, and assign a custom player nickname.
+* **Character Creation**: Select from several starting character archetypes ("New character", "Bandit", "Punchman", "Archer", "Lumberjack", "Robber") by name or list index, and assign a custom player nickname.
 * **Turn-Based Combat**: Engaging turn-based combat system where players fight enemies. Includes a flee mechanic with a 75% success chance (failing allows the enemy to attack first).
 * **Weighted Enemy Spawning**: Enemies spawn dynamically based on difficulty probability tiers: Easy (70% chance), Medium (20% chance), and Hard (10% chance). Features 12 unique enemy types ranging from Rat to Demon.
 * **Dynamic Combat Calculations**: Features random damage spreads, critical hits dealing 1.5x damage, and armor reduction (`armor / 5.0`). Player base damage scales with level (`weapon damage + level * 2`).
