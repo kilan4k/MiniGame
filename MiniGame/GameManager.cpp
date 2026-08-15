@@ -226,11 +226,11 @@ std::unique_ptr<Enemy> GameManager::getRandomEnemy() {
 
     short randDifficulty = getRandomNumber(1, 100);
 
-    const short RAND_EASY_PERC = currentConfig.easyEnemyChance;
-    const short RAND_MED_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance;
-    const short RAND_HARD_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance+currentConfig.hardEnemyChance;
+    const short RAND_EASY_PERC = currentConfig.easyEnemyChance; // from 0 to 100 percents of easy chance
+    const short RAND_MED_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance; // medium number gap equals easy + med
+    const short RAND_HARD_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance+currentConfig.hardEnemyChance; // same way there's hard number gap
     int easyNum = 0, medNum = 0, hardNum = 0;
-    for (const auto& enemy : enemies) {
+    for (const auto& enemy : enemies) { // finding out number of every diffuclty type for each enemy
         if (enemy.getDifficulty() == DifficultyLevel::EASY) {
             easyNum++;
             medNum++;
@@ -339,7 +339,21 @@ void GameManager::printEnemyCatalogue()const { // Printing every enemy in game j
     cout << "\n==================================================\n";
     {
         int i = 1;
+        DifficultyLevel difficultyD;
+        string difficultyS;
         for (const auto& enemy : enemies) {
+            difficultyD = enemy.getDifficulty();
+            switch (difficultyD) {
+            case DifficultyLevel::EASY:
+                difficultyS = "Easy";
+                break;
+            case DifficultyLevel::NORMAL:
+                difficultyS = "Normal";
+                break;
+            case DifficultyLevel::HARD:
+                difficultyS = "Hard";
+                break;
+            }
             cout << "\n-------------------------------------------\n";
             cout << "| " << i++ << ". " << enemy.getName() << ":\n";
             cout << "| HP: " << enemy.getMaxHp() << "\n";
@@ -347,7 +361,8 @@ void GameManager::printEnemyCatalogue()const { // Printing every enemy in game j
             cout << "| Critical damage chance: " << enemy.getCritChance() << "%\n";
             cout << "| Armor class: " << enemy.getArmor() << "\n";
             cout << "| Money drop: " << enemy.getMoney() << "$\n";
-            cout << "| EXP drop: " << enemy.getXpReward();
+            cout << "| EXP drop: " << enemy.getXpReward()<<"\n";
+            cout << "| Difficulty: " << difficultyS;
         }
     }
     cout << "\n-------------------------------------------\n\n\n";
