@@ -229,24 +229,24 @@ std::unique_ptr<Enemy> GameManager::getRandomEnemy() {
     const short RAND_EASY_PERC = currentConfig.easyEnemyChance; // from 0 to 100 percents of easy chance
     const short RAND_MED_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance; // medium number gap equals easy + med
     const short RAND_HARD_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance+currentConfig.hardEnemyChance; // same way there's hard number gap
-    int easyNum = 0, medNum = 0, hardNum = 0;
+    
     for (const auto& enemy : enemies) { // finding out number of every diffuclty type for each enemy
         if (enemy.getDifficulty() == DifficultyLevel::EASY) {
-            easyNum++;
-            medNum++;
-            hardNum++;
+            currentConfig.easyNum++;
+            currentConfig.medNum++;
+            currentConfig.hardNum++;
         }
         else if (enemy.getDifficulty() == DifficultyLevel::NORMAL) {
-            medNum++;
-            hardNum++;
+            currentConfig.medNum++;
+            currentConfig.hardNum++;
         }
         else if (enemy.getDifficulty() == DifficultyLevel::HARD) {
-            hardNum++;
+            currentConfig.hardNum++;
         }
     }
-    const short MAX_EASY_ENEMY_INDEX=easyNum-1;
-    const short MAX_MEDIUM_ENEMY_INDEX = medNum-1;
-    const short MAX_HARD_ENEMY_INDEX = hardNum-1;
+    const short MAX_EASY_ENEMY_INDEX= currentConfig.easyNum-1;
+    const short MAX_MEDIUM_ENEMY_INDEX = currentConfig.medNum-1;
+    const short MAX_HARD_ENEMY_INDEX = currentConfig.hardNum-1;
     if (randDifficulty <= RAND_EASY_PERC) {
         //cout << "EASY ";
         //cout << randDifficulty << "\n";

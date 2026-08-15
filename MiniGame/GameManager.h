@@ -21,11 +21,15 @@ struct DifficultyConfig {
     short easyEnemyChance = 75;
     short medEnemyChance = 18;
     short hardEnemyChance = 7;
+    int easyNum = 0;
+    int medNum = 0;
+    int hardNum = 0;
 };
 
 class GameManager
 {
 private:
+
     array<Enemy, 12> enemies;
     array<Weapon, 12> weapons;
     array<Player, 6> players;
