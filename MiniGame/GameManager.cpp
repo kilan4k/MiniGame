@@ -94,8 +94,8 @@ void GameManager::declareData() {
         */
 }
 void GameManager::run() {
-    declareData();
     chooseDifficulty();
+    declareData();
     playerCreation();
     cout << "[BONUS FOR PLAYING ALPHA]\n";
     cout << "Adding 100$\n";
@@ -121,7 +121,7 @@ void GameManager::run() {
             break;
         case '2': openShop();
             break;
-        case 'S': printPlayerStats(*myPlayer);
+        case 'S': printPlayerStats();
             break;
         case 'H': myPlayer->HealPlayer();
             break;
@@ -431,22 +431,37 @@ void GameManager::printWeaponCatalogue()const { // Printing Weapon catalogue whi
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
-void GameManager::printPlayerStats(const Player& player)const { // Printing character or player stats 
+void GameManager::printPlayerStats()const { // Printing player stats 
+    cout << "\n\n\n==================================================\n";
+    cout << "                CHARACTER STATS";
+    cout << "\n==================================================\n";
+    cout << "\n-------------------------------------------\n";
+    cout << "| " << myPlayer->getName() << ":\n";
+    cout << "| Current HP: " << myPlayer->getHp() << "\n";
+    cout << "| Max HP: " << myPlayer->getMaxHp() << "\n";
+    cout << "| Level: " << myPlayer->getLevel() << "\n";
+    cout << "| Equipped Weapon: " << myPlayer->getCurrentWeapon()->getName() << "\n";
+    cout << "| Damage: " << myPlayer->getMinDamage() << "-" << myPlayer->getMaxDamage() << "\n";
+    cout << "| Kills: " << myPlayer->getKills() << "\n";
+    cout << "| Armor class: " << myPlayer->getArmor() << "\n";
+    cout << "| Money: " << myPlayer->getMoney() << "\n";
+    cout << "| XP: " << myPlayer->getPlayerXp() << "\n";
+    cout << "| XP left for next level: " << myPlayer->getXpToNextLvl();
+    cout << "\n-------------------------------------------\n\n";
+
+}
+void GameManager::printPlayerStats(const Player& player)const { // Printing character
     cout << "\n\n\n==================================================\n";
     cout << "                CHARACTER STATS";
     cout << "\n==================================================\n";
     cout << "\n-------------------------------------------\n";
     cout << "| " << player.getName() << ":\n";
-    cout << "| Current HP: " << player.getHp() << "\n";
     cout << "| Max HP: " << player.getMaxHp() << "\n";
     cout << "| Level: " << player.getLevel() << "\n";
     cout << "| Equipped Weapon: " << player.getCurrentWeapon()->getName() << "\n";
     cout << "| Damage: " << player.getMinDamage() << "-" << player.getMaxDamage() << "\n";
-    cout << "| Kills: " << player.getKills() << "\n";
     cout << "| Armor class: " << player.getArmor() << "\n";
     cout << "| Money: " << player.getMoney() << "\n";
-    cout << "| XP: " << player.getPlayerXp() << "\n";
-    cout << "| XP left for next level: " << player.getXpToNextLvl();
     cout << "\n-------------------------------------------\n\n";
 
 }

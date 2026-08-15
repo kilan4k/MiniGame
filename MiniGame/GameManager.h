@@ -108,6 +108,7 @@ public:
     void playerCreation();
     void printEnemyCatalogue()const;
     void printWeaponCatalogue()const;
+    void printPlayerStats()const;
     void printPlayerStats(const Player& player)const;
     void inventorySystem();
     void openShop();
