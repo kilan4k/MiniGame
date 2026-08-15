@@ -68,7 +68,7 @@ void Player::AddXp(int amount) { // Adding XP to a player, if levels up then red
 		cout << "HP: " << hp;
 		cout << "\nMax HP: " << maxHp;
 		cout << "\nCurrent XP: " << playerXp;
-		cout << "\nXP to next " << level + 1 << " level: " << xpToNextLvl;
+		cout << "\nXP required for next " << level + 1 << " level: " << xpToNextLvl;
 		std::cout << "\n-------------------------------------------\n";
 	}
 }
