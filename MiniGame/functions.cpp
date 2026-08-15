@@ -7,7 +7,7 @@
 
 std::string toUpperString(std::string str) {
     for (char& c : str) {
-        c = std::toupper(static_cast<unsigned char>(c)); // for loop to turn string into a lowercase string obv
+        c = std::toupper(static_cast<unsigned char>(c)); // for loop to turn string into a uppercase string obv
     }
     return str;
 }

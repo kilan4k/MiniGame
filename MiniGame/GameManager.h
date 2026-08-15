@@ -24,7 +24,33 @@ struct DifficultyConfig {
     int easyNum = 0;
     int medNum = 0;
     int hardNum = 0;
+    std::string difficultyName = "";
 };
+inline constexpr DifficultyConfig EASY_CONFIG = {
+    .healCostMultiplier = 0.8f,
+    .enemyHpMultiplier = 0.8f,
+    .easyEnemyChance = 87,
+    .medEnemyChance = 12,
+    .hardEnemyChance = 1,
+    .difficultyName = "Easy"
+};
+inline constexpr DifficultyConfig NORMAL_CONFIG = {
+    .healCostMultiplier = 1.0f,
+    .enemyHpMultiplier = 1.0f,
+    .easyEnemyChance = 75,
+    .medEnemyChance = 18,
+    .hardEnemyChance = 7,
+    .difficultyName = "Normal"
+};
+inline constexpr DifficultyConfig HARD_CONFIG = {
+    .healCostMultiplier = 1.2f,
+    .enemyHpMultiplier = 1.2f,
+    .easyEnemyChance = 50,
+    .medEnemyChance = 35,
+    .hardEnemyChance = 15,
+    .difficultyName = "Hard"
+};
+
 
 class GameManager
 {
@@ -33,9 +59,10 @@ private:
     array<Enemy, 12> enemies;
     array<Weapon, 12> weapons;
     array<Player, 6> players;
+	std::unique_ptr<Player> myPlayer = nullptr;
+
     DifficultyLevel currentDifficulty = DifficultyLevel::NORMAL;
     DifficultyConfig currentConfig;
-	std::unique_ptr<Player> myPlayer = nullptr;
 
     void declareData();
 public:
@@ -74,6 +101,8 @@ public:
     void run();
     void quit();
 
+    DifficultyLevel getDifficulty()const;
+    void setDifficulty(DifficultyLevel difficulty);
     void battleSystem();
     std::unique_ptr<Enemy> getRandomEnemy()const;
     void playerCreation();

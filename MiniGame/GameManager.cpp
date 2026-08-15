@@ -18,6 +18,12 @@ using std::cout, std::cin, std::string, std::endl, std::vector, std::array;
 GameManager::GameManager() {}
 GameManager::~GameManager() {}
 
+DifficultyLevel GameManager::getDifficulty()const {
+    return currentDifficulty;
+}
+void GameManager::setDifficulty(DifficultyLevel difficulty) {
+    currentDifficulty = difficulty;
+}
 void GameManager::declareData() {
    //Declaring different objects
    //Enemy types
@@ -89,6 +95,7 @@ void GameManager::declareData() {
 }
 void GameManager::run() {
     declareData();
+    chooseDifficulty();
     playerCreation();
     cout << "[BONUS FOR PLAYING ALPHA]\n";
     cout << "Adding 100$\n";
@@ -647,15 +654,41 @@ void GameManager::armorShop() {
     }
     cout << "-------------------------------------------\n\n\n";
 }
-void chooseDifficulty() {
-    string choice;
+void GameManager::chooseDifficulty() {
+    char choice;
+    bool isChosen=false;
     cout << "\n==================================================\n";
     cout <<   "            CHOOSE A GAME DIFFICULTY";
-    cout << "\n==================================================\n\n";
-    cout << "Type '1' or 'EASY' to choose easy mode\n";
-    cout << "Type '2' or 'NORMAL' to choose normal mode\n";
-    cout << "Type '3' or 'HARD' to choose hard mode\n";
-    cin >> choice;
-    clearInput();
-    
+    cout << "\n==================================================\n";
+    while (!isChosen) {
+        cout << "\nType '1' or 'E' to choose easy mode\n";
+        cout << "Type '2' or 'N' to choose normal mode\n";
+        cout << "Type '3' or 'H' to choose hard mode\n";
+        cin >> choice;
+        clearInput();
+        switch (toupper(choice)) {
+        case '1':
+        case 'E':
+            setDifficulty(DifficultyLevel::EASY);
+            currentConfig = EASY_CONFIG;
+            isChosen = true;
+            break;
+        case '2':
+        case 'N':
+            setDifficulty(DifficultyLevel::NORMAL);
+            currentConfig = NORMAL_CONFIG;
+            isChosen = true;
+            break;
+        case '3':
+        case 'H':
+            setDifficulty(DifficultyLevel::HARD);
+            currentConfig = HARD_CONFIG;
+            isChosen = true;
+            break;
+        default:
+            cout << "Error! Try again!";
+            break;
+        }
+    }
+    cout << "You have succesfully chosen " << currentConfig.difficultyName << " difficulty!\n";
 }
