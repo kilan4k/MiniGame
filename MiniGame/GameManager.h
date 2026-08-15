@@ -75,7 +75,7 @@ public:
     void quit();
 
     void battleSystem();
-    std::unique_ptr<Enemy> getRandomEnemy();
+    std::unique_ptr<Enemy> getRandomEnemy()const;
     void playerCreation();
     void printEnemyCatalogue()const;
     void printWeaponCatalogue()const;
@@ -83,6 +83,8 @@ public:
     void inventorySystem();
     void openShop();
     void armorShop();
+    void chooseDifficulty();
+
 
 };
 

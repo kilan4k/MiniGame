@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
-void clearInput();
+std::string toUpperString(std::string str);
 std::string toLowerString(std::string str);
+void clearInput();
 int getRandomNumber(int num1, int num2);

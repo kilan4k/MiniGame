@@ -246,7 +246,7 @@ void GameManager::battleSystem() {
     }
     cout << "\n-------------------------------------------\n\n\n";
 }
-std::unique_ptr<Enemy> GameManager::getRandomEnemy() {
+std::unique_ptr<Enemy> GameManager::getRandomEnemy()const {
 
     short randDifficulty = getRandomNumber(1, 100);
 
@@ -646,4 +646,16 @@ void GameManager::armorShop() {
         }
     }
     cout << "-------------------------------------------\n\n\n";
+}
+void chooseDifficulty() {
+    string choice;
+    cout << "\n==================================================\n";
+    cout <<   "            CHOOSE A GAME DIFFICULTY";
+    cout << "\n==================================================\n\n";
+    cout << "Type '1' or 'EASY' to choose easy mode\n";
+    cout << "Type '2' or 'NORMAL' to choose normal mode\n";
+    cout << "Type '3' or 'HARD' to choose hard mode\n";
+    cin >> choice;
+    clearInput();
+    
 }

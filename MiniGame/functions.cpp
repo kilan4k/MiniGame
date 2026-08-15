@@ -5,6 +5,12 @@
 #include <ctime>
 #include <random>
 
+std::string toUpperString(std::string str) {
+    for (char& c : str) {
+        c = std::toupper(static_cast<unsigned char>(c)); // for loop to turn string into a lowercase string obv
+    }
+    return str;
+}
 std::string toLowerString(std::string str) {
     for (char& c : str) {
         c = std::tolower(static_cast<unsigned char>(c)); // for loop to turn string into a lowercase string obv
