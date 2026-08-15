@@ -62,6 +62,30 @@ void GameManager::declareData() {
     Player robber = Player(1, 100, &weapons[WeaponIndex::FISTS], 0, "Robber");
 
     players = { empty, bandit, punchman, archer, lumberjack, robber };
+
+    for (const auto& enemy : enemies) { // finding out number of every diffuclty type for each enemy
+        if (enemy.getDifficulty() == DifficultyLevel::EASY) {
+            currentConfig.easyNum++;
+            currentConfig.medNum++;
+            currentConfig.hardNum++;
+            //cout << "EASY\n" << enemy.getName() << "\n";
+
+        }
+        else if (enemy.getDifficulty() == DifficultyLevel::NORMAL) {
+            currentConfig.medNum++;
+            currentConfig.hardNum++;
+            //cout << "NORMAL\n";
+        }
+        else if (enemy.getDifficulty() == DifficultyLevel::HARD) {
+            currentConfig.hardNum++;
+            //cout << "HARD\n";
+        }
+    }
+    /*
+        cout << currentConfig.easyNum << "\n";
+        cout << currentConfig.medNum << "\n";
+        cout << currentConfig.hardNum << "\n";
+        */
 }
 void GameManager::run() {
     declareData();
@@ -230,7 +254,7 @@ std::unique_ptr<Enemy> GameManager::getRandomEnemy() {
     const short RAND_MED_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance; // medium number gap equals easy + med
     const short RAND_HARD_PERC = currentConfig.easyEnemyChance+currentConfig.medEnemyChance+currentConfig.hardEnemyChance; // same way there's hard number gap
     
-    for (const auto& enemy : enemies) { // finding out number of every diffuclty type for each enemy
+   /*for (const auto& enemy : enemies) { // finding out number of every diffuclty type for each enemy
         if (enemy.getDifficulty() == DifficultyLevel::EASY) {
             currentConfig.easyNum++;
             currentConfig.medNum++;
@@ -243,7 +267,7 @@ std::unique_ptr<Enemy> GameManager::getRandomEnemy() {
         else if (enemy.getDifficulty() == DifficultyLevel::HARD) {
             currentConfig.hardNum++;
         }
-    }
+    }*/ 
     const short MAX_EASY_ENEMY_INDEX= currentConfig.easyNum-1;
     const short MAX_MEDIUM_ENEMY_INDEX = currentConfig.medNum-1;
     const short MAX_HARD_ENEMY_INDEX = currentConfig.hardNum-1;
@@ -341,19 +365,27 @@ void GameManager::printEnemyCatalogue()const { // Printing every enemy in game j
         int i = 1;
         DifficultyLevel difficultyD;
         string difficultyS;
+        float engageChance = 0;
         for (const auto& enemy : enemies) {
             difficultyD = enemy.getDifficulty();
             switch (difficultyD) {
             case DifficultyLevel::EASY:
                 difficultyS = "Easy";
+                engageChance = static_cast<float>(currentConfig.easyEnemyChance) / static_cast<float>(currentConfig.easyNum);
                 break;
             case DifficultyLevel::NORMAL:
                 difficultyS = "Normal";
+                engageChance = static_cast<float>(currentConfig.medEnemyChance) / static_cast<float>(currentConfig.medNum);
                 break;
             case DifficultyLevel::HARD:
                 difficultyS = "Hard";
+                engageChance = static_cast<float>(currentConfig.hardEnemyChance) / static_cast<float>(currentConfig.hardNum);
+                break;
+            default:
+                cout << "CRITICAL ERROR!\n";
                 break;
             }
+
             cout << "\n-------------------------------------------\n";
             cout << "| " << i++ << ". " << enemy.getName() << ":\n";
             cout << "| HP: " << enemy.getMaxHp() << "\n";
@@ -362,7 +394,8 @@ void GameManager::printEnemyCatalogue()const { // Printing every enemy in game j
             cout << "| Armor class: " << enemy.getArmor() << "\n";
             cout << "| Money drop: " << enemy.getMoney() << "$\n";
             cout << "| EXP drop: " << enemy.getXpReward()<<"\n";
-            cout << "| Difficulty: " << difficultyS;
+            cout << "| Difficulty: " << difficultyS<<"\n";
+            cout << "| Engage chance: " << engageChance <<"%";
         }
     }
     cout << "\n-------------------------------------------\n\n\n";
