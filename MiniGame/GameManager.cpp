@@ -28,18 +28,18 @@ void GameManager::declareData() {
    //Declaring different objects
    //Enemy types
 
-    Enemy rat = Enemy("Rat", 25*currentConfig.enemyHpMultiplier, 5, 10, 10, 0, 10, 10, DifficultyLevel::EASY); // 0
-    Enemy spider = Enemy("Spider", 50 * currentConfig.enemyHpMultiplier, 15, 25, 50, 0, 20, 20, DifficultyLevel::EASY);// 1
-    Enemy rogue = Enemy("Rogue", 75 * currentConfig.enemyHpMultiplier, 25, 35, 15, 0, 20, 20, DifficultyLevel::EASY);// 2
-    Enemy skeleton = Enemy("Skeleton", 75 * currentConfig.enemyHpMultiplier, 20, 30, 60, 0, 30, 30, DifficultyLevel::EASY);// 3
-    Enemy zombie = Enemy("Zombie", 100 * currentConfig.enemyHpMultiplier, 20, 30, 15, 1, 30, 30, DifficultyLevel::EASY);// 4
-    Enemy goblin = Enemy("Goblin", 75 * currentConfig.enemyHpMultiplier, 30, 40, 10, 0, 50, 30, DifficultyLevel::EASY);// 5
-    Enemy barbarian = Enemy("Barbarian", 100 * currentConfig.enemyHpMultiplier, 20, 40, 5, 1, 60, 50, DifficultyLevel::NORMAL);// 6
-    Enemy bear = Enemy("Bear", 75 * currentConfig.enemyHpMultiplier, 40, 70, 25, 2, 105, 75, DifficultyLevel::NORMAL);// 7
-    Enemy juggernaut = Enemy("Juggernaut", 250 * currentConfig.enemyHpMultiplier, 15, 20, 10, 3, 100, 100, DifficultyLevel::NORMAL);// 8
-    Enemy knight = Enemy("Knight", 150 * currentConfig.enemyHpMultiplier, 40, 65, 25, 2, 150, 100, DifficultyLevel::HARD);// 9
-    Enemy dragon = Enemy("Dragon", 300 * currentConfig.enemyHpMultiplier, 30, 60, 35, 1, 200, 120, DifficultyLevel::HARD);// 10
-    Enemy demon = Enemy("Demon", 400 * currentConfig.enemyHpMultiplier, 60, 100, 40, 1, 240, 200, DifficultyLevel::HARD);// 11
+    Enemy rat = Enemy(EnemyIndex::Rat,"Rat", 25*currentConfig.enemyHpMultiplier, 5, 10, 10, 0, 10, 10, DifficultyLevel::EASY); // 0
+    Enemy spider = Enemy(EnemyIndex::Spider, "Spider", 50 * currentConfig.enemyHpMultiplier, 15, 25, 50, 0, 20, 20, DifficultyLevel::EASY);// 1
+    Enemy rogue = Enemy(EnemyIndex::Rogue, "Rogue", 75 * currentConfig.enemyHpMultiplier, 25, 35, 15, 0, 20, 20, DifficultyLevel::EASY);// 2
+    Enemy skeleton = Enemy(EnemyIndex::Skeleton, "Skeleton", 75 * currentConfig.enemyHpMultiplier, 20, 30, 60, 0, 30, 30, DifficultyLevel::EASY);// 3
+    Enemy zombie = Enemy(EnemyIndex::Zombie, "Zombie", 100 * currentConfig.enemyHpMultiplier, 20, 30, 15, 1, 30, 30, DifficultyLevel::EASY);// 4
+    Enemy goblin = Enemy(EnemyIndex::Goblin, "Goblin", 75 * currentConfig.enemyHpMultiplier, 30, 40, 10, 0, 50, 30, DifficultyLevel::EASY);// 5
+    Enemy barbarian = Enemy(EnemyIndex::Barbarian, "Barbarian", 100 * currentConfig.enemyHpMultiplier, 20, 40, 5, 1, 60, 50, DifficultyLevel::NORMAL);// 6
+    Enemy bear = Enemy(EnemyIndex::Bear, "Bear", 75 * currentConfig.enemyHpMultiplier, 40, 70, 25, 2, 105, 75, DifficultyLevel::NORMAL);// 7
+    Enemy juggernaut = Enemy(EnemyIndex::Juggernaut, "Juggernaut", 250 * currentConfig.enemyHpMultiplier, 15, 20, 10, 3, 100, 100, DifficultyLevel::NORMAL);// 8
+    Enemy knight = Enemy(EnemyIndex::Knight, "Knight", 150 * currentConfig.enemyHpMultiplier, 40, 65, 25, 2, 150, 100, DifficultyLevel::HARD);// 9
+    Enemy dragon = Enemy(EnemyIndex::Dragon, "Dragon", 300 * currentConfig.enemyHpMultiplier, 30, 60, 35, 1, 200, 120, DifficultyLevel::HARD);// 10
+    Enemy demon = Enemy(EnemyIndex::Demon, "Demon", 400 * currentConfig.enemyHpMultiplier, 60, 100, 40, 1, 240, 200, DifficultyLevel::HARD);// 11
 
     enemies = { rat, spider, rogue, skeleton, zombie, goblin, barbarian, bear, juggernaut, knight, dragon, demon };
 
@@ -284,20 +284,20 @@ std::unique_ptr<Enemy> GameManager::getRandomEnemy()const {
         //cout << "EASY ";
         //cout << randDifficulty << "\n";
         int enemyNum = getRandomNumber(0, MAX_EASY_ENEMY_INDEX);
-        return std::make_unique<Enemy>(enemies[enemyNum]);
+        return std::make_unique<Enemy>(enemies[static_cast<int>( enemyNum)]);
     }
     else if (randDifficulty <= RAND_MED_PERC) {
         //cout << "MEDIUM ";
         //cout << randDifficulty << "\n";
         int enemyNum = getRandomNumber(MAX_EASY_ENEMY_INDEX + 1, MAX_MEDIUM_ENEMY_INDEX);
-        return std::make_unique<Enemy>(enemies[enemyNum]);
+        return std::make_unique<Enemy>(enemies[static_cast<int>( enemyNum)]);
 
     }
     else {
         //cout << "HARD ";
         //cout << randDifficulty<<"\n";
         int enemyNum = getRandomNumber(MAX_MEDIUM_ENEMY_INDEX + 1, MAX_HARD_ENEMY_INDEX);
-        return std::make_unique<Enemy>(enemies[enemyNum]);
+        return std::make_unique<Enemy>( enemies[static_cast<int>(enemyNum)]);
     }
 }
 void GameManager::playerCreation() {// creating player's character

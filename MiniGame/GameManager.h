@@ -67,20 +67,6 @@ private:
     void declareData();
 public:
    
-    enum EnemyIndex {
-        RAT = 0,
-        SPIDER = 1,
-        ROGUE = 2,
-        SKELETON = 3,
-        ZOMBIE = 4,
-        GOBLIN = 5,
-        BARBARIAN = 6,
-        BEAR = 7,
-        JUGGERNAUT = 8,
-        KNIGHT = 9,
-        DRAGON = 10,
-        DEMON = 11
-    };
 
 
     GameManager();

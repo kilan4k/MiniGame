@@ -17,9 +17,12 @@ Enemy::Enemy() {
 	armor = 0;
 	money = 1;
 }
-Enemy::Enemy(string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor, int money, int xpReward, DifficultyLevel difficulty)
-	: name(name), hp(maxHp),maxHp(maxHp), minDamage(minDamage),maxDamage(maxDamage),critChance(critChance),armor(armor),money(money), xpReward(xpReward), difficulty(difficulty)
+Enemy::Enemy(EnemyIndex enemyId, string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor, int money, int xpReward, DifficultyLevel difficulty)
+	: enemyId(enemyId), name(name), hp(maxHp),maxHp(maxHp), minDamage(minDamage),maxDamage(maxDamage),critChance(critChance),armor(armor),money(money), xpReward(xpReward), difficulty(difficulty)
 {}
+const EnemyIndex Enemy::getEnemyId()const {
+	return enemyId;
+}
 
 std::pair<int, int> Enemy::CalculateDamage() const{
 	int baseDamage = getRandomNumber(minDamage, maxDamage);

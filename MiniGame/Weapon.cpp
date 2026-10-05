@@ -6,7 +6,7 @@ using std::cout, std::cin, std::string, std::endl;
 Weapon::Weapon(WeaponIndex weaponId, string name, int minDamage, int maxDamage, short critChance, int price, int lvlReq, bool isBought)
 	:  weaponId(weaponId), name(name), minDamage(minDamage),maxDamage(maxDamage),critChance(critChance),price(price),lvlReq(lvlReq),isBought(isBought)
 {}
-WeaponIndex Weapon::getWeaponId()const {
+const WeaponIndex Weapon::getWeaponId()const {
 	return weaponId;
 }
 std::string Weapon::getName() const {

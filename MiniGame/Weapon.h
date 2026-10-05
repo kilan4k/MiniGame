@@ -36,7 +36,7 @@ public:
 	}
 
 	Weapon(WeaponIndex weaponId, std::string name, int minDamage,	int maxDamage,	short critChance,	int price,	int lvlReq,	bool isBought);
-	WeaponIndex getWeaponId()const;
+	const WeaponIndex getWeaponId()const;
 	std::string getName() const;
 	int getMinDMG() const;
 	int getMaxDMG() const;

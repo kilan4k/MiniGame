@@ -2,11 +2,26 @@
 #include <string>
 #include <utility>
 enum class DifficultyLevel;
+enum class EnemyIndex {
+	Rat = 0,
+	Spider = 1,
+	Rogue = 2,
+	Skeleton = 3,
+	Zombie = 4,
+	Goblin = 5,
+	Barbarian = 6,
+	Bear = 7,
+	Juggernaut= 8,
+	Knight = 9,
+	Dragon = 10,
+	Demon = 11
+};
 
 
 class Enemy
 {
 private:
+	EnemyIndex enemyId;
 	std::string name;
 	float hp;
 	float maxHp;
@@ -19,7 +34,9 @@ private:
 	DifficultyLevel difficulty;
 public:
 	Enemy();
-	Enemy(std::string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor,int money,int xpReward, DifficultyLevel difficulty);
+	Enemy(EnemyIndex enemyId, std::string name, float maxHp, int minDamage, int maxDamage, short critChance, short armor,int money,int xpReward, DifficultyLevel difficulty);
+	const EnemyIndex getEnemyId()const;
+
 	std::pair<int, int> CalculateDamage()const;
 	void Attack(class Player& target);
 	int TakeDamage(int damage);
