@@ -66,20 +66,7 @@ private:
 
     void declareData();
 public:
-    enum WeaponIndex {
-        FISTS = 0,
-        KNIFE = 1,
-        MACHETE = 2,
-        AXE = 3,
-        HAMMER = 4,
-        SWORD = 5,
-        BOW = 6,
-        KATANA = 7,
-        SHOTGUN = 8,
-        FIRESTF = 9,
-        LGHTSBR = 10,
-        DEADSTF = 11
-    };
+   
     enum EnemyIndex {
         RAT = 0,
         SPIDER = 1,

@@ -3,11 +3,11 @@
 #include <compare>
 #include <utility>
 #include <string>
-
+class Weapon;
 class Player
 {
 private:
-	class Weapon* currentWeapon;
+	Weapon* currentWeapon;
 	std::vector<Weapon*> inventory;
 	short armor;
 	int level;

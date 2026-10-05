@@ -44,28 +44,28 @@ void GameManager::declareData() {
     enemies = { rat, spider, rogue, skeleton, zombie, goblin, barbarian, bear, juggernaut, knight, dragon, demon };
 
     //Weapon types
-    Weapon fists = Weapon("Fists", 10, 20, 5, 0, 0, false); //0
-    Weapon knife = Weapon("Knife", 20, 30, 5, 25, 1, false);//1
-    Weapon machete = Weapon("Machete", 25, 35, 10, 85, 6, false);//2
-    Weapon axe = Weapon("Axe", 35, 45, 35, 150, 7, false);//3
-    Weapon hammer = Weapon("Hammer", 20, 40, 33, 95, 7, false);//4
-    Weapon sword = Weapon("Sword", 40, 55, 25, 200, 10, false);//5
-    Weapon bow = Weapon("Bow", 25, 60, 65, 250, 15, false);//6
-    Weapon katana = Weapon("Katana", 50, 75, 50, 400, 20, false);//7
-    Weapon shotgun = Weapon("Shotgun", 30, 90, 1, 600, 25, false);//8
-    Weapon firestf = Weapon("Fire staff", 50, 70, 50, 750, 25, false);//9
-    Weapon lightsaber = Weapon("Light Saber", 67, 80, 25, 800, 25, false);//10
-    Weapon deadlystf = Weapon("Deadly staff", 50, 200, 67, 1500, 50, false);//11
+    Weapon fists = Weapon(WeaponIndex::Fists,"Fists", 10, 20, 5, 0, 0, false); //0
+    Weapon knife = Weapon(WeaponIndex::Knife,"Knife", 20, 30, 5, 25, 1, false);//1
+    Weapon machete = Weapon(WeaponIndex::Machete, "Machete", 25, 35, 10, 85, 6, false);//2
+    Weapon axe = Weapon(WeaponIndex::Axe, "Axe", 35, 45, 35, 150, 7, false);//3
+    Weapon hammer = Weapon(WeaponIndex::Hammer, "Hammer", 20, 40, 33, 95, 7, false);//4
+    Weapon sword = Weapon(WeaponIndex::Sword, "Sword", 40, 55, 25, 200, 10, false);//5
+    Weapon bow = Weapon(WeaponIndex::Bow, "Bow", 25, 60, 65, 250, 15, false);//6
+    Weapon katana = Weapon(WeaponIndex::Katana, "Katana", 50, 75, 50, 400, 20, false);//7
+    Weapon shotgun = Weapon(WeaponIndex::Shotgun, "Shotgun", 30, 90, 1, 600, 25, false);//8
+    Weapon firestf = Weapon(WeaponIndex::FireStaff, "Fire staff", 50, 70, 50, 750, 25, false);//9
+    Weapon lightsaber = Weapon(WeaponIndex::LightSaber, "Light Saber", 67, 80, 25, 800, 25, false);//10
+    Weapon deadlystf = Weapon(WeaponIndex::DeadStaff, "Deadly staff", 50, 200, 67, 1500, 50, false);//11
 
     weapons = { fists, knife, machete, axe, hammer, sword, bow, katana, shotgun, firestf, lightsaber, deadlystf };
 
     //Player types
-    Player empty = Player(1, 0, &weapons[WeaponIndex::FISTS], 0, "New character");
-    Player bandit = Player(1, 50, &weapons[WeaponIndex::KNIFE], 0, "Bandit");
-    Player punchman = Player(1, 0, &weapons[WeaponIndex::FISTS], 1, "Punchman");
-    Player archer = Player(1, 0, &weapons[WeaponIndex::BOW], 0, "Archer");
-    Player lumberjack = Player(1, 0, &weapons[WeaponIndex::AXE], 0, "Lumberjack");
-    Player robber = Player(1, 100, &weapons[WeaponIndex::FISTS], 0, "Robber");
+    Player empty = Player(1, 0, &weapons[static_cast<int>(WeaponIndex::Fists)], 0, "New character");
+    Player bandit = Player(1, 50, &weapons[static_cast<int>(WeaponIndex::Knife)], 0, "Bandit");
+    Player punchman = Player(1, 0, &weapons[static_cast<int>(WeaponIndex::Fists)], 1, "Punchman");
+    Player archer = Player(1, 0, &weapons[static_cast<int>(WeaponIndex::Bow)], 0, "Archer");
+    Player lumberjack = Player(1, 0, &weapons[static_cast<int>(WeaponIndex::Axe)], 0, "Lumberjack");
+    Player robber = Player(1, 100, &weapons[static_cast<int>( WeaponIndex::Fists)], 0, "Robber");
 
     players = { empty, bandit, punchman, archer, lumberjack, robber };
     currentConfig.easyNum = 0;
